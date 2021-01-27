@@ -1,0 +1,170 @@
+/////////////////////////////////////////////////////////////////////////////////
+//
+// Thor C++ Library
+// Copyright (c) 2011-2016 Jan Haller
+//
+// This software is provided 'as-is', without any express or implied
+// warranty. In no event will the authors be held liable for any damages
+// arising from the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not
+//    claim that you wrote the original software. If you use this software
+//    in a product, an acknowledgment in the product documentation would be
+//    appreciated but is not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
+/////////////////////////////////////////////////////////////////////////////////
+
+// MT 24.2.2017: adapted to fit into project structure
+
+/// @file
+/// @brief Algebraic operations on two-dimensional vectors (dot product, vector length and angles, ...)
+/// @details Here is an overview over the functionality:
+/// <table>
+///  <tr><th>Operation</th>				<th>Translation</th>		<th>Scale</th>				<th>Rotation</th>				</tr>
+///	 <tr><td>Get</td>					<td>v</td>					<td>length(v)</td>			<td>polarAngle(v)</td>			</tr>
+///	 <tr><td>Set, absolute</td>			<td>v = w</td>				<td>setLength(v,l)</td>		<td>setPolarAngle(v,a)</td>		</tr>
+///	 <tr><td>Set, relative</td>			<td>v += w</td>				<td>v *= l</td>				<td>rotate(v,a)</td>			</tr>
+///	 <tr><td>Copy, relative</td>		<td>v + w</td>				<td>v * l</td>				<td>rotatedVector(v,a)</td>		</tr>
+/// </table>
+/// Other functions:
+/// <table>
+///	 <tr><td>dotProduct(v,w)</td>		<td>unitVector(v)</td>					<td>squaredLength(v)</td>		</tr>
+///	 <tr><td>crossProduct(v,w)</td>		<td>perpendicularVector(v)</td>			<td>signedAngle(v,w)</td>		</tr>
+///	 <tr><td>cwiseProduct(v,w)</td>		<td>cwiseQuotient(v,w)</td>				<td>projectedVector(v,w)</td>	</tr>
+/// </table>
+
+#pragma once
+
+#include "Trigonometry.h"
+
+#include <SFML/System/Vector2.hpp>
+
+#include <cassert>
+
+namespace MathUtil
+{
+	template <typename T>
+	T length(const Vector2<T>& vector)
+	{
+		return TrigonometricTraits<T>::sqrt(squaredLength(vector));
+	}
+
+	template <typename T>
+	T squaredLength(const Vector2<T>& vector)
+	{
+		return dotProduct(vector, vector);
+	}
+
+	template <typename T>
+	void setLength(Vector2<T>& vector, T newLength)
+	{
+		assert(vector != sf::Vector2<T>());
+		vector *= newLength / length(vector);
+	}
+
+	template <typename T>
+	Vector2<T> unitVector(const Vector2<T>& vector)
+	{
+		assert(vector != sf::Vector2<T>());
+		return vector / length(vector);
+	}
+
+	template <typename T>
+	T polarAngle(const Vector2<T>& vector)
+	{
+		assert(vector != sf::Vector2<T>());
+		return TrigonometricTraits<T>::arcTan2(vector.y, vector.x);
+	}
+
+	template <typename T>
+	void setPolarAngle(Vector2<T>& vector, T newAngle)
+	{
+		// No assert here, because turning a zero vector is well-defined (yields always zero vector)
+
+		T vecLength = length(vector);
+
+		vector.x = vecLength * TrigonometricTraits<T>::cos(newAngle);
+		vector.y = vecLength * TrigonometricTraits<T>::sin(newAngle);
+	}
+
+	template <typename T>
+	void rotate(Vector2<T>& vector, T angle)
+	{
+		// No assert here, because turning a zero vector is well-defined (yields always zero vector)
+
+		T cos = TrigonometricTraits<T>::cos(angle);
+		T sin = TrigonometricTraits<T>::sin(angle);
+
+		// Don't manipulate x and y separately, otherwise they're overwritten too early
+		vector = sf::Vector2<T>(
+			cos * vector.x - sin * vector.y,
+			sin * vector.x + cos * vector.y);
+	}
+
+	template <typename T>
+	Vector2<T> rotatedVector(const Vector2<T>& vector, T angle)
+	{
+		// No assert here, because turning a zero vector is well-defined (yields always zero vector)
+
+		Vector2<T> copy = vector;
+		rotate(copy, angle);
+		return copy;
+	}
+
+	template <typename T>
+	Vector2<T> perpendicularVector(const Vector2<T>& vector)
+	{
+		return sf::Vector2<T>(-vector.y, vector.x);
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+
+
+	template <typename T>
+	T signedAngle(const Vector2<T>& lhs, const Vector2<T>& rhs)
+	{
+		assert(lhs != sf::Vector2<T>() && rhs != sf::Vector2<T>());
+		return TrigonometricTraits<T>::arcTan2(crossProduct(lhs, rhs), dotProduct(lhs, rhs));
+	}
+
+	template <typename T>
+	T dotProduct(const Vector2<T>& lhs, const Vector2<T>& rhs)
+	{
+		return lhs.x * rhs.x + lhs.y * rhs.y;
+	}
+
+	template <typename T>
+	T crossProduct(const Vector2<T>& lhs, const Vector2<T>& rhs)
+	{
+		return lhs.x * rhs.y - lhs.y * rhs.x;
+	}
+
+	template <typename T>
+	Vector2<T> cwiseProduct(const Vector2<T>& lhs, const Vector2<T>& rhs)
+	{
+		return sf::Vector2<T>(lhs.x * rhs.x, lhs.y * rhs.y);
+	}
+
+	template <typename T>
+	Vector2<T> cwiseQuotient(const Vector2<T>& lhs, const Vector2<T>& rhs)
+	{
+		assert(rhs.x != 0 && rhs.y != 0);
+		return sf::Vector2<T>(lhs.x / rhs.x, lhs.y / rhs.y);
+	}
+
+	template <typename T>
+	Vector2<T> projectedVector(const Vector2<T>& vector, const Vector2<T>& axis)
+	{
+		assert(axis != sf::Vector2<T>());
+		return dotProduct(vector, axis) / squaredLength(axis) * axis;
+	}
+}

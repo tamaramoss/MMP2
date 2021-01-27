@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugDLL|Win32">
+      <Configuration>DebugDLL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A4057076-8163-44DB-9C04-6843C2F58174}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>FinalFrontier</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\tmp\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-$(PlatformShortName)-$(Configuration)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\tmp\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-$(PlatformShortName)-$(Configuration)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(ProjectName)-$(PlatformShortName)-$(Configuration)</TargetName>
+    <IntDir>$(SolutionDir)..\tmp\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>FINALFRONTIER_DLL_EXPORTS;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)/../externalLibs/box2d/include;$(SFMLROOT)/include;C:\Program Files %28x86%29\Visual Leak Detector\include</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\externalLibs\box2d\lib\Debug;$(SFMLROOT)/lib;C:\Program Files %28x86%29\Visual Leak Detector\lib\Win32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-system-d.lib;Box2D.lib;sfml-window-d.lib;sfml-network-d.lib;sfml-audio-d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>FINALFRONTIER_DLL_EXPORTS;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SFMLROOT)/include</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SFMLROOT)/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;sfml-network-d.lib;sfml-audio-d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>FINALFRONTIER_DLL_EXPORTS;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)../externalLibs/box2d/include;$(SFMLROOT)/include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)/../externalLibs/box2d/lib/Release;$(SFMLROOT)/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-system.lib;sfml-window.lib;sfml-network.lib;sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="../src/stdafx.h" />
+    <ClInclude Include="../src/targetver.h" />
+    <ClInclude Include="../src/GameState.h" />
+    <ClInclude Include="../src/MainState.h" />
+    <ClInclude Include="../src/MenuState.h" />
+    <ClInclude Include="../src/Game.h" />
+    <ClInclude Include="../src/GameObject.h" />
+    <ClInclude Include="..\src\ColliderComponent.h" />
+    <ClInclude Include="..\src\CameraRenderComponent.h" />
+    <ClInclude Include="..\src\DebugDraw.h" />
+    <ClInclude Include="..\src\EventBus.h" />
+    <ClInclude Include="..\src\FinalFrontier\dll_export.h" />
+    <ClInclude Include="..\src\GameObjectEvents.h" />
+    <ClInclude Include="..\src\IEvent.h" />
+    <ClInclude Include="..\src\GameObjectManager.h" />
+    <ClInclude Include="..\src\NLTmxMap.h" />
+    <ClInclude Include="..\src\PhysicsComponentEvents.h" />
+    <ClInclude Include="..\src\PhysicsManager.h" />
+    <ClInclude Include="..\src\RenderComponentEvents.h" />
+    <ClInclude Include="..\src\RigidBodyComponent.h" />
+    <ClInclude Include="..\src\SpriteManager.h" />
+    <ClInclude Include="..\src\TileMapLoader.h" />
+    <ClInclude Include="..\src\TransformAnimationConstantMotion.h" />
+    <ClInclude Include="..\src\IGameComponent.h" />
+    <ClInclude Include="../src/GameStateManager.h" />
+    <ClInclude Include="../src/InputManager.h" />
+    <ClInclude Include="..\src\Debug.h" />
+    <ClInclude Include="..\src\PlayerMoveComponent.h" />
+    <ClInclude Include="..\src\IRenderComponent.h" />
+    <ClInclude Include="..\src\SpriteRenderComponent.h" />
+    <ClInclude Include="..\src\IAnimationComponent.h" />
+    <ClInclude Include="../src/TransformAnimationComponent.h" />
+    <ClInclude Include="../src/TileLayerRenderComponent.h" />
+    <ClInclude Include="..\src\Trigonometry.h" />
+    <ClInclude Include="..\src\VectorAlgebra2D.h" />
+    <ClInclude Include="..\src\VectorAlgebra3D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="../src/main.cpp" />
+    <ClCompile Include="../src/MainState.cpp" />
+    <ClCompile Include="../src/MenuState.cpp" />
+    <ClCompile Include="../src/Game.cpp" />
+    <ClCompile Include="../src/GameObject.cpp" />
+    <ClCompile Include="../src/GameStateManager.cpp" />
+    <ClCompile Include="../src/InputManager.cpp" />
+    <ClCompile Include="..\src\ColliderComponent.cpp" />
+    <ClCompile Include="..\src\DebugDraw.cpp" />
+    <ClCompile Include="..\src\EventBus.cpp" />
+    <ClCompile Include="..\src\GameObjectEvents.cpp" />
+    <ClCompile Include="..\src\GameObjectManager.cpp" />
+    <ClCompile Include="..\src\NLTmxMap.cpp" />
+    <ClCompile Include="..\src\PhysicsComponentEvents.cpp" />
+    <ClCompile Include="..\src\PhysicsManager.cpp" />
+    <ClCompile Include="..\src\PlayerMoveComponent.cpp" />
+    <ClCompile Include="..\src\CameraRenderComponent.cpp" />
+    <ClCompile Include="..\src\RenderComponentEvents.cpp" />
+    <ClCompile Include="..\src\RigidBodyComponent.cpp" />
+    <ClCompile Include="..\src\SpriteManager.cpp" />
+    <ClCompile Include="..\src\SpriteRenderComponent.cpp" />
+    <ClCompile Include="..\src\TileMapLoader.cpp" />
+    <ClCompile Include="..\src\TransformAnimationComponent.cpp" />
+    <ClCompile Include="..\src\TransformAnimationConstantMotion.cpp" />
+    <ClCompile Include="../src/TileLayerRenderComponent.cpp" />
+    <ClCompile Include="../src/stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\VectorAlgebra2D.inl" />
+    <None Include="..\src\VectorAlgebra3D.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
