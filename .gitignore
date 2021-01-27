@@ -1,0 +1,17 @@
+pch
+*.log
+*.suo
+*.sdf
+*.opensdf
+*.ilk
+*.ipch
+*.user
+*.iobj
+*.ipdb
+vs2015/Debug
+vs2015/Release
+vs2015/.vs
+tmp
+bin
+*.VC.opendb
+*.VC.db
