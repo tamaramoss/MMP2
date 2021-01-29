@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include <TGUI/TGUI.hpp>
 #include "GameStateManager.h"
 
 class InputManager;
@@ -31,6 +31,7 @@ private:
 	Config mConfig;
 
 	RenderWindow mWindow;
+	tgui::Gui mGUI;
 	GameStateManager mGameStateManager;
 
 	InputManager* mInputManager = nullptr;

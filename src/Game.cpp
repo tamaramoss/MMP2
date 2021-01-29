@@ -23,8 +23,10 @@ void Game::run()
 		{
 			if (event.type == Event::Closed)
 				mWindow.close();
-			else
+			else if (event.type == Event::KeyPressed || event.type == Event::KeyReleased)
 				mInputManager->process(event);
+			else
+				mGUI.handleEvent(event);
 		}
 
 		update();
@@ -63,6 +65,7 @@ bool Game::init()
 	//
 	mWindow.create(VideoMode(mConfig.mResolution.x, mConfig.mResolution.y),
 	                mConfig.mWindowName);
+	mGUI.setTarget(mWindow);
 
 	mInputManager->set_renderWindow(&mWindow);
 
@@ -94,6 +97,8 @@ void Game::draw()
 	mGameStateManager.draw();
 
 	mDebugDraw->draw(mWindow);
+
+	mGUI.draw();
 
 	mWindow.display();
 }
