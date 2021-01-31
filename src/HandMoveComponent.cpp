@@ -4,7 +4,9 @@
 #include "PhysicsManager.h"
 #include "InputManager.h"
 #include "GameObject.h"
+#include "GameObjectManager.h"
 #include <iostream>
+#include "VectorAlgebra2D.h"
 
 
 
@@ -20,8 +22,9 @@ bool HandMoveComponent::init()
 {
 	auto body = mRigidBody.getB2Body();
 	//body->SetGravityScale(850);
+	body->SetType(b2_dynamicBody);
 	body->SetFixedRotation(true);
-	return false;
+	return true;
 }
 
 void HandMoveComponent::update(float deltaTime)
@@ -41,14 +44,24 @@ void HandMoveComponent::update(float deltaTime)
 	move(translation, mMoveSpeed * 100);
 
 	// grabbing
-	if (InputManager::getInstance().isButtonPressed(mUseRightStick ? "GrabRight" : "GrabLeft"))
+	if (InputManager::getInstance().isButtonPressed(mUseRightStick ? "GrabRight" : "GrabLeft") && mCanGrab && !mIsGrabbing)
 	{
 		grab();
 	}
 
-	if (InputManager::getInstance().isButtonReleased(mUseRightStick ? "GrabRight" : "GrabLeft"))
+	if (InputManager::getInstance().isButtonReleased(mUseRightStick ? "GrabRight" : "GrabLeft") && mIsGrabbing)
 	{
 		release();
+	}
+
+	if (mCanGrab)
+	{
+		float distance = MathUtil::length(mGrabPosition - mGameObject.getPosition());
+		if (distance > 400.f)
+		{
+			std::cout << distance << std::endl;
+			mCanGrab = false;
+		}
 	}
 }
 
@@ -72,7 +85,6 @@ void HandMoveComponent::release()
 {
 	std::cout << "release" << std::endl;
 	mRigidBody.getB2Body()->SetType(b2_dynamicBody);
-
 	mIsGrabbing = false;
 }
 
@@ -86,7 +98,25 @@ void HandMoveComponent::extend()
 
 void HandMoveComponent::move(sf::Vector2f direction, float speed)
 {
-	auto body = mRigidBody.getB2Body();
-	body->ApplyForce(PhysicsManager::s2b(direction * speed), b2Vec2(0, 0), false);
+	// if distance to body >= maxDistance and the other hand is not holding on, then no more force.
+	// otherwise add force
+	auto hand = mRigidBody.getB2Body();
+
+	float distanceToBody = PhysicsManager::UNRATIO * MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
+	if (distanceToBody > mNormalLength - 1.5f && !mOtherHand->mIsGrabbing)
+	{
+		direction = (mBody->getPosition() - mGameObject.getPosition()) / MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
+	}
+
+	hand->ApplyForce(PhysicsManager::s2b(direction * speed), b2Vec2(0, 0), false);
 }
 
+void HandMoveComponent::onCollisionEnter(ColliderComponent& other)
+{
+	if (other.getGameObject().getTag() == "Grabbable")
+	{
+		std::cout << "rocc" << std::endl;
+		mGrabPosition = other.getGameObject().getPosition();
+		mCanGrab = true;
+	}
+}

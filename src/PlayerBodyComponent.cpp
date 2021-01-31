@@ -16,7 +16,7 @@ PlayerBodyComponent::PlayerBodyComponent(GameObject& gameObject, RigidBodyCompon
 bool PlayerBodyComponent::init()
 {
 	mRigidbody.getB2Body()->SetGravityScale(850);
-	return false;
+	return true;
 }
 
 void PlayerBodyComponent::update(float deltaTime)

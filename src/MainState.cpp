@@ -38,10 +38,10 @@ void MainState::init()
 	// Moving camera
 	{
 		auto v = mGame->getWindow().getView();
-		v.setSize(1280 * 5, 720 * 5);
+		v.setSize(1280 * 6, 720 * 6);
 		mGame->getWindow().setView(v);
 
-		auto camera = make_shared<GameObject>("Camera");
+		auto camera = make_shared<GameObject>("Camera", "Camera");
 		auto render_comp = make_shared<CameraRenderComponent>(
 			*camera, mGame->getWindow(), mGame->getWindow().getView());
 		camera->add_component(render_comp);
