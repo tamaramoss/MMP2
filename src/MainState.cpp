@@ -26,7 +26,7 @@ void MainState::init()
 	// load tile map/level
 	{
 		const std::string& resourcePath = "../assets/";
-		const auto tilemap = NLLoadTmxMap(resourcePath + "game.tmx");
+		const auto tilemap = NLLoadTmxMap(resourcePath + "game_test.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
 		loadTileLayers(tilemap, resourcePath, mSpriteManager);
@@ -37,6 +37,10 @@ void MainState::init()
 
 	// Moving camera
 	{
+		auto v = mGame->getWindow().getView();
+		v.setSize(1280 * 5, 720 * 5);
+		mGame->getWindow().setView(v);
+
 		auto camera = make_shared<GameObject>("Camera");
 		auto render_comp = make_shared<CameraRenderComponent>(
 			*camera, mGame->getWindow(), mGame->getWindow().getView());
@@ -45,6 +49,10 @@ void MainState::init()
 
 		mGameObjectManager.addGameObject(camera);
 		mSpriteManager.setCamera(render_comp.get());
+		camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
+
+		
+
 	}
 
 	// Define layer order manually here. Could come from custom file settings.

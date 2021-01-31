@@ -141,7 +141,7 @@ static GameObject::ptr loadSprite(NLTmxMapObject* object, const std::string& lay
 		auto name = property->name;
 		if (name == "Texture")
 		{
-			spriteTexture = resourcePath + property->value;
+			spriteTexture = resourcePath + "Sprites/" + property->value;
 		}
 		else if (name == "TextureRectLeft")
 		{
@@ -217,6 +217,101 @@ static GameObject::ptr loadSprite(NLTmxMapObject* object, const std::string& lay
 	return gameObject;
 }
 
+static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+	SpriteManager& spriteManager)
+{
+	auto gameObject = make_shared<GameObject>(object->name);
+	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
+
+	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
+
+	// Parse data from file
+	IntRect texture_rect{};
+	texture_rect.width = object->width;
+	texture_rect.height = object->height;
+
+	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_staticBody);
+	//create the collider: 
+	b2PolygonShape shape;
+	auto go = gameObject;
+
+	const auto w = (texture_rect.width / 2.) * PhysicsManager::UNRATIO;
+	const auto h = (texture_rect.height / 2.) * PhysicsManager::UNRATIO;
+	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
+
+	b2FixtureDef FixtureDef;
+	FixtureDef.density = 1.f;
+	FixtureDef.friction = 0.7f;
+	FixtureDef.shape = &shape;
+	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
+
+	//Extend Physics manager and Collider Component to get detailed collision information.
+	colliderComp->registerOnCollisionFunction(
+		[](ColliderComponent& collider1, ColliderComponent& collider2)
+	{
+		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+			.getGameObject().getId() <<
+			endl;
+	});
+
+	gameObject->add_component(rigid_comp);
+	gameObject->add_component(colliderComp);
+
+
+
+	gameObject->init();
+
+	return gameObject;
+}
+
+static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+	SpriteManager& spriteManager)
+{
+	auto gameObject = make_shared<GameObject>(object->name);
+	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
+
+	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
+
+	// Parse data from file
+	IntRect texture_rect{};
+	texture_rect.width = object->width;
+	texture_rect.height = object->height;
+
+	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_staticBody);
+	//create the collider: 
+	b2PolygonShape shape;
+	auto go = gameObject;
+
+	const auto w = (texture_rect.width / 2.) * PhysicsManager::UNRATIO;
+	const auto h = (texture_rect.height / 2.) * PhysicsManager::UNRATIO;
+	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
+
+	b2FixtureDef FixtureDef;
+	FixtureDef.density = 1.f;
+	FixtureDef.friction = 0.7f;
+	FixtureDef.shape = &shape;
+	FixtureDef.isSensor = true;
+	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
+
+	//Extend Physics manager and Collider Component to get detailed collision information.
+	colliderComp->registerOnCollisionFunction(
+		[](ColliderComponent& collider1, ColliderComponent& collider2)
+	{
+		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+			.getGameObject().getId() <<
+			endl;
+	});
+
+	gameObject->add_component(rigid_comp);
+	gameObject->add_component(colliderComp);
+
+
+
+	gameObject->init();
+
+	return gameObject;
+}
+
 
 void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, SpriteManager& sprite_manager)
 {
@@ -233,6 +328,10 @@ void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, Sprit
 
 			if (object->type == "Sprite")
 				auto sprite = loadSprite(object, group->name, resource_path, sprite_manager);
+			if (object->type == "Collider")
+				auto collider = loadCollider(object, group->name, resource_path, sprite_manager);
+			if (object->type == "Trigger")
+				auto trigger = loadTrigger(object, group->name, resource_path, sprite_manager);
 		}
 	}
 }

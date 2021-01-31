@@ -2,10 +2,9 @@
 
 #include "GameObject.h"
 #include "PlayerMoveComponent.h"
-
-#include <iostream>
-
 #include "InputManager.h"
+#include "PhysicsManager.h"
+#include <iostream>
 
 PlayerMoveComponent::PlayerMoveComponent(
 	GameObject& gameObject, RigidBodyComponent& rigidBody, const int playerIndex)
@@ -18,31 +17,42 @@ PlayerMoveComponent::PlayerMoveComponent(
 bool
 PlayerMoveComponent::init()
 {
+	m_rigidBody.getB2Body()->SetGravityScale(850);
 	return true;
 }
 
 void
 PlayerMoveComponent::update(const float deltaTime)
 {
-	const auto speed = 100.0f; // pixels/second 
+	const auto speed = 1'000.0f; // pixels/second 
 	Vector2f translation{};
-	//if (InputManager::getInstance().isButtonDown("right", m_playerIndex))
-	//	translation.x += speed * deltaTime;
-	//if (InputManager::getInstance().isButtonDown("left", m_playerIndex))
-	//	translation.x -= speed * deltaTime;
-	//if (InputManager::getInstance().isButtonDown("up", m_playerIndex))
-	//	translation.y -= speed * deltaTime;
-	//if (InputManager::getInstance().isButtonDown("down", m_playerIndex))
-	//	translation.y += speed * deltaTime;
-	//
+	/*if (InputManager::getInstance().isKeyDown("right", m_playerIndex))
+		translation.x += speed * deltaTime;
+	if (InputManager::getInstance().isKeyDown("left", m_playerIndex))
+		translation.x -= speed * deltaTime;
+	if (InputManager::getInstance().isKeyDown("up", m_playerIndex))
+		translation.y -= speed * deltaTime;
+	if (InputManager::getInstance().isKeyDown("down", m_playerIndex))
+		translation.y += speed * deltaTime;*/
 
-	const sf::Vector2f axisPosition = InputManager::getInstance().getDpadPosition(m_playerIndex);
-	const float zAxisPosition = InputManager::getInstance().getTriggerPosition(m_playerIndex);
-	std::cout << axisPosition.x << " " << axisPosition.y << std::endl;
-	std::cout << zAxisPosition << std::endl;
-	translation.x += axisPosition.x * speed * deltaTime;
-	translation.y += axisPosition.y * speed * deltaTime;
-	
+	sf::Vector2f input = InputManager::getInstance().getAxisPosition(m_playerIndex == 0 ? false : true, 0);
+	translation = input;
+	if (m_playerIndex == 1)
+		std::cout << translation.x << " " << translation.y << std::endl;
+
+	if (translation.x == 0 && translation.y == 0)
+	{
+		auto vel = m_rigidBody.getB2Body()->GetLinearVelocity();
+		vel = PhysicsManager::s2b(Vector2f(-vel.x * 2.5f, 0));
+		m_rigidBody.getB2Body()->ApplyForce(vel, b2Vec2(0,0), true);
+		m_rigidBody.getB2Body()->SetGravityScale(850);
+
+	}
+	else
+	{
+		//m_rigidBody.getB2Body()->SetAngularDamping(50.f);
+		m_rigidBody.getB2Body()->SetGravityScale(0);
+	}
 
 #if 1 // physics movement
 	m_rigidBody.addVelocity(translation);
