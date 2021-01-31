@@ -13,6 +13,8 @@
 using namespace std;
 
 
+
+
 void Game::run()
 {
 	if (!init())
@@ -62,7 +64,8 @@ void Game::run()
 			else
 				mInputManager->process(event);
 
-			mGUI.handleEvent(event);
+			mTGuiWrapper->process(event);
+
 		}
 
 		update();
@@ -74,6 +77,10 @@ void Game::run()
 
 bool Game::init()
 {
+	//
+	mWindow.create(VideoMode(mConfig.mResolution.x, mConfig.mResolution.y),
+		mConfig.mWindowName);
+
 	mInputManager = &InputManager::getInstance();
 
 	//mInputManager->bindKey("Exit", Keyboard::Escape);
@@ -97,19 +104,16 @@ bool Game::init()
 	mInputManager->bindButton("right", 2, 0);
 	mInputManager->bindButton("Select", 1);
 
-
-
-
 	mDebugDraw = &DebugDraw::getInstance();
 
+	mTGuiWrapper = &TGuiWrapper::getInstance();
+	mTGuiWrapper->setGame(this);
+
+	
 	//
 	mGameStateManager.registerState("MenuState", make_shared<MenuState>(&mGameStateManager, this));
 	mGameStateManager.registerState("MainState", make_shared<MainState>(&mGameStateManager, this));
 
-	//
-	mWindow.create(VideoMode(mConfig.mResolution.x, mConfig.mResolution.y),
-	                mConfig.mWindowName);
-	mGUI.setTarget(mWindow);
 
 	mInputManager->set_renderWindow(&mWindow);
 
@@ -138,15 +142,27 @@ void Game::draw()
 {
 	mWindow.clear();
 
+	mTGuiWrapper->getGui().draw();
+
+
 	mGameStateManager.draw();
 
 	mDebugDraw->draw(mWindow);
 
-	mGUI.draw();
 
 	mWindow.display();
 }
 
 void Game::shutdown()
 {
+}
+
+tgui::Gui& Game::getGui()
+{
+	return mTGuiWrapper->getGui();
+}
+
+TGuiWrapper& Game::getGuiWrapper()
+{
+	return *mTGuiWrapper;
 }

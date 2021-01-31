@@ -14,6 +14,7 @@ public:
 	void update(float delta) override;
 	void draw() override;
 	void setupGUI();
+	void exit() override;
 
 private:
 	// should be gameobject too
@@ -21,7 +22,7 @@ private:
 	Font mFont;
 	View mView;
 
-	tgui::Gui mGUI;
+	tgui::Theme mTheme;
 
 	bool mIsInit = false;
 
