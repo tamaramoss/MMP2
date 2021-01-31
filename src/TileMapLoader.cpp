@@ -12,6 +12,8 @@
 #include "GameObjectEvents.h"
 #include "PhysicsManager.h"
 #include <iostream>
+#include "PlayerBodyComponent.h"
+#include "HandMoveComponent.h"
 
 void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
                       SpriteManager& spriteManager)
@@ -120,6 +122,83 @@ void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
 	go->init();
 }
 
+static GameObject::ptr createHand(const std::string& layer, b2Body& parent, const int index, const float speed, const Vector2f startPos, float distanceFromStart, const std::string textureName, SpriteManager& spriteManager)
+{
+	std::string name = "Hand" + to_string(index);
+	auto gameObject = make_shared<GameObject>(name);
+	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
+
+	gameObject->move(static_cast<float>(startPos.x + (index == 0 ? -distanceFromStart : distanceFromStart)), static_cast<float>(startPos.y - distanceFromStart / 2));
+
+	// Parse data from file
+	IntRect texture_rect{};
+	texture_rect.width = 384;
+	texture_rect.height = 384;
+	std::string spriteTexture;
+
+	// sprite
+	spriteTexture = textureName;
+	auto render_comp = make_shared<SpriteRenderComponent>(
+		*gameObject, spriteManager.getWindow(), spriteTexture
+		);
+	gameObject->add_component(render_comp);
+
+	render_comp->getSprite().setTextureRect(texture_rect);
+	//renderComp->getSprite().setOrigin(textureRect.width * 0.5f, textureRect.height *0.5f);
+	//renderComp->getSprite().setPosition(0.0f, 0.0f);
+
+	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *render_comp));
+
+
+	// rigidbody and collider
+	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_dynamicBody);
+	//create the collider: 
+	b2PolygonShape shape;
+	auto go = gameObject;
+	auto sprite = go->get_component<SpriteRenderComponent>();
+
+	const auto w = (sprite->getSprite().getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
+	const auto h = (sprite->getSprite().getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
+	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
+
+	b2FixtureDef FixtureDef;
+	FixtureDef.density = 1.f;
+	FixtureDef.friction = 0.7f;
+	FixtureDef.shape = &shape;
+	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
+
+	//Extend Physics manager and Collider Component to get detailed collision information.
+	colliderComp->registerOnCollisionFunction(
+		[](ColliderComponent& collider1, ColliderComponent& collider2)
+	{
+		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+			.getGameObject().getId() <<
+			endl;
+	});
+
+	auto playerMove = make_shared<HandMoveComponent>(*gameObject, *rigid_comp, 0, index == 0 ? false : true);
+	
+	gameObject->add_component(playerMove);
+	gameObject->add_component(rigid_comp);
+	gameObject->add_component(colliderComp);
+
+	// joints
+	b2RopeJointDef jointDefinition;
+	jointDefinition.bodyA = &parent;
+	jointDefinition.bodyB = rigid_comp->getB2Body();
+	jointDefinition.maxLength = 40.f;
+	jointDefinition.localAnchorA = *&parent.GetLocalCenter();
+	jointDefinition.localAnchorB = rigid_comp->getB2Body()->GetLocalCenter();
+
+	
+	//b2DistanceJoint* joint = (b2DistanceJoint*)
+	PhysicsManager::get_b2_world()->CreateJoint(&jointDefinition);
+
+	gameObject->init();
+	return gameObject;
+}
+
+
 static GameObject::ptr loadSprite(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
                                    SpriteManager& spriteManager)
 {
@@ -136,12 +215,20 @@ static GameObject::ptr loadSprite(NLTmxMapObject* object, const std::string& lay
 	auto input = false;
 	auto player_idx = 0;
 	auto mass = 1.0f;
+	auto hasArms = false;
+	auto speed = 0.f;
+	std::string handTexture;
+
 	for (auto property : object->properties)
 	{
 		auto name = property->name;
 		if (name == "Texture")
 		{
 			spriteTexture = resourcePath + "Sprites/" + property->value;
+		}
+		else if (name == "HandTexture")
+		{
+			handTexture = resourcePath + "Sprites/" + property->value;
 		}
 		else if (name == "TextureRectLeft")
 		{
@@ -159,6 +246,11 @@ static GameObject::ptr loadSprite(NLTmxMapObject* object, const std::string& lay
 		else if (name == "Mass")
 		{
 			mass = stof(property->value);
+		}
+		else if (name == "MoveSpeed")
+		{
+			hasArms = true;
+			speed = stof(property->value);
 		}
 	}
 
@@ -208,9 +300,17 @@ static GameObject::ptr loadSprite(NLTmxMapObject* object, const std::string& lay
 
 	if (input)
 	{
-		const auto input_comp =
-			make_shared<PlayerMoveComponent>(*gameObject, *rigid_comp, player_idx);
-		gameObject->add_component(input_comp);
+		const auto body_comp =
+			make_shared<PlayerBodyComponent>(*gameObject, *rigid_comp, 500.f);
+		gameObject->add_component(body_comp);
+	}
+
+	if (hasArms)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			auto myArm = createHand(layer, *rigid_comp->getB2Body(), i, speed, gameObject->getPosition(), 700.f, handTexture, spriteManager);
+		}
 	}
 
 	gameObject->init();
@@ -311,7 +411,6 @@ static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& la
 
 	return gameObject;
 }
-
 
 void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, SpriteManager& sprite_manager)
 {

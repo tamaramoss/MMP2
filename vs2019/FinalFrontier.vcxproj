@@ -147,11 +147,13 @@
     <ClInclude Include="..\src\EventBus.h" />
     <ClInclude Include="..\src\FinalFrontier\dll_export.h" />
     <ClInclude Include="..\src\GameObjectEvents.h" />
+    <ClInclude Include="..\src\HandMoveComponent.h" />
     <ClInclude Include="..\src\IEvent.h" />
     <ClInclude Include="..\src\GameObjectManager.h" />
     <ClInclude Include="..\src\NLTmxMap.h" />
     <ClInclude Include="..\src\PhysicsComponentEvents.h" />
     <ClInclude Include="..\src\PhysicsManager.h" />
+    <ClInclude Include="..\src\PlayerBodyComponent.h" />
     <ClInclude Include="..\src\RenderComponentEvents.h" />
     <ClInclude Include="..\src\RigidBodyComponent.h" />
     <ClInclude Include="..\src\SpriteManager.h" />
@@ -184,9 +186,11 @@
     <ClCompile Include="..\src\EventBus.cpp" />
     <ClCompile Include="..\src\GameObjectEvents.cpp" />
     <ClCompile Include="..\src\GameObjectManager.cpp" />
+    <ClCompile Include="..\src\HandMoveComponent.cpp" />
     <ClCompile Include="..\src\NLTmxMap.cpp" />
     <ClCompile Include="..\src\PhysicsComponentEvents.cpp" />
     <ClCompile Include="..\src\PhysicsManager.cpp" />
+    <ClCompile Include="..\src\PlayerBodyComponent.cpp" />
     <ClCompile Include="..\src\PlayerMoveComponent.cpp" />
     <ClCompile Include="..\src\CameraRenderComponent.cpp" />
     <ClCompile Include="..\src\RenderComponentEvents.cpp" />

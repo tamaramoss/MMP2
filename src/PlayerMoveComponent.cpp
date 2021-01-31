@@ -24,7 +24,7 @@ PlayerMoveComponent::init()
 void
 PlayerMoveComponent::update(const float deltaTime)
 {
-	const auto speed = 1'000.0f; // pixels/second 
+	const auto speed = 10000.0f; // pixels/second 
 	Vector2f translation{};
 	/*if (InputManager::getInstance().isKeyDown("right", m_playerIndex))
 		translation.x += speed * deltaTime;
@@ -55,7 +55,7 @@ PlayerMoveComponent::update(const float deltaTime)
 	}
 
 #if 1 // physics movement
-	m_rigidBody.addVelocity(translation);
+	m_rigidBody.addVelocity(translation * speed * deltaTime);
 #else // no physics movement
 	mGameObject.GetTransform().translate(translation);
 #endif

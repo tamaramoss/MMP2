@@ -43,6 +43,7 @@ void RigidBodyComponent::addVelocity(const Vector2f& velocity) const
 
 void RigidBodyComponent::physicsUpdate(float deltaTime) const
 {
+
 	const auto pos = getB2Body()->GetPosition();
 
 	mGameObject.setPosition(PhysicsManager::b2s(pos));
@@ -61,16 +62,16 @@ void RigidBodyComponent::physicsUpdate(float deltaTime) const
 		if (convexshape->GetType() == b2Shape::e_polygon)
 		{
 			DebugDraw::getInstance().drawPolygonShape(*dynamic_cast<b2PolygonShape*>(convexshape), mGameObject,
-			                                           PhysicsManager::s2b(Color::Green));
+				PhysicsManager::s2b(Color::Green));
 		}
 
 		fixture = fixture->GetNext();
+
+		DebugDraw::getInstance().drawAABB(&aabb, Color::Green);
+		DebugDraw::getInstance().DrawTransform(getB2Body()->GetTransform());
 	}
-
-	DebugDraw::getInstance().drawAABB(&aabb, Color::Green);
-	DebugDraw::getInstance().DrawTransform(getB2Body()->GetTransform());
+	
 }
-
 
 b2Body* RigidBodyComponent::getB2Body() const
 {

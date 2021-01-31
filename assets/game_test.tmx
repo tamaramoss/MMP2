@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="6" nextobjectid="21">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="6" nextobjectid="22">
  <tileset firstgid="1" name="background_template" tilewidth="192" tileheight="192" tilecount="9" columns="3">
   <image source="Environment/background_template.png" width="576" height="576"/>
  </tileset>
@@ -423,29 +423,19 @@
 </data>
  </layer>
  <objectgroup id="5" name="GameObjects">
-  <object id="1" name="Collider1" type="Collider" x="1765.9" y="17526.7" width="440.263" height="300.667"/>
-  <object id="2" name="Collider" type="Collider" x="3417.3" y="17298.3" width="880.527" height="610.731"/>
-  <object id="3" name="Trigger" type="Trigger" x="2198.63" y="17106.7" width="836.232" height="724.824"/>
-  <object id="4" name="Player1" type="Sprite" x="3547.79" y="18128.6" width="384" height="384">
+  <object id="1" name="Collider1" type="Collider" x="597.9" y="16454.7" width="440.263" height="300.667"/>
+  <object id="2" name="Collider" type="Collider" x="4185.3" y="16258.3" width="880.527" height="610.731"/>
+  <object id="3" name="Trigger" type="Trigger" x="2086.63" y="15714.7" width="836.232" height="724.824"/>
+  <object id="8" name="Player0" type="Sprite" x="2616.93" y="17901.6" width="384" height="384">
    <properties>
     <property name="Border" value="on"/>
     <property name="BorderSize" value="20"/>
-    <property name="Input" value="on"/>
-    <property name="InputPlayerIdx" value="1"/>
-    <property name="Mass" value="0.1"/>
-    <property name="Texture" value="hands_template.png"/>
-    <property name="TextureRectLeft" value="0"/>
-    <property name="TextureRectTop" value="0"/>
-   </properties>
-  </object>
-  <object id="8" name="Player0" type="Sprite" x="1428.93" y="18273.6" width="384" height="384">
-   <properties>
-    <property name="Border" value="on"/>
-    <property name="BorderSize" value="20"/>
+    <property name="HandTexture" value="hands_template.png"/>
     <property name="Input" value="on"/>
     <property name="InputPlayerIdx" value="0"/>
     <property name="Mass " value="0.1"/>
-    <property name="Texture" value="hands_template.png"/>
+    <property name="MoveSpeed" type="float" value="150"/>
+    <property name="Texture" value="head_template.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="384"/>
    </properties>
