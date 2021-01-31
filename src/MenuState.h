@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameState.h"
-
+#include "TGUI/TGUI.hpp"
 #include <SFML/Graphics/Text.hpp>
 
 class MenuState : public GameState
@@ -13,6 +13,7 @@ public:
 
 	void update(float delta) override;
 	void draw() override;
+	void setupGUI();
 
 private:
 	// should be gameobject too
@@ -20,5 +21,8 @@ private:
 	Font mFont;
 	View mView;
 
+	tgui::Gui mGUI;
+
 	bool mIsInit = false;
+
 };
