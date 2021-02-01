@@ -7,6 +7,7 @@
 #include "GameObjectManager.h"
 #include <iostream>
 #include "VectorAlgebra2D.h"
+#include "PlayerBodyComponent.h"
 
 
 
@@ -23,6 +24,7 @@ bool HandMoveComponent::init()
 	auto body = mRigidBody.getB2Body();
 	body->SetType(b2_dynamicBody);
 	body->SetFixedRotation(true);
+	body->SetSleepingAllowed(false);
 	return true;
 }
 
@@ -39,8 +41,6 @@ void HandMoveComponent::update(float deltaTime)
 		mRigidBody.getB2Body()->SetGravityScale(0);
 	}
 
-	move(translation, mMoveSpeed * 100);
-
 	// grabbing
 	if (InputManager::getInstance().isButtonPressed(mUseRightStick ? "GrabRight" : "GrabLeft") && mCanGrab && !mIsGrabbing)
 	{
@@ -52,7 +52,7 @@ void HandMoveComponent::update(float deltaTime)
 		release();
 	}
 
-	if (InputManager::getInstance().isButtonPressed(mUseRightStick ? "PullRight" : "PullLeft"))
+	if (InputManager::getInstance().isButtonPressed(mUseRightStick ? "PullRight" : "PullLeft") && mIsGrabbing)
 	{
 		pullUp();
 	}
@@ -65,15 +65,21 @@ void HandMoveComponent::update(float deltaTime)
 	if (mIsPulling)
 	{
 		if (mCurLength > mPullLength)
+		{
 			mCurLength -= mPullSpeed * deltaTime;
-
-		mJoint->SetMaxLength(mCurLength);
+			mJoint->SetMaxLength(mCurLength);
+		}
 	}
 	else if (mCurLength < mNormalLength)
 	{
 		mCurLength += mPullSpeed * deltaTime;
 		mJoint->SetMaxLength(mCurLength);
 	}
+
+	move(translation, mMoveSpeed * 100);
+
+	mCurLength = PhysicsManager::UNRATIO* MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
+
 }
 
 // for the normal, extended length
@@ -105,8 +111,20 @@ void HandMoveComponent::grab()
 
 void HandMoveComponent::release()
 {
-	mRigidBody.getB2Body()->SetType(b2_dynamicBody);
+	auto hand = mRigidBody.getB2Body();
+	hand->SetType(b2_dynamicBody);
 	mIsGrabbing = false;
+
+	// launch player if pulling up
+	if (mIsPulling)
+	{
+		auto body = mJoint->GetBodyA();
+		// from player to point between hands
+		auto handsMidPoint = (mGameObject.getPosition() + mOtherHand->getGameObject().getPosition()) / 2.f;
+		auto direction = (handsMidPoint - mBody->getPosition()) / MathUtil::length(handsMidPoint - mBody->getPosition());
+		body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 6000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
+		hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 1000.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
+	}
 }
 
 void HandMoveComponent::pullUp()
@@ -126,15 +144,29 @@ void HandMoveComponent::move(sf::Vector2f direction, float speed)
 	// if distance to body >= maxDistance and the other hand is not holding on, then no more force.
 	// otherwise add force
 	auto hand = mRigidBody.getB2Body();
-	hand->SetAwake(true);
 
-	float distanceToBody = PhysicsManager::UNRATIO * MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
-	if (distanceToBody > mNormalLength - 1.5f && !mOtherHand->mIsGrabbing)
+	//if ((mCurLength > mPullLength - 1.5f && mIsPulling))
+	//{
+	//	speed = 0;
+	//}
+	//else if ((mCurLength > mNormalLength - 1.5f && !mIsPulling))
+	//{
+	//	speed = 0;
+	//}
+
+	if (mCurLength > mNormalLength - 1.5f && !mOtherHand->mIsGrabbing)
 	{
 		direction = (mBody->getPosition() - mGameObject.getPosition()) / MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
+		mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(sf::Vector2f(0, 1) * speed / 5.f), b2Vec2(0, 0), true);
+		//direction = sf::Vector2f(0, 1);
 	}
 
-	hand->ApplyForce(PhysicsManager::s2b(direction * speed), b2Vec2(0, 0), false);
+	//if ((mCurLength >= mPullLength && mIsPulling) || (mCurLength >= mNormalLength && !mIsPulling))
+	//{
+	//	speed = 0;
+	//}
+
+	hand->ApplyForce(PhysicsManager::s2b(direction * speed), b2Vec2(0, 0), true);
 }
 
 void HandMoveComponent::onCollisionEnter(ColliderComponent& other)

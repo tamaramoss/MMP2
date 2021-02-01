@@ -299,7 +299,7 @@ static GameObject::ptr loadSprite(NLTmxMapObject* object, const std::string& lay
 	if (input)
 	{
 		const auto body_comp =
-			make_shared<PlayerBodyComponent>(*gameObject, *rigid_comp, 500.f);
+			make_shared<PlayerBodyComponent>(*gameObject, *rigid_comp);
 		gameObject->add_component(body_comp);
 	}
 
