@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="34">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="36">
  <tileset firstgid="1" name="background_template" tilewidth="192" tileheight="192" tilecount="9" columns="3">
   <image source="Environment/background_template.png" width="576" height="576"/>
  </tileset>
  <tileset firstgid="10" name="background_template" tilewidth="192" tileheight="192" tilecount="9" columns="3">
   <image source="Environment/background_template.png" width="576" height="576"/>
+ </tileset>
+ <tileset firstgid="19" name="lava" tilewidth="192" tileheight="192" tilecount="45" columns="9">
+  <image source="Sprites/lava.png" width="1914" height="988"/>
  </tileset>
  <layer id="1" name="Floor" width="30" height="100">
   <data encoding="csv">
@@ -501,6 +504,11 @@
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="Texture" value="rocks_template.png"/>
+   </properties>
+  </object>
+  <object id="34" name="Lava" type="Lava" x="-1760" y="20224" width="9000" height="10000">
+   <properties>
+    <property name="Texture" value="lava.png"/>
    </properties>
   </object>
  </objectgroup>

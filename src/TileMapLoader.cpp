@@ -495,6 +495,89 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 	return gameObject;
 }
 
+static GameObject::ptr loadLava (NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+	SpriteManager& spriteManager)
+{
+	auto gameObject = make_shared<GameObject>(object->name, object->type);
+	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
+
+	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
+
+	// Parse data from file
+	IntRect texture_rect{};
+	texture_rect.width = object->width;
+	texture_rect.height = object->height;
+	std::string spriteTexture;
+	
+	for (auto property : object->properties)
+	{
+		auto name = property->name;
+		if (name == "Texture")
+		{
+			spriteTexture = resourcePath + "Sprites/" + property->value;
+		}
+		else if (name == "TextureSize")
+		{
+			int rectLeftStart = rand() % 3;
+			int rectTopStart = rand() % 3;
+
+			texture_rect.left = rectLeftStart * stoi(property->value);
+			texture_rect.top = rectTopStart * stoi(property->value);
+		}
+	}
+
+	// Initialize components with parsed data.
+	if (spriteTexture.length() > 0)
+	{
+		auto render_comp = make_shared<SpriteRenderComponent>(
+			*gameObject, spriteManager.getWindow(), spriteTexture
+			);
+		gameObject->add_component(render_comp);
+
+		render_comp->getSprite().setTextureRect(texture_rect);
+		//renderComp->getSprite().setOrigin(textureRect.width * 0.5f, textureRect.height *0.5f);
+		//renderComp->getSprite().setPosition(0.0f, 0.0f);
+
+		EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *render_comp));
+	}
+
+	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_staticBody);
+	//create the collider: 
+	b2PolygonShape shape;
+	auto go = gameObject;
+	auto sprite = go->get_component<SpriteRenderComponent>();
+
+	const auto w = (sprite->getSprite().getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
+	const auto h = (sprite->getSprite().getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
+	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
+
+	rigid_comp->getB2Body()->SetType(b2_kinematicBody);
+	rigid_comp->getB2Body()->SetLinearVelocity(b2Vec2(0, -10));
+	
+	b2FixtureDef FixtureDef;
+	FixtureDef.density = 1.f;
+	FixtureDef.friction = 0.7f;
+	FixtureDef.shape = &shape;
+	FixtureDef.isSensor = true;
+	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
+
+	//Extend Physics manager and Collider Component to get detailed collision information.
+	colliderComp->registerOnCollisionFunction(
+		[](ColliderComponent& collider1, ColliderComponent& collider2)
+	{
+		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+			.getGameObject().getId() <<
+			endl;
+		cout << "Player died" << endl;
+	});
+
+	gameObject->add_component(rigid_comp);
+	gameObject->add_component(colliderComp);
+
+	gameObject->init();
+	return gameObject;
+}
+
 
 void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, SpriteManager& sprite_manager)
 {
@@ -516,7 +599,9 @@ void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, Sprit
 			if (object->type == "Trigger")
 				auto trigger = loadTrigger(object, group->name, resource_path, sprite_manager);
 			if (object->type == "Grabbable")
-				auto trigger = loadRock(object, group->name, resource_path, sprite_manager);
+				auto rock = loadRock(object, group->name, resource_path, sprite_manager);
+			if (object->type == "Lava")
+				auto lava = loadLava(object, group->name, resource_path, sprite_manager);
 		}
 	}
 }
