@@ -144,7 +144,7 @@ sf::Vector2f InputManager::getAxisPosition(bool rightJoystick, int playerIdx)
 	float xAxis, yAxis;
 	if (rightJoystick)
 	{
-		xAxis = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::U);
+		xAxis = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Z);
 		yAxis = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::R);
 	}
 	else
