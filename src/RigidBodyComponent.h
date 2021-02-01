@@ -21,7 +21,6 @@ public:
 
 	void physicsUpdate(float deltaTime) const;
 
-
 	b2Body* getB2Body() const;
 
 

@@ -76,6 +76,7 @@ void PhysicsManager::update(const float deltaTime)
 			mRigidbodies.erase(mRigidbodies.begin() + i--);
 			continue;
 		}
+
 		mRigidbodies.at(i)->physicsUpdate(deltaTime);
 	}
 }

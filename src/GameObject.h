@@ -1,12 +1,7 @@
 #pragma once
-
-#pragma once
-
 #include <list>
 #include <string>
-
 #include <utility>
-
 #include "IGameComponent.h"
 
 class GameObject : public Transformable
@@ -14,8 +9,9 @@ class GameObject : public Transformable
 public:
 	using ptr = std::shared_ptr<GameObject>;
 
-	GameObject(std::string id)
-		: mId(std::move(id))
+	GameObject(std::string id, std::string tag)
+		: mId(std::move(id)),
+		mTag(std::move(tag))
 	{
 	}
 
@@ -54,8 +50,12 @@ public:
 	std::string getId() const { return mId; }
 	void setId(const std::string& id) { mId = id; }
 
+	std::string getTag() const { return mTag; }
+	void setTag(const std::string& tag) { mTag = tag; }
+
 protected:
 	std::string mId = "unnamed"; //< unique name of object, e.g., player
+	std::string mTag = "untagged";
 	bool mWantToDie = false;
 
 	std::list<IGameComponent::ptr> mComponentsList;

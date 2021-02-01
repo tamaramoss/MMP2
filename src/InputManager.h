@@ -95,7 +95,7 @@ public:
 	bool isButtonUp(const int buttonCode)
 	{
 		FF_ASSERT_MSG(buttonCode >= 0 && buttonCode < sf::Joystick::ButtonCount, "KeyCode out of bounds");
-		return mCurrentJoystickFrame.mButtons[buttonCode];
+		return !mCurrentJoystickFrame.mButtons[buttonCode];
 	}
 
 	/// Returns true if the key button has been pressed.
@@ -109,7 +109,7 @@ public:
 	bool isButtonReleased(const int buttonCode)
 	{
 		FF_ASSERT_MSG(buttonCode >= 0 && buttonCode < sf::Joystick::ButtonCount, "KeyCode out of bounds");
-		return mCurrentJoystickFrame.mButtons[buttonCode] && mLastJoystickFrame.mButtons[buttonCode];
+		return !mCurrentJoystickFrame.mButtons[buttonCode] && mLastJoystickFrame.mButtons[buttonCode];
 	}
 
 	/// Returns true if the button for the given Action is currently down.

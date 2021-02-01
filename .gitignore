@@ -8,9 +8,9 @@ pch
 *.user
 *.iobj
 *.ipdb
-vs2015/Debug
-vs2015/Release
-vs2015/.vs
+vs2019/Debug
+vs2019/Release
+vs2019/.vs
 tmp
 *.VC.opendb
 *.VC.db
