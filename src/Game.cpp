@@ -8,6 +8,7 @@
 #include "InputManager.h"
 #include "MenuState.h"
 #include "MainState.h"
+#include "FinalScreen.h"
 #include "DebugDraw.h"
 
 using namespace std;
@@ -64,7 +65,8 @@ void Game::run()
 			else
 				mInputManager->process(event);
 
-			mTGuiWrapper->process(event);
+			if (event.type == sf::Event::JoystickMoved || event.type == sf::Event::JoystickButtonPressed)
+				mTGuiWrapper->process(event);
 
 		}
 
@@ -113,11 +115,12 @@ bool Game::init()
 	//
 	mGameStateManager.registerState("MenuState", make_shared<MenuState>(&mGameStateManager, this));
 	mGameStateManager.registerState("MainState", make_shared<MainState>(&mGameStateManager, this));
+	mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
 
 
 	mInputManager->set_renderWindow(&mWindow);
 
-	mGameStateManager.setState("MenuState");
+	mGameStateManager.setState("FinalScreen");
 
 	return true;
 }
@@ -132,6 +135,7 @@ void Game::update()
 
 	// must be first call
 	mInputManager->update();
+
 
 	mGameStateManager.update(fDeltaTimeSeconds);
 
@@ -155,14 +159,4 @@ void Game::draw()
 
 void Game::shutdown()
 {
-}
-
-tgui::Gui& Game::getGui()
-{
-	return mTGuiWrapper->getGui();
-}
-
-TGuiWrapper& Game::getGuiWrapper()
-{
-	return *mTGuiWrapper;
 }

@@ -1,11 +1,8 @@
 #include "stdafx.h"
 
 #include "MenuState.h"
-
 #include "Game.h"
 #include "GameStateManager.h"
-
-#include "InputManager.h"
 
 using namespace std;
 
@@ -49,39 +46,31 @@ void MenuState::draw()
 }
 
 void MenuState::setupGUI ()
-{
-	mGame->getGuiWrapper().setGuiStatus(true);
-	
-	/*GUI->setTarget(mGame->getWindow());*/
-	mGame->getGui().add(tgui::Picture::create("../assets/spaceMenu.png"));
+{	
+	TGuiWrapper::getInstance().getGui().add(tgui::Picture::create("../assets/spaceMenu.png"));
 
-	/*tgui::Theme mTheme( "../externalLibs/tgui/themes/Black.txt" );*/
-	mTheme.load("../externalLibs/tgui/themes/Black.txt");
+	tgui::Theme theme("../externalLibs/tgui/themes/Black.txt");
 
 	auto button = tgui::Button::create();
-	button->setRenderer(mTheme.getRenderer("Button"));
+	button->setRenderer(theme.getRenderer("Button"));
 	button->setPosition(mGame->getWindow().getSize().x / 2 - 75.f, mGame->getWindow().getSize().y / 2 - 80.f);
 	button->setText("Start");
 	button->setSize(150, 60);
 	button->connect("pressed", [&]() { mGameStateManager->setState("MainState"); });
-	button->setFocused(true);
-	//button->showWithEffect(tgui::ShowAnimationType::SlideFromLeft, sf::milliseconds(500));
-	mGame->getGuiWrapper().addButton(button, true);
+	button->setFocused(false);
+	TGuiWrapper::getInstance().addButton(button, false);
 
 
 	button = tgui::Button::create();
-	button->setRenderer(mTheme.getRenderer("Button"));
+	button->setRenderer(theme.getRenderer("Button"));
 	button->setPosition(mGame->getWindow().getSize().x / 2 - 75.f, mGame->getWindow().getSize().y / 2 + 80.f);
 	button->setText("Exit");
 	button->setSize(150, 60);
 	button->connect("pressed", [&]() { mGame->getWindow().close(); });
-	//button->showWithEffect(tgui::ShowAnimationType::SlideFromLeft, sf::milliseconds(500));
-
-	mGame->getGuiWrapper().addButton(button, false);
+	TGuiWrapper::getInstance().addButton(button, false);
 }
 
 void MenuState::exit()
 {
-	mGame->getGui().removeAllWidgets();
-	mGame->getGuiWrapper().setGuiStatus(false);
+	TGuiWrapper::getInstance().exit();
 }

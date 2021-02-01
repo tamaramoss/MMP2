@@ -20,11 +20,8 @@ public:
 
 	Config& getConfig() { return mConfig; }
 	RenderWindow& getWindow() { return mWindow; }
-	tgui::Gui& getGui();
-	TGuiWrapper& getGuiWrapper();
 	
 	void run();
-
 private:
 
 	bool init();
@@ -38,7 +35,6 @@ private:
 	GameStateManager mGameStateManager;
 
 	TGuiWrapper* mTGuiWrapper = nullptr;
-
 	InputManager* mInputManager = nullptr;
 	DebugDraw* mDebugDraw = nullptr;
 };

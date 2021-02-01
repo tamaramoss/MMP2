@@ -146,6 +146,7 @@
     <ClInclude Include="..\src\DebugDraw.h" />
     <ClInclude Include="..\src\EventBus.h" />
     <ClInclude Include="..\src\FinalFrontier\dll_export.h" />
+    <ClInclude Include="..\src\FinalScreen.h" />
     <ClInclude Include="..\src\GameObjectEvents.h" />
     <ClInclude Include="..\src\IEvent.h" />
     <ClInclude Include="..\src\GameObjectManager.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="..\src\ColliderComponent.cpp" />
     <ClCompile Include="..\src\DebugDraw.cpp" />
     <ClCompile Include="..\src\EventBus.cpp" />
+    <ClCompile Include="..\src\FinalScreen.cpp" />
     <ClCompile Include="..\src\GameObjectEvents.cpp" />
     <ClCompile Include="..\src\GameObjectManager.cpp" />
     <ClCompile Include="..\src\NLTmxMap.cpp" />
