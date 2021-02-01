@@ -17,6 +17,7 @@ public:
 	void setJointPullLength(float length);
 	void setOtherHandReference(std::shared_ptr<HandMoveComponent> otherHand) { mOtherHand = otherHand; }
 	void setBodyReference(std::shared_ptr<GameObject> body) { mBody = body; }
+	void setJoint(b2RopeJoint* joint) { mJoint = joint; }
 
 	// gameplay
 	void grab();
@@ -31,15 +32,19 @@ private:
 	RigidBodyComponent& mRigidBody;
 	std::shared_ptr<HandMoveComponent> mOtherHand;
 	std::shared_ptr<GameObject> mBody;
+	b2RopeJoint* mJoint;
 
 	// gameplay params
 	sf::Vector2f mGrabPosition;
 	float mMoveSpeed = 3500.f;
 	float mNormalLength = 40.f;
-	float mPullLength = 15.f;
+	float mPullLength = 25.f;
+	float mCurLength = 40.f;
+	float mPullSpeed = 50.f;
 
 	bool mCanGrab = false;
 	bool mIsGrabbing = false;
+	bool mIsPulling = false;
 
 	// control params
 	int mPlayerIndex = 0;

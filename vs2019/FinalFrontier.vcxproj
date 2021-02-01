@@ -154,6 +154,7 @@
     <ClInclude Include="..\src\PhysicsComponentEvents.h" />
     <ClInclude Include="..\src\PhysicsManager.h" />
     <ClInclude Include="..\src\PlayerBodyComponent.h" />
+    <ClInclude Include="..\src\PositionFollowComponent.h" />
     <ClInclude Include="..\src\RenderComponentEvents.h" />
     <ClInclude Include="..\src\RigidBodyComponent.h" />
     <ClInclude Include="..\src\SpriteManager.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="..\src\PlayerBodyComponent.cpp" />
     <ClCompile Include="..\src\PlayerMoveComponent.cpp" />
     <ClCompile Include="..\src\CameraRenderComponent.cpp" />
+    <ClCompile Include="..\src\PositionFollowComponent.cpp" />
     <ClCompile Include="..\src\RenderComponentEvents.cpp" />
     <ClCompile Include="..\src\RigidBodyComponent.cpp" />
     <ClCompile Include="..\src\SpriteManager.cpp" />

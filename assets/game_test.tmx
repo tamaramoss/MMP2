@@ -426,7 +426,7 @@
   <object id="1" name="Collider1" type="Collider" x="5.9" y="15870.7" width="1288.26" height="548.667"/>
   <object id="2" name="Collider" type="Collider" x="3729.3" y="15954.3" width="1824.53" height="610.731"/>
   <object id="3" name="Trigger" type="Trigger" x="4086.63" y="15002.7" width="836.232" height="724.824"/>
-  <object id="8" name="Player0" type="Sprite" x="2616.93" y="17901.6" width="384" height="384">
+  <object id="8" name="Player" type="Sprite" x="2616.93" y="17901.6" width="384" height="384">
    <properties>
     <property name="Border" value="on"/>
     <property name="BorderSize" value="20"/>

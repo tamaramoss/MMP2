@@ -1,12 +1,7 @@
 #pragma once
-
-#pragma once
-
 #include <list>
 #include <string>
-
 #include <utility>
-
 #include "IGameComponent.h"
 
 class GameObject : public Transformable

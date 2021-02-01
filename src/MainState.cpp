@@ -8,6 +8,7 @@
 
 #include "NLTmxMap.h"
 #include "TileMapLoader.h"
+#include "PositionFollowComponent.h"
 
 using namespace std;
 
@@ -45,12 +46,14 @@ void MainState::init()
 		auto render_comp = make_shared<CameraRenderComponent>(
 			*camera, mGame->getWindow(), mGame->getWindow().getView());
 		camera->add_component(render_comp);
+
+		auto follow = make_shared<PositionFollowComponent>(*camera, mGameObjectManager.getGameObject("Player")->getPosition());
+		camera->add_component(follow);
 		camera->init();
 
 		mGameObjectManager.addGameObject(camera);
 		mSpriteManager.setCamera(render_comp.get());
-		camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
-
+		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 		
 
 	}
@@ -73,6 +76,12 @@ void MainState::update(const float deltaTime)
 	// update remaining game objects
 	for (auto go_pair : mGameObjectManager.getGameObjects())
 		go_pair.second->update(deltaTime);
+
+	// set camera to player + hands + tiny offset
+	auto playerPos = mGameObjectManager.getGameObject("Player")->getPosition();
+	auto handPos = (mGameObjectManager.getGameObject("Hand0")->getPosition() + mGameObjectManager.getGameObject("Hand1")->getPosition()) / 2.f;
+
+	mGameObjectManager.getGameObject("Camera")->get_component<PositionFollowComponent>()->setFollowPosition((playerPos + handPos) / 2.f + sf::Vector2f(0, -750.f));
 }
 
 void MainState::draw()

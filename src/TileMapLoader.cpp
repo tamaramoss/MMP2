@@ -187,10 +187,10 @@ static GameObject::ptr createHand(const std::string& layer, b2Body& parent, cons
 	jointDefinition.maxLength = 40.f;
 	jointDefinition.localAnchorA = *&parent.GetLocalCenter();
 	jointDefinition.localAnchorB = rigid_comp->getB2Body()->GetLocalCenter();
-
 	
 	//b2DistanceJoint* joint = (b2DistanceJoint*)
-	PhysicsManager::get_b2_world()->CreateJoint(&jointDefinition);
+	auto joint = (b2RopeJoint*)PhysicsManager::get_b2_world()->CreateJoint(&jointDefinition);
+	handComponent->setJoint(joint);
 
 	gameObject->init();
 	return gameObject;

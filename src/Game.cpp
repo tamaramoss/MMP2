@@ -99,6 +99,9 @@ bool Game::init()
 
 	mInputManager->bindButton("GrabLeft", 4);
 	mInputManager->bindButton("GrabRight", 5);
+	mInputManager->bindButton("PullLeft", 6);
+	mInputManager->bindButton("PullRight", 7);
+
 
 
 	mDebugDraw = &DebugDraw::getInstance();
