@@ -22,4 +22,11 @@ public:
 	BasicDataEvent::EventType getEventType() override { return eventType; }
 };
 
-// TODO: game object destroy event etc.
+class GameObjectDeleteEvent : public BasicDataEvent<GameObject::ptr>
+{
+public:
+	using BasicDataEvent::BasicDataEvent;
+
+	static const EventType eventType;
+	EventType getEventType() override { return eventType; }
+};

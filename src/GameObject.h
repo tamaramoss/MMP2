@@ -43,7 +43,6 @@ public:
 	/// Could also be moved out of game object in the long run.
 	void update(float deltaTime);
 
-	// TODO delete flag not used, i.e., objects are not deleted
 	bool isMarkedForDelete() const { return mWantToDie; }
 	void markForDelete() { mWantToDie = true; }
 

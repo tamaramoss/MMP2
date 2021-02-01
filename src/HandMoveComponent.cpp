@@ -8,6 +8,7 @@
 #include <iostream>
 #include "VectorAlgebra2D.h"
 #include "PlayerBodyComponent.h"
+#include "IRockComponent.h"
 
 
 
@@ -102,6 +103,8 @@ void HandMoveComponent::grab()
 	{
 		mIsGrabbing = true;
 		mRigidBody.getB2Body()->SetType(b2_staticBody);
+		mGrabbedRock->get_component<IRockComponent>()->grabRock();
+		mGrabbedRock->get_component<IRockComponent>()->setHand(std::make_shared<HandMoveComponent>(*this));
 	}
 	else
 	{
@@ -114,6 +117,7 @@ void HandMoveComponent::release()
 	auto hand = mRigidBody.getB2Body();
 	hand->SetType(b2_dynamicBody);
 	mIsGrabbing = false;
+	mGrabbedRock->get_component<IRockComponent>()->releaseRock();
 
 	// launch player if pulling up
 	if (mIsPulling)
@@ -173,6 +177,7 @@ void HandMoveComponent::onCollisionEnter(ColliderComponent& other)
 {
 	if (other.getGameObject().getTag() == "Grabbable")
 	{
+		mGrabbedRock = &other.getGameObject();
 		mGrabPosition = other.getGameObject().getPosition();
 		mCanGrab = true;
 	}

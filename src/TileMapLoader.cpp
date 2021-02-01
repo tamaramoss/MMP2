@@ -14,6 +14,9 @@
 #include <iostream>
 #include "PlayerBodyComponent.h"
 #include "HandMoveComponent.h"
+#include "RockTimedComponent.h"
+#include "RockNormalComponent.h"
+#include "RockOneTimeComponent.h"
 
 void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
                       SpriteManager& spriteManager)
@@ -444,6 +447,25 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 
 			texture_rect.left = rectLeftStart * stoi(property->value);
 			texture_rect.top = rectTopStart * stoi(property->value);
+		}
+		else if (name == "RockType")
+		{
+			auto value = property->value;
+			if (value == "Timer")
+			{
+				auto rockTimer = std::make_shared<RockTimedComponent>(*gameObject);
+				gameObject->add_component(rockTimer);
+			}
+			else if (value == "OneTime")
+			{
+				auto oneTimeRock = std::make_shared<RockOneTimeComponent>(*gameObject);
+				gameObject->add_component(oneTimeRock);
+			}
+			else if (value == "Normal")
+			{
+				auto normalRock = std::make_shared<RockNormalComponent>(*gameObject);
+				gameObject->add_component(normalRock);
+			}
 		}
 	}
 

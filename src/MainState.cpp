@@ -75,7 +75,13 @@ void MainState::update(const float deltaTime)
 
 	// update remaining game objects
 	for (auto go_pair : mGameObjectManager.getGameObjects())
-		go_pair.second->update(deltaTime);
+	{
+		if (go_pair.second->isMarkedForDelete())
+			mGameObjectManager.removeGameObject(go_pair.first);
+		else
+			go_pair.second->update(deltaTime);
+
+	}
 
 	// set camera to player + hands + tiny offset
 	auto playerPos = mGameObjectManager.getGameObject("Player")->getPosition();

@@ -14,3 +14,8 @@ vs2019/.vs
 tmp
 *.VC.opendb
 *.VC.db
+bin/FinalFrontier-x86-Debug.bsc
+bin/FinalFrontier-x86-Debug.exe
+bin/FinalFrontier-x86-Debug.pdb
+bin/FinalFrontier-x86-Release.exe
+bin/FinalFrontier-x86-Release.pdb
