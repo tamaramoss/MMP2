@@ -3,7 +3,7 @@
 #include "GameState.h"
 #include "TGUI/TGUI.hpp"
 
-class MenuState : public GameState
+class FinalScreen : public GameState
 {
 public:
 	using GameState::GameState;

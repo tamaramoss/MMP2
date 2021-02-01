@@ -8,9 +8,12 @@
 #include "InputManager.h"
 #include "MenuState.h"
 #include "MainState.h"
+#include "FinalScreen.h"
 #include "DebugDraw.h"
 
 using namespace std;
+
+
 
 
 void Game::run()
@@ -62,7 +65,9 @@ void Game::run()
 			else
 				mInputManager->process(event);
 
-			mGUI.handleEvent(event);
+			if (event.type == sf::Event::JoystickMoved || event.type == sf::Event::JoystickButtonPressed)
+				mTGuiWrapper->process(event);
+
 		}
 
 		update();
@@ -74,6 +79,10 @@ void Game::run()
 
 bool Game::init()
 {
+	//
+	mWindow.create(VideoMode(mConfig.mResolution.x, mConfig.mResolution.y),
+		mConfig.mWindowName);
+
 	mInputManager = &InputManager::getInstance();
 
 	//mInputManager->bindKey("Exit", Keyboard::Escape);
@@ -97,23 +106,21 @@ bool Game::init()
 	mInputManager->bindButton("right", 2, 0);
 	mInputManager->bindButton("Select", 1);
 
-
-
-
 	mDebugDraw = &DebugDraw::getInstance();
 
+	mTGuiWrapper = &TGuiWrapper::getInstance();
+	mTGuiWrapper->setGame(this);
+
+	
 	//
 	mGameStateManager.registerState("MenuState", make_shared<MenuState>(&mGameStateManager, this));
 	mGameStateManager.registerState("MainState", make_shared<MainState>(&mGameStateManager, this));
+	mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
 
-	//
-	mWindow.create(VideoMode(mConfig.mResolution.x, mConfig.mResolution.y),
-	                mConfig.mWindowName);
-	mGUI.setTarget(mWindow);
 
 	mInputManager->set_renderWindow(&mWindow);
 
-	mGameStateManager.setState("MenuState");
+	mGameStateManager.setState("FinalScreen");
 
 	
 
@@ -131,6 +138,7 @@ void Game::update()
 	// must be first call
 	mInputManager->update();
 
+
 	mGameStateManager.update(fDeltaTimeSeconds);
 
 	mDebugDraw->update(fDeltaTimeSeconds);
@@ -140,11 +148,13 @@ void Game::draw()
 {
 	mWindow.clear();
 
+	mTGuiWrapper->getGui().draw();
+
+
 	mGameStateManager.draw();
 
 	mDebugDraw->draw(mWindow);
 
-	mGUI.draw();
 
 	mWindow.display();
 }

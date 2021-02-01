@@ -1,26 +1,27 @@
 #pragma once
 
 #include <string>
-#include <TGUI/TGUI.hpp>
+#include "TGuiWrapper.h"
+
 #include "GameStateManager.h"
 
 class InputManager;
 class DebugDraw;
+class TGuiWrapper;
 
 class Game
 {
 public:
 	struct Config
 	{
-		Vector2i mResolution{1280, 720};
-		std::string mWindowName = "FinalFrontier";
+		Vector2i mResolution{800, 600};
+		std::string mWindowName = "ProjeccRejecc";
 	};
 
 	Config& getConfig() { return mConfig; }
 	RenderWindow& getWindow() { return mWindow; }
-
+	
 	void run();
-
 private:
 
 	bool init();
@@ -31,9 +32,9 @@ private:
 	Config mConfig;
 
 	RenderWindow mWindow;
-	tgui::Gui mGUI;
 	GameStateManager mGameStateManager;
 
+	TGuiWrapper* mTGuiWrapper = nullptr;
 	InputManager* mInputManager = nullptr;
 	DebugDraw* mDebugDraw = nullptr;
 };
