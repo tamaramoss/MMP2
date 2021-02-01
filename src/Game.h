@@ -14,7 +14,7 @@ class Game
 public:
 	struct Config
 	{
-		Vector2i mResolution{800, 600};
+		Vector2i mResolution{1280, 720};
 		std::string mWindowName = "ProjeccRejecc";
 	};
 
