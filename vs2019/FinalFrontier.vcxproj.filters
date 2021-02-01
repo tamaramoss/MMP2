@@ -72,23 +72,14 @@
     <ClInclude Include="../src/GameStateManager.h">
       <Filter>Header Files\GameState</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\IAnimationComponent.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\IRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SpriteRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="../src/TransformAnimationComponent.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="../src/GameState.h">
       <Filter>Header Files\GameState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TransformAnimationConstantMotion.h">
-      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\CameraRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
@@ -165,6 +156,24 @@
     <ClInclude Include="..\src\FinalScreen.h">
       <Filter>Header Files\GameState</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\HandMoveComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PlayerBodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PositionFollowComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TestState.h">
+      <Filter>Header Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AnimatedSprite.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Animation.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/stdafx.cpp">
@@ -188,16 +197,10 @@
     <ClCompile Include="../src/MenuState.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TransformAnimationConstantMotion.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SpriteRenderComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\src\CameraRenderComponent.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TransformAnimationComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\src\PlayerMoveComponent.cpp">
@@ -249,6 +252,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\FinalScreen.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\HandMoveComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PlayerBodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PositionFollowComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Animation.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AnimatedSprite.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TestState.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
   </ItemGroup>

@@ -45,7 +45,7 @@ void PhysicsManager::init()
 	// subscribe to events to catch creation events of physics objects
 	{
 		const auto id = EventBus::getInstance().addListener(
-			RigidBodyCreateEvent::m_eventType, 
+			RigidBodyCreateEvent::mEventType, 
 			[this](IEvent::ptr event)
 			{
 				auto rigidbodyEvent = std::static_pointer_cast<RigidBodyCreateEvent>(event);

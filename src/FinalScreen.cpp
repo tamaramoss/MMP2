@@ -47,9 +47,9 @@ void FinalScreen::setupGUI()
 	button = tgui::Button::create();
 	button->setRenderer(theme.getRenderer("Button"));
 	button->setPosition(mGame->getWindow().getSize().x / 2 - 75.f, mGame->getWindow().getSize().y / 2 );
-	button->setText("Back to Menu");
+	button->setText("AnimationTestState");
 	button->setSize(150, 60);
-	button->connect("pressed", [&]() { mGameStateManager->setState("MenuState"); });
+	button->connect("pressed", [&]() { mGameStateManager->setState("TestState"); });
 	button->setFocused(false);
 	TGuiWrapper::getInstance().addButton(button, false);
 

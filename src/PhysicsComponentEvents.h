@@ -24,8 +24,8 @@ public:
 	//	0xdec71435, 0x8d92, 0x4ca7, 0xa3, 0xd5, 0xfd, 0x17, 0xf9, 0xd5, 0xcc, 0x34);
 	//
 	// m_EventType identifies event, when we want to add it to the event bus
-	static const EventType m_eventType;
-	EventType getEventType() override { return m_eventType; }
+	static const EventType mEventType;
+	EventType getEventType() override { return mEventType; }
 };
 
 class BoxColliderCreateEvent : public BasicDataEvent<ColliderComponent&>
@@ -33,6 +33,6 @@ class BoxColliderCreateEvent : public BasicDataEvent<ColliderComponent&>
 public:
 	using BasicDataEvent::BasicDataEvent;
 
-	static const EventType m_eventType;
-	EventType getEventType() override { return m_eventType; }
+	static const EventType mEventType;
+	EventType getEventType() override { return mEventType; }
 };

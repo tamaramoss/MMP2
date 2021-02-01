@@ -6,6 +6,8 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include <iostream>
+
+#include "AnimatedSprite.h"
 #include "VectorAlgebra2D.h"
 
 
@@ -96,6 +98,7 @@ void HandMoveComponent::grab()
 	{
 		mIsGrabbing = true;
 		mRigidBody.getB2Body()->SetType(b2_staticBody);
+		mGameObject.get_component<AnimatedSprite>()->setAnimation("ClosedHand" + std::to_string(mPlayerIndex));
 	}
 	else
 	{
@@ -107,18 +110,23 @@ void HandMoveComponent::release()
 {
 	mRigidBody.getB2Body()->SetType(b2_dynamicBody);
 	mIsGrabbing = false;
+	mGameObject.get_component<AnimatedSprite>()->setAnimation("OpenHand" + std::to_string(mPlayerIndex));
+
 }
 
 void HandMoveComponent::pullUp()
 {
 	mIsPulling = true;
 	//mJoint->SetMaxLength(mPullLength);
+	mBody->get_component<AnimatedSprite>()->setAnimation("Jump");
+
+	//TODO make body animation back to "Default" when mIsPulling wieder auf falsch gesetzt wird
 }
 
 void HandMoveComponent::extend()
 {
 	//mJoint->SetMaxLength(mNormalLength);
-	mIsPulling = false;
+
 }
 
 void HandMoveComponent::move(sf::Vector2f direction, float speed)

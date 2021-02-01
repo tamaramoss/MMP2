@@ -141,6 +141,8 @@
     <ClInclude Include="../src/MenuState.h" />
     <ClInclude Include="../src/Game.h" />
     <ClInclude Include="../src/GameObject.h" />
+    <ClInclude Include="..\src\AnimatedSprite.h" />
+    <ClInclude Include="..\src\Animation.h" />
     <ClInclude Include="..\src\ColliderComponent.h" />
     <ClInclude Include="..\src\CameraRenderComponent.h" />
     <ClInclude Include="..\src\DebugDraw.h" />
@@ -159,9 +161,9 @@
     <ClInclude Include="..\src\RenderComponentEvents.h" />
     <ClInclude Include="..\src\RigidBodyComponent.h" />
     <ClInclude Include="..\src\SpriteManager.h" />
+    <ClInclude Include="..\src\TestState.h" />
     <ClInclude Include="..\src\TGuiWrapper.h" />
     <ClInclude Include="..\src\TileMapLoader.h" />
-    <ClInclude Include="..\src\TransformAnimationConstantMotion.h" />
     <ClInclude Include="..\src\IGameComponent.h" />
     <ClInclude Include="../src/GameStateManager.h" />
     <ClInclude Include="../src/InputManager.h" />
@@ -169,8 +171,6 @@
     <ClInclude Include="..\src\PlayerMoveComponent.h" />
     <ClInclude Include="..\src\IRenderComponent.h" />
     <ClInclude Include="..\src\SpriteRenderComponent.h" />
-    <ClInclude Include="..\src\IAnimationComponent.h" />
-    <ClInclude Include="../src/TransformAnimationComponent.h" />
     <ClInclude Include="../src/TileLayerRenderComponent.h" />
     <ClInclude Include="..\src\Trigonometry.h" />
     <ClInclude Include="..\src\VectorAlgebra2D.h" />
@@ -184,6 +184,8 @@
     <ClCompile Include="../src/GameObject.cpp" />
     <ClCompile Include="../src/GameStateManager.cpp" />
     <ClCompile Include="../src/InputManager.cpp" />
+    <ClCompile Include="..\src\AnimatedSprite.cpp" />
+    <ClCompile Include="..\src\Animation.cpp" />
     <ClCompile Include="..\src\ColliderComponent.cpp" />
     <ClCompile Include="..\src\DebugDraw.cpp" />
     <ClCompile Include="..\src\EventBus.cpp" />
@@ -202,10 +204,9 @@
     <ClCompile Include="..\src\RigidBodyComponent.cpp" />
     <ClCompile Include="..\src\SpriteManager.cpp" />
     <ClCompile Include="..\src\SpriteRenderComponent.cpp" />
+    <ClCompile Include="..\src\TestState.cpp" />
     <ClCompile Include="..\src\TGuiWrapper.cpp" />
     <ClCompile Include="..\src\TileMapLoader.cpp" />
-    <ClCompile Include="..\src\TransformAnimationComponent.cpp" />
-    <ClCompile Include="..\src\TransformAnimationConstantMotion.cpp" />
     <ClCompile Include="../src/TileLayerRenderComponent.cpp" />
     <ClCompile Include="../src/stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -10,7 +10,7 @@ void SpriteManager::init()
 	// subscribe to creation events
 	{
 		const auto id = EventBus::getInstance().addListener(
-			RenderableCreateEvent::m_eventType,
+			RenderableCreateEvent::mEventType,
 			[this](const IEvent::ptr event)
 			{
 				auto renderable_create_event = std::

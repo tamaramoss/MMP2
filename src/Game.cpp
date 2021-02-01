@@ -10,6 +10,7 @@
 #include "MainState.h"
 #include "FinalScreen.h"
 #include "DebugDraw.h"
+#include "TestState.h"
 
 using namespace std;
 
@@ -121,6 +122,7 @@ bool Game::init()
 	mGameStateManager.registerState("MenuState", make_shared<MenuState>(&mGameStateManager, this));
 	mGameStateManager.registerState("MainState", make_shared<MainState>(&mGameStateManager, this));
 	mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
+	mGameStateManager.registerState("TestState", make_shared<TestState>(&mGameStateManager, this));
 
 
 	mInputManager->set_renderWindow(&mWindow);

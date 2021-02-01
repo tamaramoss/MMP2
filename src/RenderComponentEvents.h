@@ -13,7 +13,7 @@ class RenderableCreateEvent : public BasicDataEvent<IRenderComponent&>
 public:
 	RenderableCreateEvent(std::string layer, IRenderComponent& comp)
 		: BasicDataEvent(comp)
-		  , m_layer(std::move(layer))
+		  , mLayer(std::move(layer))
 	{
 	}
 
@@ -26,11 +26,11 @@ public:
 	//	0xdec71435, 0x8d92, 0x4ca7, 0xa3, 0xd5, 0xfd, 0x17, 0xf9, 0xd5, 0xcc, 0x34);
 	//
 	// m_EventType identifies event, when we want to add it to the event bus
-	static const EventType m_eventType;
-	EventType getEventType() override { return m_eventType; }
+	static const EventType mEventType;
+	EventType getEventType() override { return mEventType; }
 
-	std::string getLayer() const { return m_layer; }
+	std::string getLayer() const { return mLayer; }
 
 private:
-	std::string m_layer;
+	std::string mLayer;
 };

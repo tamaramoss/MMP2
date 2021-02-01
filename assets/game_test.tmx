@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="36">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="39">
  <tileset firstgid="1" name="background_template" tilewidth="192" tileheight="192" tilecount="9" columns="3">
   <image source="Environment/background_template.png" width="576" height="576"/>
  </tileset>
@@ -429,18 +429,17 @@
   <object id="1" name="Collider1" type="Collider" x="5.9" y="15870.7" width="1288.26" height="548.667"/>
   <object id="2" name="Collider" type="Collider" x="3729.3" y="15954.3" width="1824.53" height="610.731"/>
   <object id="3" name="Trigger" type="Trigger" x="4086.63" y="15002.7" width="836.232" height="724.824"/>
-  <object id="8" name="Player" type="Sprite" x="2616.93" y="17901.6" width="384" height="384">
+  <object id="8" name="Player" type="Player" x="2616.93" y="17901.6" width="384" height="384">
    <properties>
     <property name="Border" value="on"/>
     <property name="BorderSize" value="20"/>
-    <property name="HandTexture" value="hands_template.png"/>
     <property name="Input" value="on"/>
     <property name="InputPlayerIdx" value="0"/>
     <property name="Mass " value="0.1"/>
     <property name="MoveSpeed" type="float" value="150"/>
     <property name="Texture" value="head_template.png"/>
-    <property name="TextureRectLeft" value="384"/>
-    <property name="TextureRectTop" value="384"/>
+    <property name="TextureRectLeft" value="0"/>
+    <property name="TextureRectTop" value="0"/>
    </properties>
   </object>
   <object id="13" name="Collider2" type="Collider" x="-205.326" y="-12.9924" width="359.5" height="19609.8"/>
@@ -509,6 +508,20 @@
   <object id="34" name="Lava" type="Lava" x="-1760" y="20224" width="9000" height="10000">
    <properties>
     <property name="Texture" value="lava.png"/>
+   </properties>
+  </object>
+  <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="2152" y="17556" width="384" height="384">
+   <properties>
+    <property name="Texture" value="hands_template.png"/>
+    <property name="TextureRectLeft" value="384"/>
+    <property name="TextureRectTop" value="384"/>
+   </properties>
+  </object>
+  <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="3116" y="17560" width="384" height="384">
+   <properties>
+    <property name="Texture" value="hands_template.png"/>
+    <property name="TextureRectLeft" value="384"/>
+    <property name="TextureRectTop" value="0"/>
    </properties>
   </object>
  </objectgroup>
