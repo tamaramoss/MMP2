@@ -103,6 +103,7 @@ void HandMoveComponent::grab()
 
 	if (distance <= 450.f)
 	{
+		mGameObject.get_component<AnimatedSprite>()->setAnimation("ClosedHand" + std::to_string(mPlayerIndex));
 		mIsGrabbing = true;
 		mRigidBody.getB2Body()->SetType(b2_staticBody);
 		mGrabbedRock->get_component<IRockComponent>()->grabRock();
@@ -119,6 +120,7 @@ void HandMoveComponent::release()
 	auto hand = mRigidBody.getB2Body();
 	hand->SetType(b2_dynamicBody);
 	mIsGrabbing = false;
+	mGameObject.get_component<AnimatedSprite>()->setAnimation("OpenHand" + std::to_string(mPlayerIndex));
 
 	mGrabbedRock->get_component<IRockComponent>()->releaseRock();
 
@@ -145,6 +147,9 @@ void HandMoveComponent::pullUp()
 
 void HandMoveComponent::extend()
 {
+	mIsPulling = false;
+	mBody->get_component<AnimatedSprite>()->setAnimation("Default");
+
 	//mJoint->SetMaxLength(mNormalLength);
 
 }

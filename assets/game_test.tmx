@@ -447,6 +447,7 @@
   <object id="15" name="Collider4" type="Collider" x="-23.75" y="19023.1" width="5615.5" height="468"/>
   <object id="22" name="Rock" type="Grabbable" x="1424" y="17368" width="192" height="192">
    <properties>
+    <property name="RockType" value="Timer"/>
     <property name="Texture" value="rocks_template.png"/>
     <property name="TextureSize" type="int" value="384"/>
    </properties>
@@ -454,54 +455,63 @@
   <object id="25" name="Rock2" type="Grabbable" x="3224" y="16128" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="26" name="Rock3" type="Grabbable" x="2528" y="13952" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="27" name="Rock4" type="Grabbable" x="1616" y="15376" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="28" name="Rock5" type="Grabbable" x="3960" y="14592" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="29" name="Rock6" type="Grabbable" x="4104" y="11960" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="30" name="Rock7" type="Grabbable" x="584" y="13344" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="31" name="Rock8" type="Grabbable" x="3688" y="18024" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="OneTime"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="32" name="Rock9" type="Grabbable" x="3320" y="14736" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
   <object id="33" name="Rock10" type="Grabbable" x="4312" y="13368" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
