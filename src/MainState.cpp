@@ -60,7 +60,7 @@ void MainState::init()
 	}
 
 	// Define layer order manually here. Could come from custom file settings.
-	mSpriteManager.setLayerOrder({"Floor", "Background", "GameObjects", "Top"});
+	mSpriteManager.setLayerOrder({"Floor", "Background", "BehindObjects" ,"GameObjects", "Top"});
 }
 
 void MainState::update(const float deltaTime)
