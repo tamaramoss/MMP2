@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "RockTimedComponent.h"
+
+#include "AnimationComponent.h"
 #include "GameObjectManager.h"
 #include "RigidBodyComponent.h"
 
@@ -18,6 +20,12 @@ void RockTimedComponent::update(float fDeltaTime)
 {
 	if (mIsGrabbed)
 	{
+		if (!mGameObject.get_component<AnimationComponent>()->isPlaying())
+		{
+			mGameObject.get_component<AnimationComponent>()->setAnimation("Angry");
+			mGameObject.get_component<AnimationComponent>()->setLooped(true);
+		}
+		
 		if (mTimer < mTimeUntilDestroyed)
 		{
 			mTimer += fDeltaTime;
@@ -32,6 +40,8 @@ void RockTimedComponent::update(float fDeltaTime)
 void RockTimedComponent::grabRock()
 {
 	mIsGrabbed = true;
+	mGameObject.get_component<AnimationComponent>()->setAnimation("Wake");
+	mGameObject.get_component<AnimationComponent>()->setLooped(false);
 }
 
 void RockTimedComponent::releaseRock()

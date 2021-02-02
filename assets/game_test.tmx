@@ -448,7 +448,7 @@
   <object id="22" name="Rock" type="Grabbable" x="1424" y="17368" width="192" height="192">
    <properties>
     <property name="RockType" value="Timer"/>
-    <property name="Texture" value="rocks_template.png"/>
+    <property name="Texture" value="rock_blocc.png"/>
     <property name="TextureSize" type="int" value="384"/>
    </properties>
   </object>

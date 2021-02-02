@@ -54,6 +54,8 @@ void AnimationComponent::setAnimation(const std::string& animationName)
     mCurrentFrame = 0;
     setFrame(mCurrentFrame);
 
+    mIsPaused = false;
+
 }
 
 void AnimationComponent::setFrameTime(float time)
