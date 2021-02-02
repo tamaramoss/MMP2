@@ -34,10 +34,10 @@
 #include "Animation.h"
 #include "SpriteRenderComponent.h"
 
-class AnimatedSprite : public IRenderComponent, public sf::Transformable
+class AnimationComponent : public IRenderComponent, public sf::Transformable
 {
 public:
-	explicit AnimatedSprite(GameObject& gameObject, sf::RenderWindow& window,float frameTime = 0.2f, bool paused = false, bool looped = true);
+	explicit AnimationComponent(GameObject& gameObject, sf::RenderWindow& window,float frameTime = 0.2f, bool paused = false, bool looped = true);
 
     bool init() override;
 	void registerAnimation(const std::string& name, std::shared_ptr<Animation> animation);

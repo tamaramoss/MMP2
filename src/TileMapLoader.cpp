@@ -14,13 +14,14 @@
 #include <iostream>
 
 
-#include "AnimatedSprite.h"
+#include "AnimationComponent.h"
 #include "Animation.h"
 #include "PlayerBodyComponent.h"
 #include "HandMoveComponent.h"
 #include "RockTimedComponent.h"
 #include "RockNormalComponent.h"
 #include "RockOneTimeComponent.h"
+#include "SoundComponent.h"
 
 
 struct Player
@@ -225,23 +226,31 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	closedHand->getSprite().setTextureRect(sf::IntRect(0, textureRect.top, textureRect.width, textureRect.height));
 
 
-	auto animatedSprite = make_shared<AnimatedSprite>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
+	auto animatedSprite = make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 	animatedSprite->registerAnimation("OpenHand" + to_string(index), openHand);
 	animatedSprite->registerAnimation("ClosedHand" + to_string(index), closedHand);
 
 	animatedSprite->setAnimation("OpenHand" + to_string(index));
 	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animatedSprite));
 	
-
-	
 	gameObject->add_component(animatedSprite);
+
+	auto buffer = std::make_shared<sf::SoundBuffer>();
+	if (!buffer->loadFromFile("../assets/Sounds/chicken.wav"))
+		cout << "No music Here" << endl;
+
+	auto soundComp = std::make_shared<SoundComponent>(*gameObject);
+	soundComp->registerSound("Grab", buffer);
+
+
+	gameObject->add_component(soundComp);
 
 	// rigidbody and collider
 	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_dynamicBody);
 	//create the collider: 
 	b2PolygonShape shape;
 	auto go = gameObject;
-	auto sprite = go->get_component<AnimatedSprite>()->getAnimation("OpenHand" + to_string(index))->getSprite();
+	auto sprite = go->get_component<AnimationComponent>()->getAnimation("OpenHand" + to_string(index))->getSprite();
 
 	
 
@@ -354,7 +363,7 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	jump->getSprite().setTextureRect(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
 
 
-	auto animatedSprite = make_shared<AnimatedSprite>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
+	auto animatedSprite = make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 	animatedSprite->registerAnimation("Default", defaultFace);
 	animatedSprite->registerAnimation("Dead", dead);
 	animatedSprite->registerAnimation("Jump", jump);
@@ -370,7 +379,7 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	//create the collider: 
 	b2PolygonShape shape;
 	auto go = gameObject;
-	auto sprite = go->get_component<AnimatedSprite>()->getAnimation("Default")->getSprite();
+	auto sprite = go->get_component<AnimationComponent>()->getAnimation("Default")->getSprite();
 
 
 	const auto w = (sprite.getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
@@ -655,7 +664,7 @@ static GameObject::ptr loadLava (NLTmxMapObject* object, const std::string& laye
 		if (collider2.getGameObject().getTag() == "Player")
 		{
 			cout << "Player died" << endl;
-			collider2.getGameObject().get_component<AnimatedSprite>()->setAnimation("Dead");
+			collider2.getGameObject().get_component<AnimationComponent>()->setAnimation("Dead");
 		}
 
 			

@@ -7,11 +7,11 @@
 #include "GameObjectManager.h"
 #include <iostream>
 
-#include "AnimatedSprite.h"
+#include "AnimationComponent.h"
 #include "VectorAlgebra2D.h"
 #include "PlayerBodyComponent.h"
 #include "IRockComponent.h"
-
+#include "SoundComponent.h"
 
 
 HandMoveComponent::HandMoveComponent(GameObject& gameObject, RigidBodyComponent& rigidBody, int playerIndex, bool useRightStick)
@@ -103,7 +103,9 @@ void HandMoveComponent::grab()
 
 	if (distance <= 450.f)
 	{
-		mGameObject.get_component<AnimatedSprite>()->setAnimation("ClosedHand" + std::to_string(mPlayerIndex));
+		mGameObject.get_component<AnimationComponent>()->setAnimation("ClosedHand" + std::to_string(mPlayerIndex));
+		mGameObject.get_component<SoundComponent>()->setSound("Grab");
+		
 		mIsGrabbing = true;
 		mRigidBody.getB2Body()->SetType(b2_staticBody);
 		mGrabbedRock->get_component<IRockComponent>()->grabRock();
@@ -120,7 +122,7 @@ void HandMoveComponent::release()
 	auto hand = mRigidBody.getB2Body();
 	hand->SetType(b2_dynamicBody);
 	mIsGrabbing = false;
-	mGameObject.get_component<AnimatedSprite>()->setAnimation("OpenHand" + std::to_string(mPlayerIndex));
+	mGameObject.get_component<AnimationComponent>()->setAnimation("OpenHand" + std::to_string(mPlayerIndex));
 
 	mGrabbedRock->get_component<IRockComponent>()->releaseRock();
 
@@ -140,7 +142,7 @@ void HandMoveComponent::pullUp()
 {
 	mIsPulling = true;
 	//mJoint->SetMaxLength(mPullLength);
-	mBody->get_component<AnimatedSprite>()->setAnimation("Jump");
+	mBody->get_component<AnimationComponent>()->setAnimation("Jump");
 
 	//TODO make body animation back to "Default" when mIsPulling wieder auf falsch gesetzt wird
 }
@@ -148,7 +150,7 @@ void HandMoveComponent::pullUp()
 void HandMoveComponent::extend()
 {
 	mIsPulling = false;
-	mBody->get_component<AnimatedSprite>()->setAnimation("Default");
+	mBody->get_component<AnimationComponent>()->setAnimation("Default");
 
 	//mJoint->SetMaxLength(mNormalLength);
 
