@@ -19,14 +19,8 @@
     <Filter Include="Source Files\GameObject">
       <UniqueIdentifier>{e7e786fc-d12f-4c78-91fb-a9797d7c9df3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameState">
-      <UniqueIdentifier>{0b9e6be6-86ae-499a-845a-5dda90104604}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GameState">
       <UniqueIdentifier>{23b8faec-cbfd-48d2-9a7b-6372b3c30620}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Manager">
-      <UniqueIdentifier>{9c489ab6-8049-441a-98d3-a9278e7ea43b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Manager">
       <UniqueIdentifier>{8c4d6523-877e-4cea-9916-7b835f90b368}</UniqueIdentifier>
@@ -40,14 +34,20 @@
     <Filter Include="Header Files\FinalFrontier">
       <UniqueIdentifier>{8692ebd8-a9ac-4d87-81b5-4d34fcc1e681}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Math">
-      <UniqueIdentifier>{118b7071-b610-45c5-9d0f-65951e0ea0d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Debug">
       <UniqueIdentifier>{356154c7-c52f-42fa-9335-f3bd4544da5b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Debug">
       <UniqueIdentifier>{df3c45e4-110f-49a2-933a-09c1ab04e57f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameState">
+      <UniqueIdentifier>{0b9e6be6-86ae-499a-845a-5dda90104604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Manager">
+      <UniqueIdentifier>{9c489ab6-8049-441a-98d3-a9278e7ea43b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{118b7071-b610-45c5-9d0f-65951e0ea0d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,37 +57,16 @@
     <ClInclude Include="../src/targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="../src/Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="../src/GameObject.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="../src/MenuState.h">
-      <Filter>Header Files\GameState</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/MainState.h">
-      <Filter>Header Files\GameState</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/GameStateManager.h">
-      <Filter>Header Files\GameState</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\IRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SpriteRenderComponent.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/GameState.h">
-      <Filter>Header Files\GameState</Filter>
     </ClInclude>
     <ClInclude Include="..\src\CameraRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\PlayerMoveComponent.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/TileLayerRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\NLTmxMap.h">
@@ -96,20 +75,8 @@
     <ClInclude Include="..\src\TileMapLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SpriteManager.h">
-      <Filter>Header Files\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GameObjectManager.h">
-      <Filter>Header Files\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/InputManager.h">
-      <Filter>Header Files\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\RigidBodyComponent.h">
       <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PhysicsManager.h">
-      <Filter>Header Files\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\EventBus.h">
       <Filter>Header Files\Events</Filter>
@@ -153,25 +120,73 @@
     <ClInclude Include="..\src\TGuiWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\FinalScreen.h">
-      <Filter>Header Files\GameState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\HandMoveComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PlayerBodyComponent.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\Animation.h">
+      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\PositionFollowComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RockNormalComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RockOneTimeComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RockTimedComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SpriteRenderComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/TileLayerRenderComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\HandMoveComponent.h">
+      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TestState.h">
       <Filter>Header Files\GameState</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\AnimatedSprite.h">
+    <ClInclude Include="..\src\SpriteManager.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PhysicsManager.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/MenuState.h">
+      <Filter>Header Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/MainState.h">
+      <Filter>Header Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/InputManager.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/GameState.h">
+      <Filter>Header Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\FinalScreen.h">
+      <Filter>Header Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\IRockComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Animation.h">
+    <ClInclude Include="..\src\PlayerBodyComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/GameStateManager.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GameObjectManager.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AnimationComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoundComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
@@ -248,28 +263,40 @@
     <ClCompile Include="..\src\ColliderComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TGuiWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\FinalScreen.cpp">
       <Filter>Source Files\GameState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\HandMoveComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PlayerBodyComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PositionFollowComponent.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Animation.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\AnimatedSprite.cpp">
+    <ClCompile Include="..\src\TestState.cpp">
+      <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\HandMoveComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TestState.cpp">
+    <ClCompile Include="..\src\RockTimedComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PlayerBodyComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PositionFollowComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RockNormalComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RockOneTimeComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AnimationComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoundComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TGuiWrapper.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
   </ItemGroup>

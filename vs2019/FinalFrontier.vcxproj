@@ -141,7 +141,7 @@
     <ClInclude Include="../src/MenuState.h" />
     <ClInclude Include="../src/Game.h" />
     <ClInclude Include="../src/GameObject.h" />
-    <ClInclude Include="..\src\AnimatedSprite.h" />
+    <ClInclude Include="..\src\AnimationComponent.h" />
     <ClInclude Include="..\src\Animation.h" />
     <ClInclude Include="..\src\ColliderComponent.h" />
     <ClInclude Include="..\src\CameraRenderComponent.h" />
@@ -164,6 +164,7 @@
     <ClInclude Include="..\src\RockNormalComponent.h" />
     <ClInclude Include="..\src\RockOneTimeComponent.h" />
     <ClInclude Include="..\src\RockTimedComponent.h" />
+    <ClInclude Include="..\src\SoundComponent.h" />
     <ClInclude Include="..\src\SpriteManager.h" />
     <ClInclude Include="..\src\TestState.h" />
     <ClInclude Include="..\src\TGuiWrapper.h" />
@@ -188,7 +189,7 @@
     <ClCompile Include="../src/GameObject.cpp" />
     <ClCompile Include="../src/GameStateManager.cpp" />
     <ClCompile Include="../src/InputManager.cpp" />
-    <ClCompile Include="..\src\AnimatedSprite.cpp" />
+    <ClCompile Include="..\src\AnimationComponent.cpp" />
     <ClCompile Include="..\src\Animation.cpp" />
     <ClCompile Include="..\src\ColliderComponent.cpp" />
     <ClCompile Include="..\src\DebugDraw.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="..\src\RockNormalComponent.cpp" />
     <ClCompile Include="..\src\RockOneTimeComponent.cpp" />
     <ClCompile Include="..\src\RockTimedComponent.cpp" />
+    <ClCompile Include="..\src\SoundComponent.cpp" />
     <ClCompile Include="..\src\SpriteManager.cpp" />
     <ClCompile Include="..\src\SpriteRenderComponent.cpp" />
     <ClCompile Include="..\src\TestState.cpp" />
