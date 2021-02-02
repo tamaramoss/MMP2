@@ -153,6 +153,7 @@
     <ClInclude Include="..\src\HandMoveComponent.h" />
     <ClInclude Include="..\src\IEvent.h" />
     <ClInclude Include="..\src\GameObjectManager.h" />
+    <ClInclude Include="..\src\IRockComponent.h" />
     <ClInclude Include="..\src\NLTmxMap.h" />
     <ClInclude Include="..\src\PhysicsComponentEvents.h" />
     <ClInclude Include="..\src\PhysicsManager.h" />
@@ -160,6 +161,9 @@
     <ClInclude Include="..\src\PositionFollowComponent.h" />
     <ClInclude Include="..\src\RenderComponentEvents.h" />
     <ClInclude Include="..\src\RigidBodyComponent.h" />
+    <ClInclude Include="..\src\RockNormalComponent.h" />
+    <ClInclude Include="..\src\RockOneTimeComponent.h" />
+    <ClInclude Include="..\src\RockTimedComponent.h" />
     <ClInclude Include="..\src\SpriteManager.h" />
     <ClInclude Include="..\src\TestState.h" />
     <ClInclude Include="..\src\TGuiWrapper.h" />
@@ -202,6 +206,9 @@
     <ClCompile Include="..\src\PositionFollowComponent.cpp" />
     <ClCompile Include="..\src\RenderComponentEvents.cpp" />
     <ClCompile Include="..\src\RigidBodyComponent.cpp" />
+    <ClCompile Include="..\src\RockNormalComponent.cpp" />
+    <ClCompile Include="..\src\RockOneTimeComponent.cpp" />
+    <ClCompile Include="..\src\RockTimedComponent.cpp" />
     <ClCompile Include="..\src\SpriteManager.cpp" />
     <ClCompile Include="..\src\SpriteRenderComponent.cpp" />
     <ClCompile Include="..\src\TestState.cpp" />

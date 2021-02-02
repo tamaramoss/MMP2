@@ -4,6 +4,8 @@
 
 #include "GameObjectManager.h"
 #include "GameObjectEvents.h"
+#include "SpriteManager.h"
+#include "RigidBodyComponent.h"
 
 void GameObjectManager::init()
 {
@@ -52,3 +54,17 @@ GameObject::ptr GameObjectManager::getGameObject(const std::string& id) const
 	}
 	return it->second;
 }
+
+void GameObjectManager::removeGameObject(const std::string& id)
+{
+	const auto it = mGameObjects.find(id);
+	if (it == mGameObjects.end())
+	{
+		FF_ERROR_MSG("Could not find gameobject with m_id " + id);
+		return;
+	}
+	
+	//mGameObjects.erase(it);
+}
+
+

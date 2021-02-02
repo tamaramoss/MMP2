@@ -20,6 +20,8 @@ public:
 
 	GameObjectMap& getGameObjects() { return mGameObjects; }
 
+	void removeGameObject(const std::string& id);
+
 private:
 
 	GameObjectMap mGameObjects;

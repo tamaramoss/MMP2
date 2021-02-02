@@ -35,12 +35,13 @@ private:
 	b2RopeJoint* mJoint;
 
 	// gameplay params
+	GameObject* mGrabbedRock;
 	sf::Vector2f mGrabPosition;
-	float mMoveSpeed = 3500.f;
+	float mMoveSpeed = 4000.f;
 	float mNormalLength = 40.f;
-	float mPullLength = 25.f;
-	float mCurLength = 40.f;
-	float mPullSpeed = 50.f;
+	float mPullLength = 20.f;
+	float mCurLength = 30.f;
+	float mPullSpeed = 100.f;
 
 	bool mCanGrab = false;
 	bool mIsGrabbing = false;

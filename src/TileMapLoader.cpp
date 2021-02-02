@@ -18,6 +18,9 @@
 #include "Animation.h"
 #include "PlayerBodyComponent.h"
 #include "HandMoveComponent.h"
+#include "RockTimedComponent.h"
+#include "RockNormalComponent.h"
+#include "RockOneTimeComponent.h"
 
 
 struct Player
@@ -396,7 +399,7 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	if (input)
 	{
 		const auto body_comp =
-			make_shared<PlayerBodyComponent>(*gameObject, *rigid_comp, 500.f);
+			make_shared<PlayerBodyComponent>(*gameObject, *rigid_comp);
 		gameObject->add_component(body_comp);
 	}
 
@@ -541,6 +544,25 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 
 			texture_rect.left = rectLeftStart * stoi(property->value);
 			texture_rect.top = rectTopStart * stoi(property->value);
+		}
+		else if (name == "RockType")
+		{
+			auto value = property->value;
+			if (value == "Timer")
+			{
+				auto rockTimer = std::make_shared<RockTimedComponent>(*gameObject);
+				gameObject->add_component(rockTimer);
+			}
+			else if (value == "OneTime")
+			{
+				auto oneTimeRock = std::make_shared<RockOneTimeComponent>(*gameObject);
+				gameObject->add_component(oneTimeRock);
+			}
+			else if (value == "Normal")
+			{
+				auto normalRock = std::make_shared<RockNormalComponent>(*gameObject);
+				gameObject->add_component(normalRock);
+			}
 		}
 	}
 

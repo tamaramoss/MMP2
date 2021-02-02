@@ -5,12 +5,11 @@
 class PlayerBodyComponent : public IGameComponent
 {
 public:
-	PlayerBodyComponent(GameObject& gameObject, RigidBodyComponent& rigidBody, float armLength);
+	PlayerBodyComponent(GameObject& gameObject, RigidBodyComponent& rigidBody);
 
 	bool init() override;
 	void update(float deltaTime) override;
 
 private:
-	float mArmLength = 300.f;
 	RigidBodyComponent& mRigidbody;
 };

@@ -6,20 +6,22 @@
 #include <iostream>
 #include "PlayerBodyComponent.h"
 
-PlayerBodyComponent::PlayerBodyComponent(GameObject& gameObject, RigidBodyComponent& rigidBody, float armLength)
+PlayerBodyComponent::PlayerBodyComponent(GameObject& gameObject, RigidBodyComponent& rigidBody)
 	:IGameComponent(gameObject),
-	mArmLength(armLength),
 	mRigidbody(rigidBody)
 {
 }
 
 bool PlayerBodyComponent::init()
 {
-	mRigidbody.getB2Body()->SetGravityScale(850);
+	mRigidbody.getB2Body()->SetGravityScale(1050);
+	mRigidbody.getB2Body()->SetFixedRotation(true);
+	mRigidbody.getB2Body()->SetSleepingAllowed(false);
+
 	return true;
 }
 
 void PlayerBodyComponent::update(float deltaTime)
 {
-}
 
+}
