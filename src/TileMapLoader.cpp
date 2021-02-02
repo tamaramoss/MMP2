@@ -139,6 +139,20 @@ void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
 }
 
 
+static Animation::ptr MakeAnimation(int rectLeft, int rectTop, int frameWidth, std::string path)
+{
+	auto animation = std::make_shared<Animation>(path);
+
+	while (rectLeft != animation->getSprite().getTexture()->getSize().x)
+	{
+		animation->addFrame(sf::IntRect(rectLeft, rectTop, frameWidth, frameWidth));
+		rectLeft += frameWidth;
+	}
+
+	return animation;
+}
+
+
 static std::shared_ptr<SpriteRenderComponent> makeRenderComponent(NLTmxMapObject* object, std::shared_ptr<GameObject> gameObject, string layer, SpriteManager& spriteManager, string texturePathOptional = "")
 {
 	std::shared_ptr<SpriteRenderComponent> renderComponent;
@@ -525,6 +539,7 @@ static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& la
 	return gameObject;
 }
 
+
 static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
@@ -554,50 +569,102 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 			texture_rect.left = rectLeftStart * stoi(property->value);
 			texture_rect.top = rectTopStart * stoi(property->value);
 		}
-		else if (name == "RockType")
+		
+	}
+
+	for (auto property : object->properties)
+	{
+		auto name = property->name;
+
+		if (name == "RockType")
 		{
 			auto value = property->value;
 			if (value == "Timer")
 			{
 				auto rockTimer = std::make_shared<RockTimedComponent>(*gameObject);
 				gameObject->add_component(rockTimer);
+
+				auto sleep = MakeAnimation(0, 0, texture_rect.width, spriteTexture);
+				auto wake = MakeAnimation(0, texture_rect.height, texture_rect.width, spriteTexture);
+				auto angry = MakeAnimation(0, texture_rect.height * 2, texture_rect.width, spriteTexture);
+
+				auto animationComp = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
+				animationComp->registerAnimation("Sleep", sleep);
+				animationComp->registerAnimation("Wake", wake);
+				animationComp->registerAnimation("Angry", angry);
+
+				animationComp->setAnimation("Sleep");
+
+				EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animationComp));
+				gameObject->add_component(animationComp);
 			}
 			else if (value == "OneTime")
 			{
 				auto oneTimeRock = std::make_shared<RockOneTimeComponent>(*gameObject);
 				gameObject->add_component(oneTimeRock);
+
+
+				// Initialize components with parsed data.
+				if (spriteTexture.length() > 0)
+				{
+					auto render_comp = make_shared<SpriteRenderComponent>(
+						*gameObject, spriteManager.getWindow(), spriteTexture
+						);
+					gameObject->add_component(render_comp);
+
+					render_comp->getSprite().setTextureRect(texture_rect);
+					//renderComp->getSprite().setOrigin(textureRect.width * 0.5f, textureRect.height *0.5f);
+					//renderComp->getSprite().setPosition(0.0f, 0.0f);
+
+					EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *render_comp));
+				}
 			}
 			else if (value == "Normal")
 			{
 				auto normalRock = std::make_shared<RockNormalComponent>(*gameObject);
 				gameObject->add_component(normalRock);
+
+
+				// Initialize components with parsed data.
+				if (spriteTexture.length() > 0)
+				{
+					auto render_comp = make_shared<SpriteRenderComponent>(
+						*gameObject, spriteManager.getWindow(), spriteTexture
+						);
+					gameObject->add_component(render_comp);
+
+					render_comp->getSprite().setTextureRect(texture_rect);
+					//renderComp->getSprite().setOrigin(textureRect.width * 0.5f, textureRect.height *0.5f);
+					//renderComp->getSprite().setPosition(0.0f, 0.0f);
+
+					EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *render_comp));
+				}
 			}
 		}
 	}
 
-	// Initialize components with parsed data.
-	if (spriteTexture.length() > 0)
-	{
-		auto render_comp = make_shared<SpriteRenderComponent>(
-			*gameObject, spriteManager.getWindow(), spriteTexture
-			);
-		gameObject->add_component(render_comp);
 
-		render_comp->getSprite().setTextureRect(texture_rect);
-		//renderComp->getSprite().setOrigin(textureRect.width * 0.5f, textureRect.height *0.5f);
-		//renderComp->getSprite().setPosition(0.0f, 0.0f);
 
-		EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *render_comp));
-	}
 
+	
 	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_staticBody);
 	//create the collider: 
 	b2PolygonShape shape;
 	auto go = gameObject;
 	auto sprite = go->get_component<SpriteRenderComponent>();
+	auto animation = go->get_component<AnimationComponent>();
 
-	const auto w = (sprite->getSprite().getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
-	const auto h = (sprite->getSprite().getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
+	Sprite s;
+
+
+	
+	if (!sprite)
+		s = animation->getCurrentAnimation()->getSprite();
+	else
+		s = sprite->getSprite();
+	
+	const auto w = (s.getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
+	const auto h = (s.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
 	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
 
 	b2FixtureDef FixtureDef;
