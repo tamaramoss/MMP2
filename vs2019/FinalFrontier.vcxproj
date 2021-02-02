@@ -165,6 +165,8 @@
     <ClInclude Include="..\src\RockOneTimeComponent.h" />
     <ClInclude Include="..\src\RockTimedComponent.h" />
     <ClInclude Include="..\src\SoundComponent.h" />
+    <ClInclude Include="..\src\SpitterComponent.h" />
+    <ClInclude Include="..\src\SpitterTriggerComponent.h" />
     <ClInclude Include="..\src\SpriteManager.h" />
     <ClInclude Include="..\src\TestState.h" />
     <ClInclude Include="..\src\TGuiWrapper.h" />
@@ -211,6 +213,7 @@
     <ClCompile Include="..\src\RockOneTimeComponent.cpp" />
     <ClCompile Include="..\src\RockTimedComponent.cpp" />
     <ClCompile Include="..\src\SoundComponent.cpp" />
+    <ClCompile Include="..\src\SpitterComponent.cpp" />
     <ClCompile Include="..\src\SpriteManager.cpp" />
     <ClCompile Include="..\src\SpriteRenderComponent.cpp" />
     <ClCompile Include="..\src\TestState.cpp" />
