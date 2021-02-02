@@ -69,21 +69,27 @@ void HandMoveComponent::update(float deltaTime)
 	{
 		if (mCurLength > mPullLength)
 		{
-			mCurLength -= mPullSpeed * deltaTime;
-			mJoint->SetMaxLength(mCurLength);
-			mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(mGameObject.getPosition() - mBody->getPosition()), b2Vec2(0,0), true);
+			mCurLength -= deltaTime * mPullSpeed;
+			//mJoint->SetMaxLength(mCurLength);
+			auto direction = mBody->getPosition() - mGameObject.getPosition();
+			direction = -direction / MathUtil::length(direction);
+			mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(direction * mPullSpeed * 10.f), b2Vec2(0,0), true);
 		}
 	}
-	else if (mCurLength < mNormalLength)
+	else
 	{
-		mCurLength += mPullSpeed * deltaTime;
-		mJoint->SetMaxLength(mCurLength);
+		if (mCurLength < mNormalLength)
+		{
+			mCurLength += deltaTime * mPullSpeed;
+			//mJoint->SetMaxLength(mCurLength);
+
+		}
 	}
 
 	if(translation.x != 0 || translation.y != 0)
 		move(translation, mMoveSpeed * PhysicsManager::RATIO);
 
-	mCurLength = PhysicsManager::UNRATIO* MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
+	mCurLength = PhysicsManager::UNRATIO * MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
 
 }
 
@@ -135,8 +141,8 @@ void HandMoveComponent::release()
 		// from player to point between hands
 		auto handsMidPoint = (mGameObject.getPosition() + mOtherHand->getGameObject().getPosition()) / 2.f;
 		auto direction = (handsMidPoint - mBody->getPosition()) / MathUtil::length(handsMidPoint - mBody->getPosition());
-		body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 6000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
-		hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 1000.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
+		body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 3000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
+		hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 500.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
 	}
 }
 
@@ -173,10 +179,18 @@ void HandMoveComponent::move(sf::Vector2f direction, float speed)
 	//	speed = 0;
 	//}
 
+	if(mOtherHand->mIsGrabbing)
+	{
+
+		auto directionPlayerToHand = (mGameObject.getPosition() - mBody->getPosition()) / MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
+		mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(directionPlayerToHand * speed * 5.f), b2Vec2(0, 0), true);
+	}
+
+	// omg wth
 	if (mCurLength > mNormalLength - 1.5f && !mOtherHand->mIsGrabbing)
 	{
-		direction = (mBody->getPosition() - mGameObject.getPosition()) / MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
-		mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(sf::Vector2f(0, 1) * speed / 3.f), b2Vec2(0, 0), true);
+		//direction = (mBody->getPosition() - mGameObject.getPosition()) / MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
+		//mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(sf::Vector2f(0, 1) * speed * 5.f), b2Vec2(0, 0), true);
 		//direction = sf::Vector2f(0, 1);
 	}
 

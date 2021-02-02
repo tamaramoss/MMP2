@@ -27,6 +27,9 @@ public:
 	void move(sf::Vector2f direction, float speed);
 	void onCollisionEnter(ColliderComponent& other);
 
+	// access
+	float getMaxLength() { return mNormalLength; }
+
 private:
 	// references
 	RigidBodyComponent& mRigidBody;
@@ -37,11 +40,11 @@ private:
 	// gameplay params
 	GameObject* mGrabbedRock;
 	sf::Vector2f mGrabPosition;
-	float mMoveSpeed = 35000.f;
-	float mNormalLength = 40.f;
+	float mMoveSpeed = 1200.f;
+	float mNormalLength = 50.f;
 	float mPullLength = 20.f;
-	float mCurLength = 30.f;
-	float mPullSpeed = 100.f;
+	float mCurLength = 40.f;
+	float mPullSpeed = 16000.f;
 
 	bool mCanGrab = false;
 	bool mIsGrabbing = false;

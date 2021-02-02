@@ -87,7 +87,7 @@ void MainState::update(const float deltaTime)
 	// set camera to player + hands + tiny offset
 	auto player = mGameObjectManager.getGameObject("Player");
 	auto spriteBounds = player->get_component<AnimationComponent>()->getCurrentAnimation()->getSprite().getLocalBounds();
-	auto playerPos = player->getPosition() - sf::Vector2f(spriteBounds.width * 2, 0);
+	auto playerPos = player->getPosition() - sf::Vector2f(spriteBounds.width, 0);
 	auto handPos = (mGameObjectManager.getGameObject("Hand0")->getPosition() + mGameObjectManager.getGameObject("Hand1")->getPosition()) / 2.f;
 
 	mGameObjectManager.getGameObject("Camera")->get_component<PositionFollowComponent>()->setFollowPosition((playerPos + handPos) / 2.f + sf::Vector2f(0, -750.f));
