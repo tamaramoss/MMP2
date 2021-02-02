@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="54">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="55">
  <tileset firstgid="1" name="background_template" tilewidth="192" tileheight="192" tilecount="9" columns="3">
   <image source="Environment/background_template.png" width="576" height="576"/>
  </tileset>
@@ -534,14 +534,14 @@
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
-  <object id="37" name="Rock14" type="Grabbable" x="2936" y="4480" width="192" height="192">
+  <object id="37" name="Rock14" type="Grabbable" x="2840" y="5096" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
-  <object id="38" name="Rock15" type="Grabbable" x="2480" y="4480" width="192" height="192">
+  <object id="38" name="Rock15" type="Grabbable" x="2384" y="5096" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="RockType" value="Normal"/>
@@ -615,5 +615,12 @@
   <object id="49" name="Collider6" type="Collider" x="3440" y="10072" width="2056.26" height="852.667"/>
   <object id="50" name="Collider7" type="Collider" x="3064" y="12544" width="552" height="1076.67"/>
   <object id="51" name="Collider8" type="Collider" x="1787.87" y="10365.7" width="1352.26" height="548.667"/>
+  <object id="54" name="Rock25" type="Grabbable" x="5176" y="14912" width="192" height="192">
+   <properties>
+    <property name="RockSize" type="int" value="384"/>
+    <property name="RockType" value="Normal"/>
+    <property name="Texture" value="rocks_template.png"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
