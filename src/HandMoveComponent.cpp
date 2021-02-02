@@ -71,6 +71,7 @@ void HandMoveComponent::update(float deltaTime)
 		{
 			mCurLength -= mPullSpeed * deltaTime;
 			mJoint->SetMaxLength(mCurLength);
+			mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(mGameObject.getPosition() - mBody->getPosition()), b2Vec2(0,0), true);
 		}
 	}
 	else if (mCurLength < mNormalLength)
@@ -79,7 +80,8 @@ void HandMoveComponent::update(float deltaTime)
 		mJoint->SetMaxLength(mCurLength);
 	}
 
-	move(translation, mMoveSpeed * 100);
+	if(translation.x != 0 || translation.y != 0)
+		move(translation, mMoveSpeed * PhysicsManager::RATIO);
 
 	mCurLength = PhysicsManager::UNRATIO* MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
 
@@ -174,7 +176,7 @@ void HandMoveComponent::move(sf::Vector2f direction, float speed)
 	if (mCurLength > mNormalLength - 1.5f && !mOtherHand->mIsGrabbing)
 	{
 		direction = (mBody->getPosition() - mGameObject.getPosition()) / MathUtil::length(mBody->getPosition() - mGameObject.getPosition());
-		mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(sf::Vector2f(0, 1) * speed / 5.f), b2Vec2(0, 0), true);
+		mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(sf::Vector2f(0, 1) * speed / 3.f), b2Vec2(0, 0), true);
 		//direction = sf::Vector2f(0, 1);
 	}
 
@@ -182,7 +184,6 @@ void HandMoveComponent::move(sf::Vector2f direction, float speed)
 	//{
 	//	speed = 0;
 	//}
-
 	hand->ApplyForce(PhysicsManager::s2b(direction * speed), b2Vec2(0, 0), true);
 }
 

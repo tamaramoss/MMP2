@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="39">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="192" tileheight="192" infinite="0" nextlayerid="7" nextobjectid="40">
  <tileset firstgid="1" name="background_template" tilewidth="192" tileheight="192" tilecount="9" columns="3">
   <image source="Environment/background_template.png" width="576" height="576"/>
  </tileset>
@@ -429,7 +429,7 @@
   <object id="1" name="Collider1" type="Collider" x="5.9" y="15870.7" width="1288.26" height="548.667"/>
   <object id="2" name="Collider" type="Collider" x="3729.3" y="15954.3" width="1824.53" height="610.731"/>
   <object id="3" name="Trigger" type="Trigger" x="4086.63" y="15002.7" width="836.232" height="724.824"/>
-  <object id="8" name="Player" type="Player" x="2616.93" y="17901.6" width="384" height="384">
+  <object id="8" name="Player" type="Player" x="2504.93" y="18029.6" width="384" height="384">
    <properties>
     <property name="Border" value="on"/>
     <property name="BorderSize" value="20"/>
@@ -445,14 +445,14 @@
   <object id="13" name="Collider2" type="Collider" x="-205.326" y="-12.9924" width="359.5" height="19609.8"/>
   <object id="14" name="Collider3" type="Collider" x="5452.25" y="-108.9" width="359.5" height="19609.8"/>
   <object id="15" name="Collider4" type="Collider" x="-23.75" y="19023.1" width="5615.5" height="468"/>
-  <object id="22" name="Rock" type="Grabbable" x="1424" y="17368" width="192" height="192">
+  <object id="22" name="Rock" type="Grabbable" x="2112" y="17328" width="192" height="192">
    <properties>
-    <property name="RockType" value="Timer"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rock_blocc.png"/>
     <property name="TextureSize" type="int" value="384"/>
    </properties>
   </object>
-  <object id="25" name="Rock2" type="Grabbable" x="3224" y="16128" width="192" height="192">
+  <object id="25" name="Rock2" type="Grabbable" x="3128" y="16272" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="RockType" value="Normal"/>
@@ -466,7 +466,7 @@
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
-  <object id="27" name="Rock4" type="Grabbable" x="1616" y="15376" width="192" height="192">
+  <object id="27" name="Rock4" type="Grabbable" x="2024" y="15176" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="RockType" value="Normal"/>
@@ -494,10 +494,10 @@
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
-  <object id="31" name="Rock8" type="Grabbable" x="3688" y="18024" width="192" height="192">
+  <object id="31" name="Rock8" type="Grabbable" x="3096" y="17336" width="192" height="192">
    <properties>
     <property name="RockSize" type="int" value="384"/>
-    <property name="RockType" value="OneTime"/>
+    <property name="RockType" value="Normal"/>
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
@@ -515,24 +515,25 @@
     <property name="Texture" value="rocks_template.png"/>
    </properties>
   </object>
-  <object id="34" name="Lava" type="Lava" x="-1760" y="20224" width="9000" height="10000">
+  <object id="34" name="Lava" type="Lava" x="-1760" y="20232" width="9000" height="10000">
    <properties>
     <property name="Texture" value="lava.png"/>
    </properties>
   </object>
-  <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="2152" y="17556" width="384" height="384">
+  <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="2040" y="17684" width="384" height="384">
    <properties>
     <property name="Texture" value="hands_template.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="384"/>
    </properties>
   </object>
-  <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="3116" y="17560" width="384" height="384">
+  <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="3004" y="17688" width="384" height="384">
    <properties>
     <property name="Texture" value="hands_template.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="0"/>
    </properties>
   </object>
+  <object id="39" name="Collider5" type="Collider" x="1920" y="18432" width="1536" height="674"/>
  </objectgroup>
 </map>

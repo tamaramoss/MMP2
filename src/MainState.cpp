@@ -9,6 +9,7 @@
 #include "NLTmxMap.h"
 #include "TileMapLoader.h"
 #include "PositionFollowComponent.h"
+#include "AnimationComponent.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ void MainState::init()
 	// Moving camera
 	{
 		auto v = mGame->getWindow().getView();
-		v.setSize(1280 * 3, 720 * 3);
+		v.setSize(1280 * 5, 720 * 5);
 		mGame->getWindow().setView(v);
 
 		auto camera = make_shared<GameObject>("Camera", "Camera");
@@ -84,7 +85,9 @@ void MainState::update(const float deltaTime)
 	}
 
 	// set camera to player + hands + tiny offset
-	auto playerPos = mGameObjectManager.getGameObject("Player")->getPosition();
+	auto player = mGameObjectManager.getGameObject("Player");
+	auto spriteBounds = player->get_component<AnimationComponent>()->getCurrentAnimation()->getSprite().getLocalBounds();
+	auto playerPos = player->getPosition() - sf::Vector2f(spriteBounds.width * 2, 0);
 	auto handPos = (mGameObjectManager.getGameObject("Hand0")->getPosition() + mGameObjectManager.getGameObject("Hand1")->getPosition()) / 2.f;
 
 	mGameObjectManager.getGameObject("Camera")->get_component<PositionFollowComponent>()->setFollowPosition((playerPos + handPos) / 2.f + sf::Vector2f(0, -750.f));
