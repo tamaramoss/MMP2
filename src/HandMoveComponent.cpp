@@ -151,8 +151,8 @@ void HandMoveComponent::release()
 
 		if (/*mBody->getPosition().y > handsMidPoint.y*/true)
 		{
-			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 8000000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
-			hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 8000000.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
+			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 800000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
+			hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 800000.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
 		}	
 	}
 }

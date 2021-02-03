@@ -1806,7 +1806,7 @@
  </layer>
  <objectgroup id="5" name="GameObjects">
   <object id="3" name="Trigger" type="Trigger" x="-6977.37" y="27954.7" width="836.232" height="724.824"/>
-  <object id="8" name="Player" type="Player" x="12968.9" y="46750" width="768" height="768">
+  <object id="8" name="Player" type="Player" x="13032.9" y="46782" width="768" height="768">
    <properties>
     <property name="Border" value="on"/>
     <property name="BorderSize" value="20"/>
@@ -1824,28 +1824,28 @@
     <property name="Texture" value="lava.png"/>
    </properties>
   </object>
-  <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="12480" y="46276" width="384" height="384">
+  <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="12544" y="46308" width="384" height="384">
    <properties>
     <property name="Texture" value="hands_left.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="384"/>
    </properties>
   </object>
-  <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="13876" y="46232" width="384" height="384">
+  <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="13940" y="46264" width="384" height="384">
    <properties>
     <property name="Texture" value="hands_right.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="0"/>
    </properties>
   </object>
-  <object id="39" name="Spitter1" type="Spitter" x="-6336" y="25040" width="384" height="384">
+  <object id="39" name="Spitter1" type="Spitter" x="6084" y="30208" width="768" height="768">
    <properties>
     <property name="Kinematic" type="bool" value="true"/>
     <property name="SlimeTexture" value="slime.png"/>
     <property name="Texture" value="spitto.png"/>
    </properties>
   </object>
-  <object id="41" name="SpitterTrigger1" type="SpitterTrigger" x="-11960" y="26140" width="6424" height="192"/>
+  <object id="41" name="SpitterTrigger1" type="SpitterTrigger" x="840" y="34172" width="6424" height="192"/>
   <object id="106" name="Rock12" type="Grabbable" x="12768" y="44621" width="288" height="288">
    <properties>
     <property name="RockSize" type="int" value="384"/>
