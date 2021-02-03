@@ -147,10 +147,11 @@ void HandMoveComponent::release()
 
 		// if player is lower than hands, pull up, otherwise don't do anything
 		auto direction = (handsMidPoint - mBody->getPosition()) / MathUtil::length(handsMidPoint - mBody->getPosition());
+		direction = sf::Vector2f(0, -1);
 
 		if (mBody->getPosition().y > handsMidPoint.y)
 		{
-			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 30000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
+			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 4000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
 			//hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 500.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
 		}	
 	}

@@ -39,10 +39,15 @@ void RockTimedComponent::update(float fDeltaTime)
 
 void RockTimedComponent::grabRock()
 {
+	if (!mWasGrabbed)
+	{
+		mGameObject.get_component<AnimationComponent>()->setAnimation("Wake");
+		mGameObject.get_component<AnimationComponent>()->setLooped(false);
+	}
+	
 	mIsGrabbed = true;
 	mWasGrabbed = true;
-	mGameObject.get_component<AnimationComponent>()->setAnimation("Wake");
-	mGameObject.get_component<AnimationComponent>()->setLooped(false);
+	
 }
 
 void RockTimedComponent::releaseRock()
@@ -53,7 +58,6 @@ void RockTimedComponent::releaseRock()
 void RockTimedComponent::destroyRock()
 {
 	/*mGameObject.markForDelete();*/
-	mIsGrabbed = false;
 	mGameObject.get_component<RigidBodyComponent>()->getB2Body()->SetTransform(b2Vec2(-10000000, -10000000), 0);
 
 	if(mIsGrabbed)
