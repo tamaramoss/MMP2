@@ -579,7 +579,7 @@ static GameObject::ptr loadGoalTrigger(NLTmxMapObject* object, const std::string
 	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
 
 	auto spriteComponent = makeRenderComponent(object, gameObject, layer, spriteManager);
-
+	//spriteComponent->init();
 	makePhysics(gameObject, true);
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
