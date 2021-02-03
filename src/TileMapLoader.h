@@ -8,7 +8,7 @@
 class NLTmxMap;
 
 void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
-                      SpriteManager& spriteManager);
+    SpriteManager& spriteManager);
 
 void loadObjectLayers(NLTmxMap* tilemap, const std::string& resourcePath,
-                        SpriteManager& spriteManager);
+    SpriteManager& spriteManager);
