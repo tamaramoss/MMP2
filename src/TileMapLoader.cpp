@@ -600,13 +600,13 @@ static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& la
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
-	colliderComp->registerOnCollisionFunction(
+	/*colliderComp->registerOnCollisionFunction(
 		[](ColliderComponent& collider1, ColliderComponent& collider2)
 	{
 		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
 			.getGameObject().getId() <<
 			endl;
-	});
+	});*/
 
 	gameObject->add_component(rigid_comp);
 	gameObject->add_component(colliderComp);
@@ -875,13 +875,13 @@ static GameObject::ptr loadSpitter (Spitter spitter, const std::string& layer, c
 	auto colliderComp = make_shared<ColliderComponent>(*spitterTrigger, *rigid_comp, FixtureDef);
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
-	colliderComp->registerOnCollisionFunction(
-		[](ColliderComponent& collider1, ColliderComponent& collider2)
-		{
-			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-				.getGameObject().getId() <<
-				endl;
-		});
+	//colliderComp->registerOnCollisionFunction(
+	//	[](ColliderComponent& collider1, ColliderComponent& collider2)
+	//	{
+	//		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+	//			.getGameObject().getId() <<
+	//			endl;
+	//	});
 
 	spitterTrigger->add_component(rigid_comp);
 	spitterTrigger->add_component(colliderComp);
@@ -889,20 +889,20 @@ static GameObject::ptr loadSpitter (Spitter spitter, const std::string& layer, c
 	auto stc = std::make_shared<SpitterTriggerComponent>(spitterTrigger);
 	
 	//Extend Physics manager and Collider Component to get detailed collision information.
-	spitterTrigger->get_component<ColliderComponent>()->registerOnCollisionFunction(
-		[](ColliderComponent& collider1, ColliderComponent& collider2)
-		{
-			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-				.getGameObject().getId() <<
-				endl;
+	//spitterTrigger->get_component<ColliderComponent>()->registerOnCollisionFunction(
+	//	[](ColliderComponent& collider1, ColliderComponent& collider2)
+	//	{
+	//		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+	//			.getGameObject().getId() <<
+	//			endl;
 
-			if (collider2.getGameObject().getTag() == "Player")
-			{
-				//collider1.getGameObject().get_component<SpitterTriggerComponent>()->getSpitter().get_component<SpitterComponent>()->startSpitting();
-			}
+	//		if (collider2.getGameObject().getTag() == "Player")
+	//		{
+	//			//collider1.getGameObject().get_component<SpitterTriggerComponent>()->getSpitter().get_component<SpitterComponent>()->startSpitting();
+	//		}
 
 
-		});
+	//	});
 
 	spitterTrigger->init();
 #pragma endregion

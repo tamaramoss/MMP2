@@ -73,7 +73,7 @@ void HandMoveComponent::update(float deltaTime)
 			//mJoint->SetMaxLength(mCurLength);
 			auto direction = mBody->getPosition() - mGameObject.getPosition();
 			direction = -direction / MathUtil::length(direction);
-			mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(direction * mPullSpeed * 10.f), b2Vec2(0,0), true);
+			mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(direction * mPullSpeed * 50.f), b2Vec2(0,0), true);
 		}
 	}
 	else
@@ -137,12 +137,19 @@ void HandMoveComponent::release()
 	// launch player if pulling up
 	if (mIsPulling)
 	{
-		auto body = mJoint->GetBodyA();
+		auto body = mBody->get_component<RigidBodyComponent>()->getB2Body();
 		// from player to point between hands
 		auto handsMidPoint = (mGameObject.getPosition() + mOtherHand->getGameObject().getPosition()) / 2.f;
+
+		// if player is lower than hands, pull up, otherwise don't do anything
 		auto direction = (handsMidPoint - mBody->getPosition()) / MathUtil::length(handsMidPoint - mBody->getPosition());
-		body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 3000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
-		hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 500.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
+
+		if (mBody->getPosition().y < handsMidPoint.y)
+		{
+			//body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 3000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
+			//hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 500.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
+		}
+		
 	}
 }
 
