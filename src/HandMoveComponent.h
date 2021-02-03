@@ -45,6 +45,7 @@ private:
 	float mPullLength = 20.f;
 	float mCurLength = 40.f;
 	float mPullSpeed = 23000.f;
+	float mMaxDistanceToOtherHand = 2300.f;
 
 	bool mCanGrab = false;
 	bool mIsGrabbing = false;

@@ -195,6 +195,9 @@
     <ClInclude Include="..\src\SpitterTriggerComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ConstantVelocityComponent.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/stdafx.cpp">
@@ -307,6 +310,8 @@
     </ClCompile>
     <ClCompile Include="..\src\TGuiWrapper.cpp">
       <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\ConstantVelocityComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

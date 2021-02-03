@@ -149,10 +149,10 @@ void HandMoveComponent::release()
 		auto direction = (handsMidPoint - mBody->getPosition()) / MathUtil::length(handsMidPoint - mBody->getPosition());
 		direction = sf::Vector2f(0, -1);
 
-		if (mBody->getPosition().y > handsMidPoint.y)
+		if (/*mBody->getPosition().y > handsMidPoint.y*/true)
 		{
-			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 4000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
-			//hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 500.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
+			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 8000000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
+			hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 8000000.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
 		}	
 	}
 }
@@ -189,7 +189,6 @@ void HandMoveComponent::move(sf::Vector2f direction, float speed)
 	//{
 	//	speed = 0;
 	//}
-
 	if(mOtherHand->mIsGrabbing)
 	{
 
@@ -209,7 +208,11 @@ void HandMoveComponent::move(sf::Vector2f direction, float speed)
 	//{
 	//	speed = 0;
 	//}
-	hand->ApplyForce(PhysicsManager::s2b(direction * speed), b2Vec2(0, 0), true);
+	//auto distanceToOther = MathUtil::length(mGameObject.getPosition() - mOtherHand->getGameObject().getPosition());
+
+
+		hand->ApplyForce(PhysicsManager::s2b(direction * speed), b2Vec2(0, 0), true);
+
 }
 
 void HandMoveComponent::onCollisionEnter(ColliderComponent& other)
