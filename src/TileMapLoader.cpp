@@ -285,8 +285,10 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	const auto h = (sprite.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
 	shape.SetAsBox(w * 0.7f, h * 0.7f, b2Vec2(w, h), 0);
 
+	float area = (2 * w * 0.7f) * (2 * h * 0.7f);
+
 	b2FixtureDef FixtureDef;
-	FixtureDef.density = 1.f;
+	FixtureDef.density = 5.f / area;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &shape;
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
@@ -461,8 +463,10 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	const auto h = (sprite.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
 	shape.SetAsBox(w* 0.5f, h * 0.7f, b2Vec2(w, h), 0);
 
+	float area = (2 * w * 0.5f) * (2 * h * 0.7f);
+
 	b2FixtureDef FixtureDef;
-	FixtureDef.density = 1.f;
+	FixtureDef.density = mass / area;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &shape;
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
@@ -730,7 +734,7 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 
 	auto spriteComponent = makeRenderComponent(object, gameObject, layer, spriteManager);
 
-	makePhysics(gameObject, true, b2Vec2(0, -5.f * 192.f * PhysicsManager::RATIO));
+	makePhysics(gameObject, true);
 
 
 	//Extend Physics manager and Collider Component to get detailed collision information.

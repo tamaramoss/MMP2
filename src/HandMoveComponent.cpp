@@ -132,7 +132,11 @@ void HandMoveComponent::release()
 	mIsGrabbing = false;
 	mGameObject.get_component<AnimationComponent>()->setAnimation("ToOpen" + std::to_string(mPlayerIndex));
 
+	
+
 	mGrabbedRock->get_component<IRockComponent>()->releaseRock();
+	mGrabbedRock = nullptr;
+	mGrabPosition = sf::Vector2f(-1000000,-1000000);
 
 	// launch player if pulling up
 	if (mIsPulling)

@@ -27,6 +27,7 @@ void RockOneTimeComponent::releaseRock()
 {
     mIsGrabbed = false;
     mGameObject.get_component<RigidBodyComponent>()->getB2Body()->SetTransform(b2Vec2(-10000000, -10000000), 0);
+    mGameObject.setPosition(sf::Vector2f(-100000000, -100000000));
 }
 
 void RockOneTimeComponent::setHand(std::shared_ptr<HandMoveComponent> hand)
