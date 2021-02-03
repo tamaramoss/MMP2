@@ -598,7 +598,7 @@
     <property name="Texture" value="grabbie_anims.png"/>
    </properties>
   </object>
-  <object id="31" name="Rock8" type="Grabbable" x="3688" y="18024" width="192" height="192">
+  <object id="31" name="Rock8" type="Grabbable" x="3688" y="18024" width="288" height="288">
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="RockType" value="OneTime"/>
@@ -626,14 +626,14 @@
   </object>
   <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="2152" y="17556" width="384" height="384">
    <properties>
-    <property name="Texture" value="hands_template.png"/>
+    <property name="Texture" value="hands_left.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="384"/>
    </properties>
   </object>
   <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="3116" y="17560" width="384" height="384">
    <properties>
-    <property name="Texture" value="hands_template.png"/>
+    <property name="Texture" value="hands_right.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="0"/>
    </properties>

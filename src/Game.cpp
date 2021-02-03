@@ -160,7 +160,7 @@ void Game::draw()
 
 	mGameStateManager.draw();
 
-	//mDebugDraw->draw(mWindow);
+	mDebugDraw->draw(mWindow);
 
 
 	mWindow.display();
