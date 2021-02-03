@@ -47,6 +47,7 @@ public:
 	string name;
 	string type;
 	int gid{};
+	int id{};
 	int x{};
 	int y{};
 	int width{};

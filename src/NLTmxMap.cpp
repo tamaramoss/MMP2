@@ -151,6 +151,11 @@ NLTmxMap* NLLoadTmxMap(char* xml)
 			{
 				object->name = name_attribute->value();
 			}
+			const auto id_attribute = objectnode->first_attribute("id");
+			if (id_attribute)
+			{
+				object->gid = atoi(id_attribute->value());
+			}
 			const auto gid_attribute = objectnode->first_attribute("gid");
 			if (gid_attribute)
 			{

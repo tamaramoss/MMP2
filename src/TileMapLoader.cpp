@@ -35,18 +35,18 @@ struct Player
 
 struct Spitter
 {
-	NLTmxMapObject* Spitter;
+	NLTmxMapObject* SpitterBody;
 	NLTmxMapObject* SpitterTrigger;
 };
 
 void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
-                      SpriteManager& spriteManager)
+	SpriteManager& spriteManager)
 {
 	err() << "Load tilemap with size: " << tilemap->width << ", "
 		<< tilemap->height << " and tile-size: " << tilemap->tileWidth
 		<< ", " << tilemap->tileHeight << std::endl;
 
-	spriteManager.setTileSize({tilemap->tileWidth, tilemap->tileHeight});
+	spriteManager.setTileSize({ tilemap->tileWidth, tilemap->tileHeight });
 
 	// load textures for every tileset
 	SpriteManager::TileSetMap tileSets;
@@ -128,7 +128,7 @@ void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
 			sprite->setTextureRect(source);
 			sprite->setPosition(position.x, position.y);
 
-			tile_layers[layer_idx].tiles.push_back({i, sprite});
+			tile_layers[layer_idx].tiles.push_back({ i, sprite });
 		}
 	}
 
@@ -179,7 +179,7 @@ static std::shared_ptr<SpriteRenderComponent> makeRenderComponent(NLTmxMapObject
 		{
 			string path;
 			texturePathOptional.empty() ? path = "../assets/sprites/" + property->value : path = texturePathOptional;
-			
+
 			renderComponent =
 				std::make_shared<SpriteRenderComponent>(*gameObject, spriteManager.getWindow(), path);
 		}
@@ -237,32 +237,27 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	}
 
 #pragma region animation
-	
-	auto openHand = std::make_shared<Animation>(path);
-	openHand->addFrame(textureRect);
-	openHand->addFrame(textureRect);
-	openHand->getSprite().setTextureRect(textureRect);
 
+	auto closedToOPen = MakeAnimation(0, 0, textureRect.height, path);
+	auto openToClosed = MakeAnimation(0, textureRect.height , textureRect.height, path);
 
-	auto closedHand = std::make_shared<Animation>(path);
-	closedHand->addFrame(sf::IntRect(0, textureRect.top, textureRect.width, textureRect.height));
-	closedHand->addFrame(sf::IntRect(0, textureRect.top, textureRect.width, textureRect.height));
-	closedHand->getSprite().setTextureRect(sf::IntRect(0, textureRect.top, textureRect.width, textureRect.height));
-
+	//closedToOPen->getSprite().setScale(1.5f, 1.5f);
+	//openToClosed->getSprite().setScale(1.5f, 1.5f);
 
 	auto animatedSprite = make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
-	animatedSprite->registerAnimation("OpenHand" + to_string(index), openHand);
-	animatedSprite->registerAnimation("ClosedHand" + to_string(index), closedHand);
+	animatedSprite->registerAnimation("ToOpen" + to_string(index), closedToOPen);
+	animatedSprite->registerAnimation("ToClose" + to_string(index), openToClosed);
+	animatedSprite->setLooped(false);
 
-	animatedSprite->setAnimation("OpenHand" + to_string(index));
+	animatedSprite->setAnimation("ToOpen" + to_string(index));
 	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animatedSprite));
-	
+
 	gameObject->add_component(animatedSprite);
-	
+
 #pragma endregion
 
 #pragma region Sound
-	
+
 	auto buffer = std::make_shared<sf::SoundBuffer>();
 	if (!buffer->loadFromFile("../assets/Sounds/chicken.wav"))
 		cout << "No music Here" << endl;
@@ -271,35 +266,29 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	soundComp->registerSound("Grab", buffer);
 
 	gameObject->add_component(soundComp);
-	
+
 #pragma endregion
 
 
-#pragma region Physics
-	
+#pragma region physic
+
 	// rigidbody and collider
 	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_dynamicBody);
 	//create the collider: 
 	b2PolygonShape shape;
-	//b2CircleShape shape;
 	auto go = gameObject;
-	auto sprite = go->get_component<AnimationComponent>()->getAnimation("OpenHand" + to_string(index))->getSprite();
+	auto sprite = go->get_component<AnimationComponent>()->getCurrentAnimation()->getSprite();
 
-	
+
 
 	const auto w = (sprite.getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
 	const auto h = (sprite.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
-	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
-	//shape.m_radius = w / 2;
-	//shape.m_p = PhysicsManager::s2b(gameObject->getPosition() + sf::Vector2f(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2));
-	
-	float area = (2 * w) * (2 * h);
+	shape.SetAsBox(w * 0.7f, h * 0.7f, b2Vec2(w, h), 0);
 
 	b2FixtureDef FixtureDef;
-	FixtureDef.density = 5.f/area;
+	FixtureDef.density = 1.f;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &shape;
-	//FixtureDef.isSensor = true; // CHECK DIS PLZ
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
 
 	auto handComponent = make_shared<HandMoveComponent>(*gameObject, *rigid_comp, index, index == 0 ? false : true);
@@ -307,10 +296,10 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	//Extend Physics manager and Collider Component to get detailed collision information.
 	colliderComp->registerOnCollisionFunction(
 		[handComponent](ColliderComponent& collider1, ColliderComponent& collider2)
-	{
-		handComponent->onCollisionEnter(collider2);
-	});
-	
+		{
+			handComponent->onCollisionEnter(collider2);
+		});
+
 	gameObject->add_component(handComponent);
 	gameObject->add_component(rigid_comp);
 	gameObject->add_component(colliderComp);
@@ -319,20 +308,20 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	b2RopeJointDef jointDefinition;
 	jointDefinition.bodyA = &parent;
 	jointDefinition.bodyB = rigid_comp->getB2Body();
-	jointDefinition.maxLength = handComponent->getMaxLength();
+	jointDefinition.maxLength = 40.f;
 	jointDefinition.localAnchorA = *&parent.GetLocalCenter();
 	jointDefinition.localAnchorB = rigid_comp->getB2Body()->GetLocalCenter();
-	
+
 	//b2DistanceJoint* joint = (b2DistanceJoint*)
 	auto joint = (b2RopeJoint*)PhysicsManager::get_b2_world()->CreateJoint(&jointDefinition);
 	handComponent->setJoint(joint);
 #pragma endregion
-	
+
 	gameObject->init();
 	return gameObject;
 }
 
-static void makePhysics(GameObject::ptr gameObject, bool isKinematic, b2Vec2 constantVelocity = b2Vec2(0,0))
+static void makePhysics(GameObject::ptr gameObject, bool isKinematic, float sizeFactor = 1.0f)
 {
 	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_staticBody);
 	//create the collider: 
@@ -350,9 +339,12 @@ static void makePhysics(GameObject::ptr gameObject, bool isKinematic, b2Vec2 con
 	else
 		s = sprite->getSprite();
 
-	const auto w = (s.getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
-	const auto h = (s.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
-	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
+	const auto w = ((s.getLocalBounds().width) / 2.) * PhysicsManager::UNRATIO;
+	const auto h = ((s.getLocalBounds().height) / 2.) * PhysicsManager::UNRATIO;
+
+	const auto sw = w * sizeFactor;
+	const auto sh = h * sizeFactor;
+	shape.SetAsBox(sw, sh, b2Vec2(w, h), 0);
 
 
 	if (isKinematic)
@@ -360,8 +352,6 @@ static void makePhysics(GameObject::ptr gameObject, bool isKinematic, b2Vec2 con
 	else
 		rigid_comp->getB2Body()->SetType(b2_dynamicBody);
 
-	// mainly for lava, but any other moving things
-	rigid_comp->getB2Body()->SetLinearVelocity(constantVelocity);
 
 
 	b2FixtureDef FixtureDef;
@@ -376,7 +366,7 @@ static void makePhysics(GameObject::ptr gameObject, bool isKinematic, b2Vec2 con
 }
 
 static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer, const std::string& resourcePath,
-                                   SpriteManager& spriteManager)
+	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(playerStruct.PlayerBody->name, playerStruct.PlayerBody->type);
 	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
@@ -427,32 +417,29 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	}
 
 #pragma region Animation
-	
-
-	auto defaultFace = MakeAnimation(0, 0, 768, path); /*std::make_shared<Animation>(path);*/
-	//defaultFace->addFrame(textureRect);
-	//defaultFace->addFrame(textureRect);
-	//defaultFace->getSprite().setTextureRect(textureRect);
 
 
-	auto dead = MakeAnimation(0, 768 * 2, 768, path);
-	//dead->addFrame(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
-	//dead->addFrame(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
-	//dead->getSprite().setTextureRect(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
+	auto defaultFace = std::make_shared<Animation>(path);
+	defaultFace->addFrame(textureRect);
+	defaultFace->addFrame(textureRect);
+	defaultFace->getSprite().setTextureRect(textureRect);
 
-	auto jump = MakeAnimation(0, 768, 768, path);
-	//jump->addFrame(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
-	//jump->addFrame(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
-	//jump->getSprite().setTextureRect(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
 
-	auto win = MakeAnimation(0, 768 * 3, 768, path);
+	auto dead = std::make_shared<Animation>(path);
+	dead->addFrame(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
+	dead->addFrame(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
+	dead->getSprite().setTextureRect(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
+
+	auto jump = std::make_shared<Animation>(path);
+	jump->addFrame(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
+	jump->addFrame(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
+	jump->getSprite().setTextureRect(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
 
 
 	auto animatedSprite = make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 	animatedSprite->registerAnimation("Default", defaultFace);
 	animatedSprite->registerAnimation("Dead", dead);
 	animatedSprite->registerAnimation("Jump", jump);
-	animatedSprite->registerAnimation("Win", win);
 
 	animatedSprite->setAnimation("Default");
 	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animatedSprite));
@@ -461,7 +448,7 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 
 #pragma endregion 
 
-#pragma region Physics
+#pragma region Physic
 
 	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_dynamicBody);
 	//create the collider: 
@@ -472,12 +459,10 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 
 	const auto w = (sprite.getLocalBounds().width / 2.) * PhysicsManager::UNRATIO;
 	const auto h = (sprite.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
-	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
-
-	float area = (2*w) * (2*h);
+	shape.SetAsBox(w* 0.5f, h * 0.7f, b2Vec2(w, h), 0);
 
 	b2FixtureDef FixtureDef;
-	FixtureDef.density = mass/area;
+	FixtureDef.density = 1.f;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &shape;
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
@@ -491,10 +476,9 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	//			endl;
 	//	});
 
-	std::cout << "MASS PLAYER IS " + to_string(rigid_comp->getB2Body()->GetMass()) << std::endl;
 	gameObject->add_component(rigid_comp);
 	gameObject->add_component(colliderComp);
-	
+
 #pragma endregion 
 
 	if (input)
@@ -508,25 +492,25 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	{
 		auto arm1 = createHand(playerStruct.PlayerHandLeft, layer, *rigid_comp->getB2Body(), 0, speed, gameObject->getPosition(), 500.f,  spriteManager);
 		auto arm2 = createHand(playerStruct.PlayerHandRight, layer, *rigid_comp->getB2Body(), 1, speed, gameObject->getPosition(), 500.f,  spriteManager);
+
 		// references to other hand
 		auto hmc = arm1->get_component<HandMoveComponent>();
 		hmc->setOtherHandReference(arm2->get_component<HandMoveComponent>());
 		hmc->setBodyReference(gameObject);
-		
+
 		hmc = arm2->get_component<HandMoveComponent>();
 		hmc->setOtherHandReference(arm1->get_component<HandMoveComponent>());
 		hmc->setBodyReference(gameObject);
 	}
 
 	gameObject->init();
-	//gameObject->setScale(sf::Vector2f(2,2));
 	return gameObject;
 }
 
 static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
-	auto gameObject = make_shared<GameObject>(object->name, object->type);
+	auto gameObject = make_shared<GameObject>(object->name + to_string(object->id), object->type);
 	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
 
 	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
@@ -573,7 +557,7 @@ static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& l
 static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
-	auto gameObject = make_shared<GameObject>(object->name, object->type);
+	auto gameObject = make_shared<GameObject>(object->name + to_string(object->id), object->type);
 	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
 
 	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
@@ -600,13 +584,13 @@ static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& la
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
-	/*colliderComp->registerOnCollisionFunction(
+	colliderComp->registerOnCollisionFunction(
 		[](ColliderComponent& collider1, ColliderComponent& collider2)
-	{
-		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-			.getGameObject().getId() <<
-			endl;
-	});*/
+		{
+			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+				.getGameObject().getId() <<
+				endl;
+		});
 
 	gameObject->add_component(rigid_comp);
 	gameObject->add_component(colliderComp);
@@ -622,7 +606,7 @@ static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& la
 static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
-	auto gameObject = make_shared<GameObject>(object->name, object->type);
+	auto gameObject = make_shared<GameObject>(object->name + to_string(object->id), object->type);
 	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
 
 	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
@@ -642,13 +626,14 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 		}
 		else if (name == "TextureSize")
 		{
-			int rectLeftStart = rand() % 3;
-			int rectTopStart = rand() % 3;
+			//int rectLeftStart = rand() % 3;
+			//int rectTopStart = rand() % 3;
 
-			texture_rect.left = rectLeftStart * stoi(property->value);
-			texture_rect.top = rectTopStart * stoi(property->value);
+			texture_rect.left = stoi(property->value);
+			texture_rect.top = stoi(property->value);
+
 		}
-		
+
 	}
 
 	for (auto property : object->properties)
@@ -666,6 +651,11 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 				auto sleep = MakeAnimation(0, 0, texture_rect.width, spriteTexture);
 				auto wake = MakeAnimation(0, texture_rect.height, texture_rect.width, spriteTexture);
 				auto angry = MakeAnimation(0, texture_rect.height * 2, texture_rect.width, spriteTexture);
+				//sleep->getSprite().setScale(1.5f, 1.5f);
+
+				//wake->getSprite().setScale(1.5f, 1.5f);
+				//angry->getSprite().setScale(1.5f, 1.5f);
+
 
 				auto animationComp = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 				animationComp->registerAnimation("Sleep", sleep);
@@ -692,6 +682,7 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 					gameObject->add_component(render_comp);
 
 					render_comp->getSprite().setTextureRect(texture_rect);
+					//render_comp->getSprite().setScale(1.5f, 1.5f);
 					//renderComp->getSprite().setOrigin(textureRect.width * 0.5f, textureRect.height *0.5f);
 					//renderComp->getSprite().setPosition(0.0f, 0.0f);
 
@@ -703,8 +694,12 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 				auto normalRock = std::make_shared<RockNormalComponent>(*gameObject);
 				gameObject->add_component(normalRock);
 
-				auto defaut = MakeAnimation(0, 0 , texture_rect.width, spriteTexture);
+				auto defaut = MakeAnimation(0, 0, texture_rect.width, spriteTexture);
 				auto Gabbed = MakeAnimation(0, texture_rect.height, texture_rect.width, spriteTexture);
+
+				//defaut->getSprite().setScale(1.5f, 1.5f);
+				//Gabbed->getSprite().setScale(1.5f, 1.5f);
+
 
 				auto animationComp = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 				animationComp->registerAnimation("Default", defaut);
@@ -714,18 +709,18 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 
 				EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animationComp));
 				gameObject->add_component(animationComp);
-				
+
 			}
 		}
 	}
-	
-	makePhysics(gameObject, true);
+
+	makePhysics(gameObject, true, 0.7f);
 
 	gameObject->init();
 	return gameObject;
 }
 
-static GameObject::ptr loadLava (NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(object->name, object->type);
@@ -736,6 +731,7 @@ static GameObject::ptr loadLava (NLTmxMapObject* object, const std::string& laye
 	auto spriteComponent = makeRenderComponent(object, gameObject, layer, spriteManager);
 
 	makePhysics(gameObject, true, b2Vec2(0, -5.f * 192.f * PhysicsManager::RATIO));
+
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
 	gameObject->get_component<ColliderComponent>()->registerOnCollisionFunction(
@@ -753,27 +749,27 @@ static GameObject::ptr loadLava (NLTmxMapObject* object, const std::string& laye
 
 
 		});
-	
+
 	gameObject->init();
 	return gameObject;
 }
 
-static GameObject::ptr loadSpitter (Spitter spitter, const std::string& layer, const std::string& resourcePath,
+static GameObject::ptr loadSpitter(Spitter spitter, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
-	auto gameObject = make_shared<GameObject>(spitter.Spitter->name, "Hand");
+	auto gameObject = make_shared<GameObject>(spitter.SpitterBody->name + to_string(spitter.SpitterBody->id), "Hand");
 	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
 
-	gameObject->move(static_cast<float>(spitter.Spitter->x), static_cast<float>(spitter.Spitter->y));
+	gameObject->move(static_cast<float>(spitter.SpitterBody->x), static_cast<float>(spitter.SpitterBody->y));
 
 	sf::IntRect textureRect{};
-	textureRect.width = spitter.Spitter->width;
-	textureRect.height = spitter.Spitter->height;
+	textureRect.width = spitter.SpitterBody->width;
+	textureRect.height = spitter.SpitterBody->height;
 	std::string texturePath;
 	std::string slimeTexturePath;
 	bool isKinematic;
-	
-	for (auto property : spitter.Spitter->properties)
+
+	for (auto property : spitter.SpitterBody->properties)
 	{
 		auto name = property->name;
 
@@ -800,7 +796,7 @@ static GameObject::ptr loadSpitter (Spitter spitter, const std::string& layer, c
 	}
 
 #pragma region animation
-	
+
 	auto d = MakeAnimation(0, 0, 384, texturePath);
 	auto s = MakeAnimation(0, 384, 384, texturePath);
 
@@ -813,19 +809,19 @@ static GameObject::ptr loadSpitter (Spitter spitter, const std::string& layer, c
 	gameObject->add_component(animation);
 
 #pragma endregion
-	
+
 
 	auto spitterComp = std::make_shared<SpitterComponent>(*gameObject);
 	gameObject->add_component(spitterComp);
 
 #pragma region slimes
-	
+
 	for (int i = 0; i < 20; i++)
 	{
 		auto slime = make_shared<GameObject>("Slime" + to_string(i), "Slime");
 		EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(slime));
 
-		slime->move(static_cast<float>(spitter.Spitter->x), static_cast<float>(spitter.Spitter->y));
+		slime->move(static_cast<float>(spitter.SpitterBody->x), static_cast<float>(spitter.SpitterBody->y));
 
 		auto renderComponent =
 			std::make_shared<SpriteRenderComponent>(*slime, spriteManager.getWindow(), slimeTexturePath);
@@ -851,7 +847,7 @@ static GameObject::ptr loadSpitter (Spitter spitter, const std::string& layer, c
 	sf::IntRect texture_rect{};
 	texture_rect.width = spitter.SpitterTrigger->width;
 	texture_rect.height = spitter.SpitterTrigger->height;
-	
+
 	auto spitterTrigger = make_shared<GameObject>(spitter.SpitterTrigger->name, spitter.SpitterTrigger->type);
 	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(spitterTrigger));
 
@@ -875,34 +871,34 @@ static GameObject::ptr loadSpitter (Spitter spitter, const std::string& layer, c
 	auto colliderComp = make_shared<ColliderComponent>(*spitterTrigger, *rigid_comp, FixtureDef);
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
-	//colliderComp->registerOnCollisionFunction(
-	//	[](ColliderComponent& collider1, ColliderComponent& collider2)
-	//	{
-	//		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-	//			.getGameObject().getId() <<
-	//			endl;
-	//	});
+	colliderComp->registerOnCollisionFunction(
+		[](ColliderComponent& collider1, ColliderComponent& collider2)
+		{
+			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+				.getGameObject().getId() <<
+				endl;
+		});
 
 	spitterTrigger->add_component(rigid_comp);
 	spitterTrigger->add_component(colliderComp);
 
 	auto stc = std::make_shared<SpitterTriggerComponent>(spitterTrigger);
-	
+
 	//Extend Physics manager and Collider Component to get detailed collision information.
-	//spitterTrigger->get_component<ColliderComponent>()->registerOnCollisionFunction(
-	//	[](ColliderComponent& collider1, ColliderComponent& collider2)
-	//	{
-	//		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-	//			.getGameObject().getId() <<
-	//			endl;
+	spitterTrigger->get_component<ColliderComponent>()->registerOnCollisionFunction(
+		[](ColliderComponent& collider1, ColliderComponent& collider2)
+		{
+			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
+				.getGameObject().getId() <<
+				endl;
 
-	//		if (collider2.getGameObject().getTag() == "Player")
-	//		{
-	//			//collider1.getGameObject().get_component<SpitterTriggerComponent>()->getSpitter().get_component<SpitterComponent>()->startSpitting();
-	//		}
+			if (collider2.getGameObject().getTag() == "Player")
+			{
+				//collider1.getGameObject().get_component<SpitterTriggerComponent>()->getSpitter().get_component<SpitterComponent>()->startSpitting();
+			}
 
 
-	//	});
+		});
 
 	spitterTrigger->init();
 #pragma endregion
@@ -926,7 +922,7 @@ void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, Sprit
 			const Vector2f position(static_cast<float>(object->x), static_cast<float>(object->y));
 
 			FloatRect bounds(position.x, position.y, static_cast<float>(object->width),
-			                 static_cast<float>(object->height));
+				static_cast<float>(object->height));
 
 
 			//if (object->type == "PlayerBody")
@@ -946,7 +942,7 @@ void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, Sprit
 			if (object->type == "PlayerHandRight")
 				player.PlayerHandRight = object;
 			if (object->type == "Spitter")
-				spitter.Spitter = object;
+				spitter.SpitterBody = object;
 			if (object->type == "SpitterTrigger")
 				spitter.SpitterTrigger = object;
 		}
