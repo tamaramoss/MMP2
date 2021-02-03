@@ -10,6 +10,9 @@
 #include "TileMapLoader.h"
 #include "PositionFollowComponent.h"
 #include "AnimationComponent.h"
+#include "GameObjectEvents.h"
+#include "PlayerBodyComponent.h"
+#include "RenderComponentEvents.h"
 
 using namespace std;
 
@@ -65,6 +68,7 @@ void MainState::init()
 
 void MainState::update(const float deltaTime)
 {
+	
 	if (InputManager::getInstance().isKeyPressed("Exit"))
 	{
 		mGameStateManager->setState("MenuState");
@@ -90,12 +94,46 @@ void MainState::update(const float deltaTime)
 	auto playerPos = player->getPosition() - sf::Vector2f(spriteBounds.width, 0);
 	auto handPos = (mGameObjectManager.getGameObject("Hand0")->getPosition() + mGameObjectManager.getGameObject("Hand1")->getPosition()) / 2.f;
 
-	mGameObjectManager.getGameObject("Camera")->get_component<PositionFollowComponent>()->setFollowPosition((playerPos + handPos) / 2.f + sf::Vector2f(0, -750.f));
+	Vector2f position = (playerPos + handPos) / 2.f + sf::Vector2f(0, -750.f);
+
+	mGameObjectManager.getGameObject("Camera")->get_component<PositionFollowComponent>()->setFollowPosition(position);
+
+	if (player->get_component<PlayerBodyComponent>()->isPlayerDead())
+	{
+		auto m = mGameObjectManager.getGameObject("Dead");
+		m->setPosition(Vector2f(position.x, position.y));
+
+		if (mTimer < mNextStateTimer)
+		{
+			mTimer += deltaTime;
+		}
+		else
+		{
+			mGameStateManager->setState("FinalScreen");
+		}
+	}
+
+	if (player->get_component<PlayerBodyComponent>()->isLevelWon())
+	{
+		auto m = mGameObjectManager.getGameObject("Win");
+		m->setPosition(Vector2f(position.x, position.y));
+
+		if (mTimer < mNextStateTimer)
+		{
+			mTimer += deltaTime;
+		}
+		else
+		{
+			mGameStateManager->setState("FinalScreen");
+		}
+	}
 }
 
 void MainState::draw()
 {
 	mSpriteManager.draw();
+
+
 }
 
 void

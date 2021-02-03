@@ -127,7 +127,7 @@ bool Game::init()
 
 	mInputManager->set_renderWindow(&mWindow);
 
-	mGameStateManager.setState("FinalScreen");
+	mGameStateManager.setState("MenuState");
 
 	
 

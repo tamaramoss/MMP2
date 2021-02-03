@@ -31,14 +31,14 @@ void FinalScreen::draw()
 
 void FinalScreen::setupGUI()
 {
-	TGuiWrapper::getInstance().getGui().add(tgui::Picture::create("../assets/spaceMenu.png"));
+	TGuiWrapper::getInstance().getGui().add(tgui::Picture::create("../assets/space.png"));
 
 	tgui::Theme theme("../externalLibs/tgui/themes/Black.txt");
 
 	auto button = tgui::Button::create();
 	button->setRenderer(theme.getRenderer("Button"));
 	button->setPosition(mGame->getWindow().getSize().x / 2 - 75.f, mGame->getWindow().getSize().y / 2 - 80.f);
-	button->setText("Retry");
+	button->setText("Play again");
 	button->setSize(150, 60);
 	button->connect("pressed", [&]() { mGameStateManager->setState("MainState"); });
 	button->setFocused(false);
@@ -47,9 +47,9 @@ void FinalScreen::setupGUI()
 	button = tgui::Button::create();
 	button->setRenderer(theme.getRenderer("Button"));
 	button->setPosition(mGame->getWindow().getSize().x / 2 - 75.f, mGame->getWindow().getSize().y / 2 );
-	button->setText("AnimationTestState");
+	button->setText("Back to menu");
 	button->setSize(150, 60);
-	button->connect("pressed", [&]() { mGameStateManager->setState("TestState"); });
+	button->connect("pressed", [&]() { mGameStateManager->setState("MenuState"); });
 	button->setFocused(false);
 	TGuiWrapper::getInstance().addButton(button, false);
 

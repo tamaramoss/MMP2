@@ -178,7 +178,7 @@ static std::shared_ptr<SpriteRenderComponent> makeRenderComponent(NLTmxMapObject
 		if (name == "Texture")
 		{
 			string path;
-			texturePathOptional.empty() ? path = "../assets/sprites/" + property->value : path = texturePathOptional;
+			texturePathOptional.empty() ? path = "../assets/Sprites/" + property->value : path = texturePathOptional;
 
 			renderComponent =
 				std::make_shared<SpriteRenderComponent>(*gameObject, spriteManager.getWindow(), path);
@@ -204,6 +204,35 @@ static std::shared_ptr<SpriteRenderComponent> makeRenderComponent(NLTmxMapObject
 	return renderComponent;
 }
 
+static GameObject::ptr loadDeadOverlay (SpriteManager& spriteManager)
+{
+	auto gameObject = std::make_shared<GameObject>("Dead", "Die");
+	gameObject->move(-100000, -100000);
+	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
+
+	auto r =
+		std::make_shared<SpriteRenderComponent>(*gameObject, spriteManager.getWindow(), "../assets/Sprites/die.png");
+	r->init();
+	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>("Top", *r));
+	gameObject->add_component(r);
+
+	return gameObject;
+}
+
+static GameObject::ptr loadWinOverlay(SpriteManager& spriteManager)
+{
+	auto gameObject = std::make_shared<GameObject>("Win", "Win");
+	gameObject->move(-100000, -100000);
+	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
+
+	auto r =
+		std::make_shared<SpriteRenderComponent>(*gameObject, spriteManager.getWindow(), "../assets/Sprites/youwin.png");
+	r->init();
+	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>("Top", *r));
+	gameObject->add_component(r);
+
+	return gameObject;
+}
 
 static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& layer, b2Body& parent, const int index, const float speed, const Vector2f startPos, float distanceFromStart, SpriteManager& spriteManager)
 {
@@ -462,15 +491,6 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	FixtureDef.shape = &shape;
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
 
-	//Extend Physics manager and Collider Component to get detailed collision information.
-	//colliderComp->registerOnCollisionFunction(
-	//	[](ColliderComponent& collider1, ColliderComponent& collider2)
-	//	{
-	//		cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-	//		                                                                            .getGameObject().getId() <<
-	//			endl;
-	//	});
-
 	gameObject->add_component(rigid_comp);
 	gameObject->add_component(colliderComp);
 
@@ -546,6 +566,36 @@ static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& l
 
 	gameObject->init();
 
+	return gameObject;
+}
+
+static GameObject::ptr loadGoalTrigger(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+	SpriteManager& spriteManager)
+{
+	auto gameObject = make_shared<GameObject>(object->name, object->type);
+	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
+
+	gameObject->move(static_cast<float>(object->x), static_cast<float>(object->y));
+
+	auto spriteComponent = makeRenderComponent(object, gameObject, layer, spriteManager);
+
+	makePhysics(gameObject, true);
+
+	//Extend Physics manager and Collider Component to get detailed collision information.
+	gameObject->get_component<ColliderComponent>()->registerOnCollisionFunction(
+		[](ColliderComponent& collider1, ColliderComponent& collider2)
+		{
+			if (collider2.getGameObject().getTag() == "Player")
+			{
+				cout << "Player win" << endl;
+				collider2.getGameObject().get_component<AnimationComponent>()->setAnimation("Win");
+				collider2.getGameObject().get_component<PlayerBodyComponent>()->playerWon();
+			}
+
+
+		});
+
+	gameObject->init();
 	return gameObject;
 }
 
@@ -733,14 +783,12 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 	gameObject->get_component<ColliderComponent>()->registerOnCollisionFunction(
 		[](ColliderComponent& collider1, ColliderComponent& collider2)
 		{
-			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-				.getGameObject().getId() <<
-				endl;
-
 			if (collider2.getGameObject().getTag() == "Player")
 			{
 				cout << "Player died" << endl;
 				collider2.getGameObject().get_component<AnimationComponent>()->setAnimation("Dead");
+				collider2.getGameObject().get_component<PlayerBodyComponent>()->playerDied();
+
 			}
 
 
@@ -822,9 +870,6 @@ static GameObject::ptr loadSpitter(Spitter spitter, const std::string& layer, co
 		auto renderComponent =
 			std::make_shared<SpriteRenderComponent>(*slime, spriteManager.getWindow(), slimeTexturePath);
 
-
-		//renderComponent->getSprite().setTextureRect(sf::IntRect(0, 0, ));
-
 		EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>("BehindObjects", *renderComponent));
 
 		slime->add_component(renderComponent);
@@ -884,9 +929,6 @@ static GameObject::ptr loadSpitter(Spitter spitter, const std::string& layer, co
 	spitterTrigger->get_component<ColliderComponent>()->registerOnCollisionFunction(
 		[](ColliderComponent& collider1, ColliderComponent& collider2)
 		{
-			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-				.getGameObject().getId() <<
-				endl;
 
 			if (collider2.getGameObject().getTag() == "Player")
 			{
@@ -931,6 +973,8 @@ void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, Sprit
 				auto rock = loadRock(object, group->name, resource_path, sprite_manager);
 			if (object->type == "Lava")
 				auto lava = loadLava(object, group->name, resource_path, sprite_manager);
+			if (object->type == "Goal")
+				auto lava = loadGoalTrigger(object, group->name, resource_path, sprite_manager);
 			if (object->type == "Player")
 				player.PlayerBody = object;
 			if (object->type == "PlayerHandLeft")
@@ -946,6 +990,8 @@ void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, Sprit
 		{
 			makePlayer(player, group->name, resource_path, sprite_manager);
 			loadSpitter(spitter, group->name, resource_path, sprite_manager);
+			loadDeadOverlay(sprite_manager);
+			loadWinOverlay(sprite_manager);
 		}
 	}
 

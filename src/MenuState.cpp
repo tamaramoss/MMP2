@@ -73,4 +73,5 @@ void MenuState::setupGUI ()
 void MenuState::exit()
 {
 	TGuiWrapper::getInstance().exit();
+	mIsInit = false;
 }
