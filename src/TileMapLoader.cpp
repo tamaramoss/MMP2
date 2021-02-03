@@ -563,8 +563,6 @@ static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& l
 	gameObject->add_component(rigid_comp);
 	gameObject->add_component(colliderComp);
 
-
-
 	gameObject->init();
 
 	return gameObject;
@@ -846,11 +844,10 @@ static GameObject::ptr loadSpitter(Spitter spitter, const std::string& layer, co
 
 #pragma region animation
 
-	auto d = MakeAnimation(0, 0, 384, texturePath);
-	auto s = MakeAnimation(0, 384, 384, texturePath);
+	auto d = MakeAnimation(0, 0, 768, texturePath);
+	auto s = MakeAnimation(0, 768, 768, texturePath);
 
-
-	auto animation = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow());
+	auto animation = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.5f, false, false);
 	animation->registerAnimation("Default", d);
 	animation->registerAnimation("Spitting", s);
 
@@ -865,12 +862,12 @@ static GameObject::ptr loadSpitter(Spitter spitter, const std::string& layer, co
 
 #pragma region slimes
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		auto slime = make_shared<GameObject>("Slime" + to_string(i), "Slime");
 		EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(slime));
 
-		slime->move(static_cast<float>(spitter.SpitterBody->x), static_cast<float>(spitter.SpitterBody->y));
+		slime->move(static_cast<float>(spitter.SpitterBody->x + 900.f), static_cast<float>(spitter.SpitterBody->y));
 
 		auto renderComponent =
 			std::make_shared<SpriteRenderComponent>(*slime, spriteManager.getWindow(), slimeTexturePath);
@@ -918,11 +915,9 @@ static GameObject::ptr loadSpitter(Spitter spitter, const std::string& layer, co
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
 	colliderComp->registerOnCollisionFunction(
-		[](ColliderComponent& collider1, ColliderComponent& collider2)
+		[spitterComp](ColliderComponent& collider1, ColliderComponent& collider2)
 		{
-			cout << "Collision: " << collider1.getGameObject().getId() << " vs. " << collider2
-				.getGameObject().getId() <<
-				endl;
+			spitterComp->startSpitting();
 		});
 
 	spitterTrigger->add_component(rigid_comp);

@@ -14,12 +14,15 @@ public:
 	void stopSpitting();
 	void addSlime(GameObject::ptr slime);
 	void setTimeInterval(float sec);
+
+	void SpitSlime();
 	
 private:
 	std::vector<GameObject::ptr> mSlimes;
-	int mCurrentIndex;
-	int mTotalSlimes;
-	float mTimeInterval;
+	int mCurrentIndex = 0;
+	int mTotalSlimes = 0;
+	float mTimeInterval = 2.f;
+	float mTimer = 2.f; // starts at 2 so the spitter immediately spits when hitting the trigger
 	bool mSpittingAtm = false;
 
 	bool mSlimeIsNonKinematic;
