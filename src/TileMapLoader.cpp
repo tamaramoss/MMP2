@@ -24,6 +24,7 @@
 #include "SoundComponent.h"
 #include "SpitterComponent.h"
 #include "SpitterTriggerComponent.h"
+#include "ConstantVelocityComponent.h"
 
 
 struct Player
@@ -358,7 +359,7 @@ static void makePhysics(GameObject::ptr gameObject, bool isKinematic, float size
 
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 1.f;
-	FixtureDef.friction = 0.7f;
+	FixtureDef.friction = 0.0f;
 	FixtureDef.shape = &shape;
 	FixtureDef.isSensor = true;
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
@@ -727,7 +728,6 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 
 	makePhysics(gameObject, true);
 
-	gameObject->get_component<RigidBodyComponent>()->getB2Body()->SetLinearVelocity(b2Vec2(0, -100 * PhysicsManager::RATIO));
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
 	gameObject->get_component<ColliderComponent>()->registerOnCollisionFunction(
@@ -746,7 +746,13 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 
 		});
 
+	auto constantVelocity = std::make_shared<ConstantVelocityComponent>(*gameObject, sf::Vector2f(0, -200));
+	gameObject->add_component(constantVelocity);
+
 	gameObject->init();
+	//gameObject->get_component<RigidBodyComponent>()->getB2Body()->SetSleepingAllowed(false);
+	//gameObject->get_component<RigidBodyComponent>()->getB2Body()->SetLinearVelocity(b2Vec2(0, -10000000));
+	//gameObject->get_component<RigidBodyComponent>()->getB2Body()->ApplyLinearImpulse(b2Vec2(0, -100000), b2Vec2(0, 0), true);
 	return gameObject;
 }
 

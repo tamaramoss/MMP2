@@ -50,7 +50,7 @@ void RigidBodyComponent::physicsUpdate(float deltaTime) const
 	mGameObject.setRotation(getB2Body()->GetAngle() * 180 / b2_pi);
 
 	//Debug Draw
-	auto fixture = mBody->GetFixtureList();
+	/*auto fixture = mBody->GetFixtureList();
 	b2AABB aabb;
 	aabb.lowerBound = b2Vec2(FLT_MAX, FLT_MAX);
 	aabb.upperBound = b2Vec2(-FLT_MAX, -FLT_MAX);
@@ -69,7 +69,7 @@ void RigidBodyComponent::physicsUpdate(float deltaTime) const
 
 		DebugDraw::getInstance().drawAABB(&aabb, Color::Green);
 		DebugDraw::getInstance().DrawTransform(getB2Body()->GetTransform());
-	}
+	}*/
 	
 }
 

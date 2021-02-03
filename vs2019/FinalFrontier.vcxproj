@@ -145,6 +145,7 @@
     <ClInclude Include="..\src\Animation.h" />
     <ClInclude Include="..\src\ColliderComponent.h" />
     <ClInclude Include="..\src\CameraRenderComponent.h" />
+    <ClInclude Include="..\src\ConstantVelocityComponent.h" />
     <ClInclude Include="..\src\DebugDraw.h" />
     <ClInclude Include="..\src\EventBus.h" />
     <ClInclude Include="..\src\FinalFrontier\dll_export.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="..\src\AnimationComponent.cpp" />
     <ClCompile Include="..\src\Animation.cpp" />
     <ClCompile Include="..\src\ColliderComponent.cpp" />
+    <ClCompile Include="..\src\ConstantVelocityComponent.cpp" />
     <ClCompile Include="..\src\DebugDraw.cpp" />
     <ClCompile Include="..\src\EventBus.cpp" />
     <ClCompile Include="..\src\FinalScreen.cpp" />
