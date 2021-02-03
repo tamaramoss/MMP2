@@ -28,7 +28,7 @@ void MainState::init()
 	// load tile map/level
 	{
 		const std::string& resourcePath = "../assets/";
-		const auto tilemap = NLLoadTmxMap(resourcePath + "level_1.tmx");
+		const auto tilemap = NLLoadTmxMap(resourcePath + "level_smol.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
 		loadTileLayers(tilemap, resourcePath, mSpriteManager);

@@ -21,12 +21,12 @@ void RockNormalComponent::update(float fDeltaTime)
 
 void RockNormalComponent::grabRock()
 {
-	mGameObject.get_component<AnimationComponent>()->setAnimation("Grabbed");
+	//mGameObject.get_component<AnimationComponent>()->setAnimation("Grabbed");
 }
 
 void RockNormalComponent::releaseRock()
 {
-	mGameObject.get_component<AnimationComponent>()->setAnimation("Default");
+	//mGameObject.get_component<AnimationComponent>()->setAnimation("Default");
 }
 
 void RockNormalComponent::setHand(std::shared_ptr<HandMoveComponent> hand)

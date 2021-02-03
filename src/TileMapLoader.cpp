@@ -705,7 +705,6 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 
 				EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animationComp));
 				gameObject->add_component(animationComp);
-
 			}
 		}
 	}

@@ -4422,9 +4422,6 @@
     <property name="Texture" value="grabbie_anims.png"/>
    </properties>
   </object>
-  <object id="213" name="l" x="13343" y="82138" width="352" height="2104" rotation="336.797">
-   <ellipse/>
-  </object>
   <object id="232" name="Rock" type="Grabbable" x="11096" y="99600" width="288" height="288">
    <properties>
     <property name="RockType" value="Timer"/>
@@ -4434,81 +4431,5 @@
   </object>
  </objectgroup>
  <objectgroup id="12" name="Rocks"/>
- <objectgroup id="11" name="Collider">
-  <object id="55" name="Collider" type="Collider" x="440.675" y="100836" width="4616.26" height="4772.67"/>
-  <object id="56" name="Collider2" type="Collider" x="3772.07" y="103895" width="1824.53" height="1730.73"/>
-  <object id="57" name="Collider3" type="Collider" x="-1018.52" y="-616.05" width="1787.5" height="107546"/>
-  <object id="58" name="Collider4" type="Collider" x="14623" y="-423.95" width="2023.5" height="106810"/>
-  <object id="59" name="Collider5" type="Collider" x="-100.975" y="105412" width="15967.5" height="3636"/>
-  <object id="60" name="Collider6" type="Collider" x="4919.74" y="105191" width="1824.53" height="1730.73"/>
-  <object id="62" name="Collider7" type="Collider" x="4199.73" y="104679" width="1824.53" height="1730.73"/>
-  <object id="63" name="Collider8" type="Collider" x="11287.7" y="101159" width="1016.53" height="5250.73"/>
-  <object id="64" name="Collider9" type="Collider" x="10719.7" y="103127" width="552.53" height="3274.73"/>
-  <object id="65" name="Collider10" type="Collider" x="10155.7" y="103819" width="552.53" height="2698.73"/>
-  <object id="66" name="Collider11" type="Collider" x="9555.74" y="104787" width="552.53" height="1586.73"/>
-  <object id="67" name="Collider12" type="Collider" x="9387.74" y="98362.6" width="5560.53" height="1162.73"/>
-  <object id="68" name="Collider13" type="Collider" x="7427.74" y="100651" width="1304.53" height="1346.73"/>
-  <object id="69" name="Collider14" type="Collider" x="7643.73" y="100047" width="1256.53" height="858.73"/>
-  <object id="70" name="Collider15" type="Collider" x="8147.74" y="99522.6" width="1208.53" height="858.73"/>
-  <object id="71" name="Collider16" type="Collider" x="8555.74" y="98770.6" width="1312.53" height="1122.73"/>
-  <object id="72" name="Collider17" type="Collider" x="13287.7" y="98742.6" width="1440.53" height="1010.73"/>
-  <object id="73" name="Collider18" type="Collider" x="14255.7" y="99718.6" width="816.53" height="594.73"/>
-  <object id="74" name="Collider19" type="Collider" x="1899.87" y="98861.7" width="1384.26" height="2132.67"/>
-  <object id="75" name="Collider20" type="Collider" x="571.87" y="99189.7" width="1384.26" height="1796.67"/>
-  <object id="76" name="Collider21" type="Collider" x="2931.87" y="98953.7" width="664.26" height="1940.67"/>
-  <object id="77" name="Collider22" type="Collider" x="3243.87" y="99357.7" width="664.26" height="1660.67"/>
-  <object id="78" name="Collider23" type="Collider" x="3635.87" y="99741.7" width="664.26" height="1420.67"/>
-  <object id="79" name="Collider24" type="Collider" x="4103.87" y="100074" width="664.26" height="1052.67"/>
-  <object id="80" name="Collider25" type="Collider" x="4299.87" y="100526" width="664.26" height="636.67"/>
-  <object id="130" name="Collider26" type="Collider" x="6731.87" y="85173.7" width="1944.26" height="8308.67"/>
-  <object id="131" name="Collider27" type="Collider" x="6187.87" y="93461.7" width="2280.26" height="2452.67"/>
-  <object id="132" name="Collider28" type="Collider" x="-196.13" y="86725.7" width="2056.26" height="6340.67"/>
-  <object id="133" name="Collider29" type="Collider" x="-468.13" y="93101.7" width="2056.26" height="1364.67"/>
-  <object id="134" name="Collider30" type="Collider" x="-484.13" y="94517.7" width="1672.26" height="1364.67"/>
-  <object id="135" name="Collider31" type="Collider" x="-68.13" y="85413.7" width="1672.26" height="1364.67"/>
-  <object id="136" name="Collider32" type="Collider" x="-404.13" y="84053.7" width="1672.26" height="1364.67"/>
-  <object id="137" name="Collider33" type="Collider" x="6635.87" y="83957.7" width="1672.26" height="1364.67"/>
-  <object id="138" name="Collider34" type="Collider" x="6651.87" y="82677.7" width="1352.26" height="1364.67"/>
-  <object id="139" name="Collider35" type="Collider" x="6651.87" y="81893.7" width="856.26" height="788.67"/>
-  <object id="140" name="Collider36" type="Collider" x="14075.9" y="90917.7" width="2056.26" height="2964.67"/>
-  <object id="141" name="Collider37" type="Collider" x="13691.9" y="93093.7" width="2056.26" height="5396.67"/>
-  <object id="142" name="Collider38" type="Collider" x="13163.9" y="97653.7" width="1048.26" height="916.67"/>
-  <object id="168" name="Collider35" type="Collider" x="2879.87" y="80337.7" width="1096.26" height="1004.67"/>
-  <object id="169" name="Collider35" type="Collider" x="6035.87" y="76217.7" width="1200.26" height="1108.67"/>
-  <object id="170" name="Collider35" type="Collider" x="6463.87" y="75525.7" width="784.26" height="796.67"/>
-  <object id="171" name="Collider35" type="Collider" x="9163.87" y="78841.7" width="784.26" height="1004.67"/>
-  <object id="172" name="Collider35" type="Collider" x="12187.9" y="74437.7" width="1032.26" height="1340.67"/>
-  <object id="173" name="Collider35" type="Collider" x="12459.9" y="74145.7" width="1032.26" height="1340.67"/>
-  <object id="174" name="Collider35" type="Collider" x="12731.9" y="74625.7" width="1032.26" height="704.67"/>
-  <object id="175" name="Collider35" type="Collider" x="9435.87" y="71297.7" width="1428.26" height="1012.67"/>
-  <object id="176" name="Collider35" type="Collider" x="597.87" y="66469.7" width="10404.3" height="1204.67"/>
-  <object id="177" name="Collider35" type="Collider" x="-306.15" y="65045.7" width="1316.3" height="1396.67"/>
-  <object id="179" name="Collider35" type="Collider" x="613.85" y="65645.7" width="948.3" height="1036.67"/>
-  <object id="180" name="Collider35" type="Collider" x="397.85" y="67429.7" width="10084.3" height="1204.67"/>
-  <object id="181" name="Collider35" type="Collider" x="141.85" y="68645.7" width="9060.3" height="724.67"/>
-  <object id="182" name="Collider35" type="Collider" x="-82.15" y="69445.7" width="8196.3" height="500.67"/>
-  <object id="183" name="Collider35" type="Collider" x="-146.15" y="69989.7" width="7044.3" height="788.67"/>
-  <object id="184" name="Collider35" type="Collider" x="-18.15" y="70789.7" width="5988.3" height="852.67"/>
-  <object id="185" name="Collider35" type="Collider" x="-146.15" y="71749.7" width="5220.3" height="1204.67"/>
-  <object id="186" name="Collider35" type="Collider" x="-146.15" y="72965.7" width="1796.3" height="8100.67"/>
-  <object id="187" name="Collider35" type="Collider" x="1597.85" y="72917.7" width="2836.3" height="1204.67"/>
-  <object id="188" name="Collider35" type="Collider" x="1501.85" y="74133.7" width="2020.3" height="1204.67"/>
-  <object id="189" name="Collider35" type="Collider" x="1357.85" y="75333.7" width="1620.3" height="1204.67"/>
-  <object id="190" name="Collider35" type="Collider" x="1389.85" y="76597.7" width="1012.3" height="1972.67"/>
-  <object id="215" name="Collider27" type="Collider" x="7723.87" y="92885.7" width="3496.26" height="2676.67"/>
-  <object id="216" name="Collider27" type="Collider" x="10155.9" y="93141.7" width="2280.26" height="1988.67"/>
-  <object id="217" name="Collider27" type="Collider" x="8539.87" y="92357.7" width="520.26" height="628.67"/>
-  <object id="220" name="Collider27" type="Collider" x="9355.87" y="90485.7" width="728.26" height="628.67"/>
-  <object id="221" name="Collider27" type="Collider" x="8091.87" y="84533.7" width="1800.26" height="1988.67"/>
-  <object id="222" name="Collider27" type="Collider" x="8043.87" y="83909.7" width="1528.26" height="628.67"/>
-  <object id="223" name="Collider27" type="Collider" x="7843.87" y="83397.7" width="824.26" height="628.67"/>
-  <object id="224" name="Collider27" type="Collider" x="8083.87" y="86469.7" width="1400.26" height="1028.67"/>
-  <object id="225" name="Collider27" type="Collider" x="12979.9" y="77493.7" width="1752.26" height="13828.7"/>
-  <object id="226" name="Collider27" type="Collider" x="12179.9" y="78229.7" width="1256.26" height="6948.67"/>
-  <object id="227" name="Collider27" type="Collider" x="11539.9" y="79621.7" width="744.26" height="4324.67"/>
-  <object id="228" name="Collider27" type="Collider" x="12035.9" y="87125.7" width="1528.26" height="3892.67"/>
-  <object id="229" name="Collider27" type="Collider" x="11123.9" y="87797.7" width="1528.26" height="2548.67"/>
-  <object id="230" name="Collider27" type="Collider" x="10835.9" y="88485.7" width="440.26" height="1380.67"/>
-  <object id="231" name="Collider35" type="Collider" x="13819.9" y="76783.7" width="1032.26" height="704.67"/>
- </objectgroup>
+ <objectgroup id="11" name="Collider"/>
 </map>
