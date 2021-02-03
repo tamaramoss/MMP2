@@ -28,7 +28,7 @@ void MainState::init()
 	// load tile map/level
 	{
 		const std::string& resourcePath = "../assets/";
-		const auto tilemap = NLLoadTmxMap(resourcePath + "game_test.tmx");
+		const auto tilemap = NLLoadTmxMap(resourcePath + "level_1.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
 		loadTileLayers(tilemap, resourcePath, mSpriteManager);
@@ -60,7 +60,7 @@ void MainState::init()
 	}
 
 	// Define layer order manually here. Could come from custom file settings.
-	mSpriteManager.setLayerOrder({"Floor", "Background", "BehindObjects" ,"GameObjects", "Top"});
+	mSpriteManager.setLayerOrder({"Floor", "Background", "BackgroundExtras", "BehindObjects", "Walls", "GameObjects", "Top"});
 }
 
 void MainState::update(const float deltaTime)

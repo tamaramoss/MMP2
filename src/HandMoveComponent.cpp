@@ -71,9 +71,9 @@ void HandMoveComponent::update(float deltaTime)
 		{
 			mCurLength -= deltaTime * mPullSpeed;
 			//mJoint->SetMaxLength(mCurLength);
-			auto direction = mBody->getPosition() - mGameObject.getPosition();
-			direction = -direction / MathUtil::length(direction);
-			mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(direction * mPullSpeed * 50.f), b2Vec2(0,0), true);
+			auto direction = mGameObject.getPosition() - mBody->getPosition();
+			direction = direction / MathUtil::length(direction);
+			mBody->get_component<RigidBodyComponent>()->getB2Body()->ApplyForce(PhysicsManager::s2b(direction * mPullSpeed * PhysicsManager::RATIO), b2Vec2(0,0), true);
 		}
 	}
 	else
@@ -132,7 +132,11 @@ void HandMoveComponent::release()
 	mIsGrabbing = false;
 	mGameObject.get_component<AnimationComponent>()->setAnimation("ToOpen" + std::to_string(mPlayerIndex));
 
+	
+
 	mGrabbedRock->get_component<IRockComponent>()->releaseRock();
+	mGrabbedRock = nullptr;
+	mGrabPosition = sf::Vector2f(-1000000,-1000000);
 
 	// launch player if pulling up
 	if (mIsPulling)
@@ -143,13 +147,13 @@ void HandMoveComponent::release()
 
 		// if player is lower than hands, pull up, otherwise don't do anything
 		auto direction = (handsMidPoint - mBody->getPosition()) / MathUtil::length(handsMidPoint - mBody->getPosition());
+		direction = sf::Vector2f(0, -1);
 
-		if (mBody->getPosition().y < handsMidPoint.y)
+		if (mBody->getPosition().y > handsMidPoint.y)
 		{
-			//body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 3000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
+			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 4000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
 			//hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 500.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
-		}
-		
+		}	
 	}
 }
 

@@ -285,8 +285,10 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	const auto h = (sprite.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
 	shape.SetAsBox(w * 0.7f, h * 0.7f, b2Vec2(w, h), 0);
 
+	float area = (2 * w * 0.7f) * (2 * h * 0.7f);
+
 	b2FixtureDef FixtureDef;
-	FixtureDef.density = 1.f;
+	FixtureDef.density = 5.f / area;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &shape;
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
@@ -419,27 +421,18 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 #pragma region Animation
 
 
-	auto defaultFace = std::make_shared<Animation>(path);
-	defaultFace->addFrame(textureRect);
-	defaultFace->addFrame(textureRect);
-	defaultFace->getSprite().setTextureRect(textureRect);
-
-
-	auto dead = std::make_shared<Animation>(path);
-	dead->addFrame(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
-	dead->addFrame(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
-	dead->getSprite().setTextureRect(sf::IntRect(textureRect.width, textureRect.width, textureRect.width, textureRect.height));
-
-	auto jump = std::make_shared<Animation>(path);
-	jump->addFrame(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
-	jump->addFrame(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
-	jump->getSprite().setTextureRect(sf::IntRect(0, textureRect.width, textureRect.width, textureRect.height));
+	auto defaultFace = MakeAnimation(0, 0, 768, path);
+	auto dead = MakeAnimation(0, 768 * 2, 768, path);
+	auto jump = MakeAnimation(0, 768, 768, path);
+	auto win = MakeAnimation(0, 768 * 3, 768, path);
 
 
 	auto animatedSprite = make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 	animatedSprite->registerAnimation("Default", defaultFace);
 	animatedSprite->registerAnimation("Dead", dead);
 	animatedSprite->registerAnimation("Jump", jump);
+	animatedSprite->registerAnimation("Win", win);
+
 
 	animatedSprite->setAnimation("Default");
 	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animatedSprite));
@@ -461,8 +454,10 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	const auto h = (sprite.getLocalBounds().height / 2.) * PhysicsManager::UNRATIO;
 	shape.SetAsBox(w* 0.5f, h * 0.7f, b2Vec2(w, h), 0);
 
+	float area = (2 * w * 0.5f) * (2 * h * 0.7f);
+
 	b2FixtureDef FixtureDef;
-	FixtureDef.density = 1.f;
+	FixtureDef.density = mass / area;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &shape;
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
@@ -490,8 +485,9 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 
 	if (hasArms)
 	{
-		auto arm1 = createHand(playerStruct.PlayerHandLeft, layer, *rigid_comp->getB2Body(), 0, speed, gameObject->getPosition(), 700.f, spriteManager);
-		auto arm2 = createHand(playerStruct.PlayerHandRight, layer, *rigid_comp->getB2Body(), 1, speed, gameObject->getPosition(), 700.f, spriteManager);
+		auto arm1 = createHand(playerStruct.PlayerHandLeft, layer, *rigid_comp->getB2Body(), 0, speed, gameObject->getPosition(), 500.f,  spriteManager);
+		auto arm2 = createHand(playerStruct.PlayerHandRight, layer, *rigid_comp->getB2Body(), 1, speed, gameObject->getPosition(), 500.f,  spriteManager);
+
 		// references to other hand
 		auto hmc = arm1->get_component<HandMoveComponent>();
 		hmc->setOtherHandReference(arm2->get_component<HandMoveComponent>());
@@ -731,8 +727,7 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 
 	makePhysics(gameObject, true);
 
-	gameObject->get_component<RigidBodyComponent>()->getB2Body()->SetLinearVelocity(b2Vec2(0, -100));
-
+	gameObject->get_component<RigidBodyComponent>()->getB2Body()->SetLinearVelocity(b2Vec2(0, -100 * PhysicsManager::RATIO));
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
 	gameObject->get_component<ColliderComponent>()->registerOnCollisionFunction(

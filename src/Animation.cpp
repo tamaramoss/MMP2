@@ -30,7 +30,7 @@ Animation::Animation(std::string textureFilePath) : mTextureFilePath(textureFile
 	{
 		err() << "Could not load texture from " << mTextureFilePath << std::endl;
 	}
-	image.createMaskFromColor(Color::Black);
+	//image.createMaskFromColor(Color::Black);
 	mTexture.loadFromImage(image);
 	mSprite.setTexture(mTexture);
 }

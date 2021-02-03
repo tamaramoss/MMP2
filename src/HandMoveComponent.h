@@ -40,11 +40,11 @@ private:
 	// gameplay params
 	GameObject* mGrabbedRock;
 	sf::Vector2f mGrabPosition;
-	float mMoveSpeed = 1200.f;
-	float mNormalLength = 50.f;
+	float mMoveSpeed = 1000.f;
+	float mNormalLength = 45.f;
 	float mPullLength = 20.f;
 	float mCurLength = 40.f;
-	float mPullSpeed = 16000.f;
+	float mPullSpeed = 23000.f;
 
 	bool mCanGrab = false;
 	bool mIsGrabbing = false;

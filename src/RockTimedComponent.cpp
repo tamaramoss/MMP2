@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "RockTimedComponent.h"
-
 #include "AnimationComponent.h"
 #include "GameObjectManager.h"
 #include "RigidBodyComponent.h"
@@ -18,11 +17,12 @@ bool RockTimedComponent::init()
 
 void RockTimedComponent::update(float fDeltaTime)
 {
-	if (mIsGrabbed)
+	if (mWasGrabbed)
 	{
 		if (!mGameObject.get_component<AnimationComponent>()->isPlaying())
 		{
 			mGameObject.get_component<AnimationComponent>()->setAnimation("Angry");
+			mGameObject.get_component<AnimationComponent>()->setFrameTime(0.1f);
 			mGameObject.get_component<AnimationComponent>()->setLooped(true);
 		}
 		
@@ -39,22 +39,29 @@ void RockTimedComponent::update(float fDeltaTime)
 
 void RockTimedComponent::grabRock()
 {
+	if (!mWasGrabbed)
+	{
+		mGameObject.get_component<AnimationComponent>()->setAnimation("Wake");
+		mGameObject.get_component<AnimationComponent>()->setLooped(false);
+	}
+	
 	mIsGrabbed = true;
-	mGameObject.get_component<AnimationComponent>()->setAnimation("Wake");
-	mGameObject.get_component<AnimationComponent>()->setLooped(false);
+	mWasGrabbed = true;
+	
 }
 
 void RockTimedComponent::releaseRock()
 {
-	//mIsGrabbed = false;
+	mIsGrabbed = false;
 }
 
 void RockTimedComponent::destroyRock()
 {
 	/*mGameObject.markForDelete();*/
-	mIsGrabbed = false;
 	mGameObject.get_component<RigidBodyComponent>()->getB2Body()->SetTransform(b2Vec2(-10000000, -10000000), 0);
-	mHandReference->release();
+
+	if(mIsGrabbed)
+		mHandReference->release();
 
 }
 

@@ -21,7 +21,7 @@ bool SpriteRenderComponent::init()
 		err() << "Could not load texture from " << mTextureFilePath << std::endl;
 		return false;
 	}
-	image.createMaskFromColor(Color::Black);
+	//image.createMaskFromColor(Color::Black);
 	mTexture.loadFromImage(image);
 	mSprite.setTexture(mTexture);
 
