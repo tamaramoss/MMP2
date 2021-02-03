@@ -148,7 +148,7 @@ void Game::update()
 
 	mGameStateManager.update(fDeltaTimeSeconds);
 
-	mDebugDraw->update(fDeltaTimeSeconds);
+	//mDebugDraw->update(fDeltaTimeSeconds);
 }
 
 void Game::draw()

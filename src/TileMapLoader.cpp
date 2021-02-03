@@ -506,8 +506,8 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 
 	if (hasArms)
 	{
-		auto arm1 = createHand(playerStruct.PlayerHandLeft, layer, *rigid_comp->getB2Body(), 0, speed, gameObject->getPosition(), 1900.f,  spriteManager);
-		auto arm2 = createHand(playerStruct.PlayerHandRight, layer, *rigid_comp->getB2Body(), 1, speed, gameObject->getPosition(), 1900.f,  spriteManager);
+		auto arm1 = createHand(playerStruct.PlayerHandLeft, layer, *rigid_comp->getB2Body(), 0, speed, gameObject->getPosition(), 500.f,  spriteManager);
+		auto arm2 = createHand(playerStruct.PlayerHandRight, layer, *rigid_comp->getB2Body(), 1, speed, gameObject->getPosition(), 500.f,  spriteManager);
 		// references to other hand
 		auto hmc = arm1->get_component<HandMoveComponent>();
 		hmc->setOtherHandReference(arm2->get_component<HandMoveComponent>());
@@ -735,7 +735,7 @@ static GameObject::ptr loadLava (NLTmxMapObject* object, const std::string& laye
 
 	auto spriteComponent = makeRenderComponent(object, gameObject, layer, spriteManager);
 
-	makePhysics(gameObject, true, b2Vec2(0, -100.f));
+	makePhysics(gameObject, true, b2Vec2(0, -5.f * 192.f * PhysicsManager::RATIO));
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
 	gameObject->get_component<ColliderComponent>()->registerOnCollisionFunction(

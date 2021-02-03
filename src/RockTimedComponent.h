@@ -14,6 +14,7 @@ public:
 	virtual void setHand(std::shared_ptr<HandMoveComponent> hand) override;
 
 private:
+	bool mWasGrabbed = false;
 	float mTimer = 0;
 	float mTimeUntilDestroyed = 5;
 
