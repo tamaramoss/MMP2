@@ -564,7 +564,6 @@ static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& l
 	gameObject->add_component(colliderComp);
 
 
-
 	gameObject->init();
 
 	return gameObject;

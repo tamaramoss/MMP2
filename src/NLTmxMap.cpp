@@ -181,6 +181,12 @@ NLTmxMap* NLLoadTmxMap(char* xml)
 				object->height = atoi(height_attribute->value());
 			}
 
+			const auto rotation_attribute = objectnode->first_attribute("rotation");
+			if (rotation_attribute)
+			{
+				object->rotation = atof(rotation_attribute->value());
+			}
+
 			const auto properties_node = objectnode->first_node("properties");
 
 			if (properties_node)
