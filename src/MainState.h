@@ -20,6 +20,9 @@ private:
 	SpriteManager mSpriteManager;
 	GameObjectManager mGameObjectManager;
 	PhysicsManager mPhysicsManager;
-	float mNextStateTimer = 8.0f;
+	
+	float mNextStateTimer = 5.0f;
 	float mTimer = 0.0f;
+
+	bool mIsInit = false;
 };

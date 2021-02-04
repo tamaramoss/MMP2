@@ -10,7 +10,6 @@
 #include "MainState.h"
 #include "FinalScreen.h"
 #include "DebugDraw.h"
-#include "TestState.h"
 
 using namespace std;
 
@@ -61,8 +60,6 @@ void Game::run()
 			else
 				mInputManager->process(event);
 
-			if (event.type == sf::Event::JoystickMoved || event.type == sf::Event::JoystickButtonPressed)
-				mTGuiWrapper->process(event);
 
 		}
 
@@ -88,38 +85,23 @@ bool Game::init()
 
 	mInputManager = &InputManager::getInstance();
 
-	//mInputManager->bindKey("Exit", Keyboard::Escape);
-	//mInputManager->bindKey("Select", Keyboard::Space);
-
-	//// May move to view later on
-	//mInputManager->bindKey("up", Keyboard::W, 1);
-	//mInputManager->bindKey("left", Keyboard::A, 1);
-	//mInputManager->bindKey("down", Keyboard::S, 1);
-	//mInputManager->bindKey("right", Keyboard::D, 1);
-
-	//mInputManager->bindKey("up", Keyboard::Up, 0);
-	//mInputManager->bindKey("left", Keyboard::Left, 0);
-	//mInputManager->bindKey("down", Keyboard::Down, 0);
-	//mInputManager->bindKey("right", Keyboard::Right, 0);
-
-	//mInputManager->bindKey("debug draw", Keyboard::F1, 0);
-
 	controllerSetup();
 
 	mDebugDraw = &DebugDraw::getInstance();
 
-	mTGuiWrapper = &TGuiWrapper::getInstance();
-	mTGuiWrapper->setGame(this);
+
+	mInputManager->set_renderWindow(&mWindow);
 
 	
 	//
 	mGameStateManager.registerState("MenuState", make_shared<MenuState>(&mGameStateManager, this));
-	mGameStateManager.registerState("MainState", make_shared<MainState>(&mGameStateManager, this));
-	mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
-	mGameStateManager.registerState("TestState", make_shared<TestState>(&mGameStateManager, this));
+	auto m = make_shared<MainState>(&mGameStateManager, this);
+	//m->init();
+	mGameStateManager.registerState("MainState", m);
+	
+	//mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
 
 
-	mInputManager->set_renderWindow(&mWindow);
 
 	mGameStateManager.setState("MenuState");
 
@@ -139,7 +121,6 @@ void Game::update()
 	// must be first call
 	mInputManager->update();
 
-
 	mGameStateManager.update(fDeltaTimeSeconds);
 
 	//mDebugDraw->update(fDeltaTimeSeconds);
@@ -149,8 +130,7 @@ void Game::draw()
 {
 	mWindow.clear();
 
-	mTGuiWrapper->getGui().draw();
-
+	//mTGuiWrapper->getGui().draw();
 
 	mGameStateManager.draw();
 
@@ -187,6 +167,8 @@ void Game::controllerSetup()
 		if (Joystick::getIdentification(0).vendorId == 1356)
 		{
 			mInputManager->bindButton("Select", 1, 0);
+			mInputManager->bindJoystick("DPad", Joystick::Axis::PovY, 0);
+
 
 			mInputManager->bindButton("Grab", 4, 0);
 			mInputManager->bindButton("Grab", 5, 1);
@@ -216,6 +198,7 @@ void Game::controllerSetup()
 			//mInputManager->bindJoystick("RightJoystick", std::vector<Joystick::Axis> { Joystick::Axis::Z, Joystick::Axis::R }, controllerCount);
 
 			mInputManager->bindJoystick("JoystickX", Joystick::Axis::X, 0);
+			mInputManager->bindJoystick("DPad", Joystick::Axis::PovY, 0);
 			mInputManager->bindJoystick("JoystickY",  Joystick::Axis::Y , 0);
 			mInputManager->bindJoystick("JoystickX", Joystick::Axis::U, 1);
 			mInputManager->bindJoystick("JoystickY", Joystick::Axis::V, 1);
@@ -247,6 +230,8 @@ void Game::controllerSetup()
 				mInputManager->bindButton("Grab", 4, controllerCount);
 				mInputManager->bindButton("Pull", 10, controllerCount);
 				mInputManager->bindButton("Select", 1, controllerCount);
+				mInputManager->bindJoystick("DPad", Joystick::Axis::PovY, controllerCount);
+
 			}
 
 			//mInputManager->bindJoystick("LeftJoystick", std::vector<Joystick::Axis> { Joystick::Axis::X, Joystick::Axis::Y }, controllerCount);
@@ -271,6 +256,8 @@ void Game::controllerSetup()
 				mInputManager->bindButton("Pull", 8, controllerCount);
 
 				mInputManager->bindButton("Select", 0, controllerCount);
+				mInputManager->bindJoystick("DPad", Joystick::Axis::PovY, controllerCount);
+
 			}
 
 			//mInputManager->bindJoystick("LeftJoystick", std::vector<Joystick::Axis> { Joystick::Axis::X, Joystick::Axis::Y }, controllerCount);

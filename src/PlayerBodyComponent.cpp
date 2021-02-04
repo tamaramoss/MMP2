@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "GameObject.h"
-#include "PlayerMoveComponent.h"
 #include "PhysicsManager.h"
 #include <iostream>
 #include "PlayerBodyComponent.h"
@@ -30,8 +29,6 @@ void PlayerBodyComponent::onCollision(ColliderComponent& other)
 {
 	if (other.getGameObject().getTag() == "Slime")
 	{
-		std::cout << "AAA" << std::endl;
-
 		for (auto h : mHands)
 		{
 			h->setReleaseFlag(true);
@@ -41,7 +38,6 @@ void PlayerBodyComponent::onCollision(ColliderComponent& other)
 		other.getGameObject().setScale(0,0);
 		other.getBody().getB2Body()->SetLinearVelocity(-other.getBody().getB2Body()->GetLinearVelocity());
 	}
-
 }
 
 void PlayerBodyComponent::addHand(std::shared_ptr<HandMoveComponent> hand)

@@ -20,6 +20,8 @@ public:
 
 	Config& getConfig() { return mConfig; }
 	RenderWindow& getWindow() { return mWindow; }
+
+	GameStateManager& getGameStateManager() { return mGameStateManager; }
 	
 	void run();
 private:

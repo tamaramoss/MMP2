@@ -84,9 +84,6 @@
     <ClInclude Include="..\src\CameraRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\PlayerMoveComponent.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="../src/TileLayerRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
@@ -177,9 +174,6 @@
     <ClInclude Include="..\src\SpitterTriggerComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TestState.h">
-      <Filter>Header Files\GameState</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\HandMoveComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
@@ -225,9 +219,6 @@
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\src\CameraRenderComponent.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PlayerMoveComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="../src/TileLayerRenderComponent.cpp">
@@ -281,9 +272,6 @@
     <ClCompile Include="..\src\HandMoveComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PlayerBodyComponent.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RockNormalComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
@@ -305,14 +293,14 @@
     <ClCompile Include="..\src\FinalScreen.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TestState.cpp">
-      <Filter>Source Files\GameState</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\TGuiWrapper.cpp">
       <Filter>Source Files\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\TileMapLoader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PlayerBodyComponent.cpp">
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

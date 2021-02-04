@@ -4,6 +4,7 @@
 #include <utility>
 #include "GameState.h"
 #include "Debug.h"
+#include "MainState.h"
 
 void GameStateManager::registerState(const std::string& name, GameState::ptr state)
 {

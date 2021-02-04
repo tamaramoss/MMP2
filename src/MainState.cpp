@@ -24,6 +24,9 @@ MainState::MainState(GameStateManager* gameStateManager, Game* game)
 
 void MainState::init()
 {
+	if (mIsInit)
+		return;
+	
 	mGameObjectManager.init();
 	mSpriteManager.init();
 	mPhysicsManager.init();
@@ -62,17 +65,12 @@ void MainState::init()
 
 	// Define layer order manually here. Could come from custom file settings.
 	mSpriteManager.setLayerOrder({"Floor", "Background", "BackgroundExtras", "BehindObjects", "Walls", "GameObjects", "Top"});
+
+	mIsInit = true;
 }
 
 void MainState::update(const float deltaTime)
 {
-	
-	if (InputManager::getInstance().isKeyPressed("Exit"))
-	{
-		mGameStateManager->setState("MenuState");
-		return;
-	}
-
 	mPhysicsManager.update(deltaTime);
 	EventBus::getInstance().processEvents(deltaTime);
 
@@ -83,7 +81,6 @@ void MainState::update(const float deltaTime)
 			mGameObjectManager.removeGameObject(go_pair.first);
 		else
 			go_pair.second->update(deltaTime);
-
 	}
 
 	// set camera to player + hands + tiny offset
@@ -130,8 +127,6 @@ void MainState::update(const float deltaTime)
 void MainState::draw()
 {
 	mSpriteManager.draw();
-
-
 }
 
 void MainState::exit()
@@ -139,4 +134,6 @@ void MainState::exit()
 	mPhysicsManager.shutdown();
 	mSpriteManager.shutdown();
 	mGameObjectManager.shutdown();
+
+	mIsInit = false;
 }

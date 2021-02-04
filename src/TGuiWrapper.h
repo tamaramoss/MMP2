@@ -1,31 +1,30 @@
 #pragma once
 #include <TGUI/TGUI.hpp>
 #include "Game.h"
+#include "GameObject.h"
 
 class Game;
 
 class TGuiWrapper
 {
 public:
-	static TGuiWrapper& getInstance();
+	TGuiWrapper(Game* game);
+	
 	void setGame(Game* game);
 
+	void process();
 
-	void process(sf::Event event);
+	void draw();
+	
 	void exit();
 
-	
-	tgui::Gui& getGui() { return mGui; }
-
-	void addButton(tgui::Button::Ptr button, bool focused = false);
+	void addButton(GameObject::ptr button, bool focused = false);
 
 private:
+
 	void updateFocusedButtonIndex(int step);
-
-	tgui::Gui mGui;
-	Game* mGame = nullptr;
-
-	std::vector<tgui::Button::Ptr> mButtons;
+	Game* mGame;
+	std::vector<GameObject::ptr> mButtons;
 	int mFocusedButtonIndex = -1;
 };
 

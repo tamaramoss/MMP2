@@ -2,76 +2,69 @@
 
 #include "TGuiWrapper.h"
 
-#include <iostream>
-#include <utility>
 
-TGuiWrapper& TGuiWrapper::getInstance()
+#include "AnimationComponent.h"
+#include "ColliderComponent.h"
+#include "InputManager.h"
+
+
+TGuiWrapper::TGuiWrapper(Game* game) : mGame(game)
 {
-	static TGuiWrapper instance;
-	return instance;
+	
 }
 
-void TGuiWrapper::process(sf::Event event)
+void TGuiWrapper::process()
 {
 	if (mButtons.size() == 0)
 		return;
 
-	if (event.type == sf::Event::JoystickButtonPressed && (sf::Joystick::isButtonPressed(0, 1) || sf::Joystick::isButtonPressed(0, 0)) && mFocusedButtonIndex != -1)
+	if (InputManager::getInstance().isButtonPressed("Selected") && mFocusedButtonIndex != -1)
 	{
-		mButtons[mFocusedButtonIndex]->onPress.emit(mButtons[mFocusedButtonIndex].get(), mButtons[mFocusedButtonIndex]->getText());
+		if (mButtons[mFocusedButtonIndex]->getId() == "StartButton")
+		{
+			mGame->getGameStateManager().setState("MainState");
+		}
 	}
 
-	if (event.type == sf::Event::JoystickMoved)
+	float position = InputManager::getInstance().getAxisPosition("DPad", 0);
+
+ 	if (position != 0)
 	{
-		auto axis = event.joystickMove.axis;
-
-		if (!(axis == sf::Joystick::PovY)) return;
-
-		float position = event.joystickMove.position;
-
-		if (position < 15.f && position > -15.f) position = 0.0f;
-
-		if (position < 0.f && mGui.focusNextWidget())
+		if (position < 0.f)
 		{
 			updateFocusedButtonIndex(1);
-			//std::cout << mFocusedButtonIndex << std::endl;
 		}
-		if (position > 0.f && mGui.focusPreviousWidget())
+		if (position > 0.f)
 		{
 			updateFocusedButtonIndex(-1);
-			//std::cout << mFocusedButtonIndex << std::endl;
 		}
 	}
 }
 
-void TGuiWrapper::exit()
-{
-	mButtons.clear();
-	mGui.removeAllWidgets();
-	mFocusedButtonIndex = -1;
-}
 
-void TGuiWrapper::setGame(Game* game)
-{
-	mGame = game;
-
-	mGui.setTarget(mGame->getWindow());
-}
-
-void TGuiWrapper::addButton(tgui::Button::Ptr button, bool focused)
+void TGuiWrapper::addButton(GameObject::ptr button, bool focused)
 {
 	if (focused)
 		mFocusedButtonIndex = mButtons.size();
 
 	mButtons.push_back(button);
-
-	mGui.add(button);
 }
 
 void TGuiWrapper::updateFocusedButtonIndex(int step)
 {
+	mButtons[mFocusedButtonIndex]->get_component<AnimationComponent>()->setAnimation("Default");
+	
 	mFocusedButtonIndex += step;
 
 	if (mFocusedButtonIndex < 0) mFocusedButtonIndex = mButtons.size() - 1;
 	if (mFocusedButtonIndex >= mButtons.size()) mFocusedButtonIndex = 0;
+
+	mButtons[mFocusedButtonIndex]->get_component<AnimationComponent>()->setAnimation("Focused");
+
+}
+
+void TGuiWrapper::exit()
+{
+	mButtons.clear();
+	mFocusedButtonIndex = -1;
 }
