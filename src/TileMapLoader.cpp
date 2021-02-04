@@ -25,7 +25,7 @@
 #include "SpitterComponent.h"
 #include "SpitterTriggerComponent.h"
 #include "ConstantVelocityComponent.h"
-#include "SlimeBallComponent.h"
+//#include "SlimeBallComponent.h"
 
 
 struct Player
@@ -509,24 +509,29 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 		colliderComp->registerOnCollisionFunction(
 			[body_comp](ColliderComponent& collider1, ColliderComponent& collider2)
 		{
-			body_comp->onCollisionEnter(collider2);
+			body_comp->onCollision(collider2);
 		});
+
+		if (hasArms)
+		{
+			auto arm1 = createHand(playerStruct.PlayerHandLeft, layer, gameObject, 0, speed, gameObject->getPosition(), 500.f, spriteManager);
+			auto arm2 = createHand(playerStruct.PlayerHandRight, layer, gameObject, 1, speed, gameObject->getPosition(), 500.f, spriteManager);
+
+			// references to other hand
+			auto hmc = arm1->get_component<HandMoveComponent>();
+			hmc->setOtherHandReference(arm2->get_component<HandMoveComponent>());
+			//hmc->setBodyReference(gameObject);
+			body_comp->addHand(hmc);
+
+			hmc = arm2->get_component<HandMoveComponent>();
+			hmc->setOtherHandReference(arm1->get_component<HandMoveComponent>());
+			//hmc->setBodyReference(gameObject);
+			body_comp->addHand(hmc);
+
+		}
 	}
 
-	if (hasArms)
-	{
-		auto arm1 = createHand(playerStruct.PlayerHandLeft, layer, gameObject, 0, speed, gameObject->getPosition(), 500.f,  spriteManager);
-		auto arm2 = createHand(playerStruct.PlayerHandRight, layer, gameObject, 1, speed, gameObject->getPosition(), 500.f,  spriteManager);
-
-		// references to other hand
-		auto hmc = arm1->get_component<HandMoveComponent>();
-		hmc->setOtherHandReference(arm2->get_component<HandMoveComponent>());
-		//hmc->setBodyReference(gameObject);
-
-		hmc = arm2->get_component<HandMoveComponent>();
-		hmc->setOtherHandReference(arm1->get_component<HandMoveComponent>());
-		//hmc->setBodyReference(gameObject);
-	}
+	
 
 	gameObject->init();
 	return gameObject;
@@ -894,7 +899,7 @@ static void loadSpitter(/*Spitter spitter,*/ const std::string& layer, const std
 
 		for (int i = 0; i < 10; i++)
 		{
-			auto slime = make_shared<GameObject>("Slime" + to_string(i), "Slime");
+			auto slime = make_shared<GameObject>("Slime" + gameObject->getId() + to_string(i), "Slime");
 			EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(slime));
 
 			//slime->move(static_cast<float>(spitter.SpitterBody->x + 900.f), static_cast<float>(spitter.SpitterBody->y));
@@ -910,18 +915,18 @@ static void loadSpitter(/*Spitter spitter,*/ const std::string& layer, const std
 
 			slime->add_component(renderComponent);
 
-			auto slimeComponent = make_shared<SlimeBallComponent>(*gameObject);
+			//auto slimeComponent = make_shared<SlimeBallComponent>(*gameObject);
 
 			makePhysics(slime, isKinematic);
 
 			// collision
-			slime->get_component<ColliderComponent>()->registerOnCollisionFunction(
+			/*slime->get_component<ColliderComponent>()->registerOnCollisionFunction(
 				[slimeComponent](ColliderComponent& collider1, ColliderComponent& collider2)
 			{
 				slimeComponent->onCollision(collider2);
 			});
 			
-			slime->add_component(slimeComponent);
+			slime->add_component(slimeComponent);*/
 			slime->init();
 
 			spitterComp->addSlime(slime);
