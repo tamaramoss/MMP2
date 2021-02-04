@@ -16,7 +16,7 @@ void TGuiWrapper::process(sf::Event event)
 	if (mButtons.size() == 0)
 		return;
 
-	if (event.type == sf::Event::JoystickButtonPressed && sf::Joystick::isButtonPressed(0, 1) && mFocusedButtonIndex != -1)
+	if (event.type == sf::Event::JoystickButtonPressed && (sf::Joystick::isButtonPressed(0, 1) || sf::Joystick::isButtonPressed(0, 0)) && mFocusedButtonIndex != -1)
 	{
 		mButtons[mFocusedButtonIndex]->onPress.emit(mButtons[mFocusedButtonIndex].get(), mButtons[mFocusedButtonIndex]->getText());
 	}
@@ -25,7 +25,7 @@ void TGuiWrapper::process(sf::Event event)
 	{
 		auto axis = event.joystickMove.axis;
 
-		if (!(axis == sf::Joystick::PovY) && !(axis == sf::Joystick::Y)) return;
+		if (!(axis == sf::Joystick::PovY)) return;
 
 		float position = event.joystickMove.position;
 

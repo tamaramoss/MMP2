@@ -35,8 +35,8 @@ PlayerMoveComponent::update(const float deltaTime)
 	if (InputManager::getInstance().isKeyDown("down", m_playerIndex))
 		translation.y += speed * deltaTime;*/
 
-	sf::Vector2f input = InputManager::getInstance().getAxisPosition(m_playerIndex == 0 ? false : true, 0);
-	translation = input;
+	//sf::Vector2f input = InputManager::getInstance().getAxisPosition("Joystick", m_playerIndex);
+	//translation = input;
 	if (m_playerIndex == 1)
 		std::cout << translation.x << " " << translation.y << std::endl;
 

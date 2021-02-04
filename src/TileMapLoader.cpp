@@ -791,7 +791,7 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 
 		});
 
-	auto constantVelocity = std::make_shared<ConstantVelocityComponent>(*gameObject, sf::Vector2f(0, -100));
+	auto constantVelocity = std::make_shared<ConstantVelocityComponent>(*gameObject, sf::Vector2f(0, -50));
 	gameObject->add_component(constantVelocity);
 
 	gameObject->init();

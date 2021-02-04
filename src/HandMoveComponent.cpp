@@ -33,7 +33,9 @@ bool HandMoveComponent::init()
 
 void HandMoveComponent::update(float deltaTime)
 {
-	sf::Vector2f translation = InputManager::getInstance().getAxisPosition(mUseRightStick, mPlayerIndex);
+	sf::Vector2f translation;
+	translation.x = InputManager::getInstance().getAxisPosition("JoystickX", mPlayerIndex);
+	translation.y = InputManager::getInstance().getAxisPosition("JoystickY", mPlayerIndex);
 
 	if ((translation.x == 0 && translation.y == 0))
 	{
@@ -45,22 +47,22 @@ void HandMoveComponent::update(float deltaTime)
 	}
 
 	// grabbing
-	if (InputManager::getInstance().isButtonPressed(mUseRightStick ? "GrabRight" : "GrabLeft") && mCanGrab && !mIsGrabbing)
+	if (InputManager::getInstance().isButtonPressed("Grab", mPlayerIndex) && mCanGrab && !mIsGrabbing)
 	{
 		grab();
 	}
 
-	if (InputManager::getInstance().isButtonReleased(mUseRightStick ? "GrabRight" : "GrabLeft") && mIsGrabbing)
+	if (InputManager::getInstance().isButtonReleased("Grab", mPlayerIndex) && mIsGrabbing)
 	{
 		release();
 	}
 
-	if (InputManager::getInstance().isButtonPressed(mUseRightStick ? "PullRight" : "PullLeft") && mIsGrabbing)
+	if (InputManager::getInstance().isButtonPressed("Pull", mPlayerIndex) && mIsGrabbing)
 	{
 		pullUp();
 	}
 
-	if (InputManager::getInstance().isButtonReleased(mUseRightStick ? "PullRight" : "PullLeft"))
+	if (InputManager::getInstance().isButtonReleased("Pull", mPlayerIndex))
 	{
 		extend();
 	}

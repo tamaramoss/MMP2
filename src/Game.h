@@ -29,6 +29,8 @@ private:
 	void draw();
 	static void shutdown();
 
+	void controllerSetup();
+
 	Config mConfig;
 
 	RenderWindow mWindow;

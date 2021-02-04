@@ -20,10 +20,10 @@ InputManager::process(const Event& event)
 		mEventKeyboardFrame.mKeys[event.key.code] = false;
 		break;
 	case Event::JoystickButtonPressed:
-		mEventJoystickFrame.mButtons[event.joystickButton.button] = true;
+		mEventButtonFrame.mButtons[event.joystickButton.button] = true;
 		break;
 	case Event::JoystickButtonReleased:
-		mEventJoystickFrame.mButtons[event.joystickButton.button] = false;
+		mEventButtonFrame.mButtons[event.joystickButton.button] = false;
 		break;
 	default: 
 		break;
@@ -36,8 +36,8 @@ InputManager::update()
 	mLastKeyboardFrame = mCurrentKeyboardFrame;
 	mCurrentKeyboardFrame = mEventKeyboardFrame;
 
-	mLastJoystickFrame = mCurrentJoystickFrame;
-	mCurrentJoystickFrame = mEventJoystickFrame;
+	mLastButtonFrame = mCurrentButtonFrame;
+	mCurrentButtonFrame = mEventButtonFrame;
 }
 
 void
@@ -66,6 +66,18 @@ void InputManager::unbindButton(const std::string& action, int playerIdx)
 	mActionBinding[playerIdx].erase(action);
 }
 
+void InputManager::bindJoystick(const std::string& action, Joystick::Axis axis, int playerIdx)
+{
+	FF_ASSERT_MSG(playerIdx < mPlayerCount, "player out of bounds");
+	mJoystickBinding[playerIdx][action] = axis;
+}
+
+void InputManager::unbindJoystick(const std::string& action, int playerIdx)
+{
+	FF_ASSERT_MSG(playerIdx < mPlayerCount, "player out of bounds");
+	mJoystickBinding[playerIdx].erase(action);
+}
+
 int
 InputManager::getKeyForAction(const std::string& action, const int playerIdx)
 {
@@ -89,6 +101,18 @@ int InputManager::getButtonForAction(const std::string& action, int playerIdx)
 		return it->second;
 	}
 	return 0;
+}
+
+int InputManager::getAxisforAction(const std::string& action, int playerIdx)
+{
+	FF_ASSERT_MSG(playerIdx < mPlayerCount, "player out of bounds");
+
+	const auto it = mJoystickBinding[playerIdx].find(action);
+	if (it != mJoystickBinding[playerIdx].end())
+	{
+		return it->second;
+	}
+	return -1;
 }
 
 bool
@@ -129,39 +153,25 @@ bool InputManager::isButtonUp(const std::string& action, int playerIdx)
 
 bool InputManager::isButtonPressed(const std::string& action, int playerIdx)
 {
-	return isButtonPressed(getKeyForAction(action, playerIdx));
+	return isButtonPressed(getButtonForAction(action, playerIdx));
 }
 
 bool InputManager::isButtonReleased(const std::string& action, int playerIdx)
 {
-	return isButtonReleased(getKeyForAction(action, playerIdx));
+	return isButtonReleased(getButtonForAction(action, playerIdx));
 }
 
-sf::Vector2f InputManager::getAxisPosition(bool rightJoystick, int playerIdx)
+float InputManager::getAxisPosition(const std::string& action, int playerIdx)
 {
+	auto axis = getAxisforAction(action, playerIdx);
+	
 	float deadZone = 15.0f;
 	
-	float xAxis, yAxis;
-	if (rightJoystick)
-	{
-		xAxis = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Z);
-		yAxis = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::R);
-	}
-	else
-	{
-		xAxis = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X);
-		yAxis = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y);
-	}
+	float position = sf::Joystick::getAxisPosition(mTotalConnectedController > 1 ? playerIdx : 0, mIntToAxis[axis]);
 
-	if (xAxis < deadZone && xAxis > -deadZone) xAxis = 0.0f;
-	if (yAxis < deadZone && yAxis > -deadZone) yAxis = 0.0f;
-
-	const sf::Vector2<float> joystickPosition{ xAxis, yAxis };
-
-	float length = MathUtil::length(joystickPosition);
-
+	if (position < deadZone && position > -deadZone) position = 0.0f;
 	
-	return length == 0.0f ? joystickPosition : joystickPosition / length;
+	return position != 0.f ? position / 100.f : position;
 }
 
 sf::Vector2f InputManager::getLeftJoystickPosition(int playerIdx)

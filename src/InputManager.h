@@ -72,6 +72,9 @@ public:
 	/// Returns true if the button for the given Action has been released.
 	bool isKeyReleased(const std::string& action, int player_idx = 0);
 
+	void setTotalConnectedController(int count) { mTotalConnectedController = count; }
+	int getTotalConnectedController() { return mTotalConnectedController; }
+
 #pragma endregion auch ok
 
 #pragma region Controller
@@ -84,32 +87,37 @@ public:
 	/// Unbinds an action.
 	void unbindButton(const std::string& action, int playerIdx = 0);
 
+	void bindJoystick(const std::string& action, Joystick::Axis axis, int playerIdx = 0);
+
+	/// Unbinds an action.
+	void unbindJoystick(const std::string& action, int playerIdx = 0);
+
 	/// Returns true if the key button is currently down.
 	bool isButtonDown(const int buttonCode)
 	{
 		FF_ASSERT_MSG(buttonCode >= 0 && buttonCode < sf::Joystick::ButtonCount, "KeyCode out of bounds");
-		return mCurrentJoystickFrame.mButtons[buttonCode];
+		return mCurrentButtonFrame.mButtons[buttonCode];
 	}
 
 	/// Returns true if the key button is currently up.
 	bool isButtonUp(const int buttonCode)
 	{
 		FF_ASSERT_MSG(buttonCode >= 0 && buttonCode < sf::Joystick::ButtonCount, "KeyCode out of bounds");
-		return !mCurrentJoystickFrame.mButtons[buttonCode];
+		return !mCurrentButtonFrame.mButtons[buttonCode];
 	}
 
 	/// Returns true if the key button has been pressed.
 	bool isButtonPressed(const int buttonCode)
 	{
 		FF_ASSERT_MSG(buttonCode >= 0 && buttonCode < sf::Joystick::ButtonCount, "KeyCode out of bounds");
-		return mCurrentJoystickFrame.mButtons[buttonCode] && !mLastJoystickFrame.mButtons[buttonCode];
+		return mCurrentButtonFrame.mButtons[buttonCode] && !mLastButtonFrame.mButtons[buttonCode];
 	}
 
 	/// Returns true if the key button has been released.
 	bool isButtonReleased(const int buttonCode)
 	{
 		FF_ASSERT_MSG(buttonCode >= 0 && buttonCode < sf::Joystick::ButtonCount, "KeyCode out of bounds");
-		return !mCurrentJoystickFrame.mButtons[buttonCode] && mLastJoystickFrame.mButtons[buttonCode];
+		return !mCurrentButtonFrame.mButtons[buttonCode] && mLastButtonFrame.mButtons[buttonCode];
 	}
 
 	/// Returns true if the button for the given Action is currently down.
@@ -126,7 +134,8 @@ public:
 
 	// Returns position of right or left joystick
 	// \param rightJoystick if true -> right joystick , false -> left joystick
-	sf::Vector2f getAxisPosition(bool rightJoystick, int playerIdx);
+	float getAxisPosition(const std::string& action, int playerIdx);
+
 
 	sf::Vector2f getLeftJoystickPosition(int playerIdx);
 	
@@ -153,13 +162,15 @@ private:
 
 	int getKeyForAction(const std::string& action, int playerIdx);
 	int getButtonForAction(const std::string& action, int playerIdx);
+	int getAxisforAction(const std::string& action, int playerIdx);
 
+	
 	struct KeyboardFrameData
 	{
 		bool mKeys[Keyboard::KeyCount];
 	};
 
-	struct JoystickFrameData
+	struct ButtonFrameData
 	{
 		bool mButtons[Joystick::ButtonCount];
 	};
@@ -168,13 +179,29 @@ private:
 	KeyboardFrameData mCurrentKeyboardFrame{};
 	KeyboardFrameData mEventKeyboardFrame{};
 
-	JoystickFrameData mLastJoystickFrame{};
-	JoystickFrameData mCurrentJoystickFrame{};
-	JoystickFrameData mEventJoystickFrame{};
+	ButtonFrameData mLastButtonFrame{};
+	ButtonFrameData mCurrentButtonFrame{};
+	ButtonFrameData mEventButtonFrame{};
 
 	RenderWindow* mRenderWindow;
 
 	/// maximum allowed players. Can be increased if needed.
-	static const int mPlayerCount = 4;
+	static const int mPlayerCount = 2;
 	std::unordered_map<std::string, int> mActionBinding[mPlayerCount];
+	std::unordered_map<std::string, int> mJoystickBinding[mPlayerCount];
+
+	std::map<int, sf::Joystick::Axis> mIntToAxis =
+	{
+		{0, sf::Joystick::Axis::X},
+		{1, sf::Joystick::Axis::Y},
+		{2, sf::Joystick::Axis::Z},
+		{3, sf::Joystick::Axis::R},
+		{4, sf::Joystick::Axis::U},
+		{5, sf::Joystick::Axis::V},
+		{6, sf::Joystick::Axis::PovX},
+		{7, sf::Joystick::Axis::PovY},
+		//{8, sf::Joystick::Axis::X}
+	};
+
+	int mTotalConnectedController = 0;
 };
