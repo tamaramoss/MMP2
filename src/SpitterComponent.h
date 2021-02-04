@@ -15,16 +15,23 @@ public:
 	void addSlime(GameObject::ptr slime);
 	void setTimeInterval(float sec);
 
-	void SpitSlime();
+	void spitSlime();
 	
+	void setMirrored(bool mirrored);
+	void setSlimeKinematic(bool kinematic);
+	void setSpitterIndex(int index);
+	int getSpitterIndex();
+
+
 private:
+	int mSpitterIndex = 0;
 	std::vector<GameObject::ptr> mSlimes;
 	int mCurrentIndex = 0;
 	int mTotalSlimes = 0;
 	float mTimeInterval = 2.f;
 	float mTimer = 2.f; // starts at 2 so the spitter immediately spits when hitting the trigger
 	bool mSpittingAtm = false;
-
-	bool mSlimeIsNonKinematic;
+	bool mIsMirrored = false;
+	bool mSlimeIsKinematic = false;
 };
 
