@@ -29,6 +29,7 @@ public:
 
 	// access
 	float getMaxLength() { return mNormalLength; }
+	void setReleaseFlag(bool flag);
 
 private:
 	// references
@@ -50,6 +51,7 @@ private:
 	bool mCanGrab = false;
 	bool mIsGrabbing = false;
 	bool mIsPulling = false;
+	bool mReleaseFlag = false;
 
 	// control params
 	int mPlayerIndex = 0;

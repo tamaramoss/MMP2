@@ -22,7 +22,7 @@ void SpitterComponent::update(float fDeltaTime)
 	mTimer += fDeltaTime;
 	if (mTimer >= mTimeInterval)
 	{
-		SpitSlime();
+		spitSlime();
 		mTimer = 0;
 	}
 }
@@ -49,7 +49,7 @@ void SpitterComponent::setTimeInterval(float sec)
 	mTimeInterval = sec;
 }
 
-void SpitterComponent::SpitSlime()
+void SpitterComponent::spitSlime()
 {
 	mGameObject.get_component<AnimationComponent>()->setAnimation("Spitting");
 
@@ -61,5 +61,26 @@ void SpitterComponent::SpitSlime()
 
 	auto curSlime = mSlimes[mCurrentIndex];
 	mSlimes[mCurrentIndex]->get_component<RigidBodyComponent>()->getB2Body()->SetTransform(PhysicsManager::s2b(mGameObject.getPosition() + sf::Vector2f(80, 300)), 0);
-	mSlimes[mCurrentIndex]->get_component<RigidBodyComponent>()->getB2Body()->SetLinearVelocity(b2Vec2(-100.f, 0));
+	mSlimes[mCurrentIndex]->get_component<RigidBodyComponent>()->getB2Body()->SetLinearVelocity(b2Vec2(-100.f * (mIsMirrored ? -1 : 1), 0));
+	mSlimes[mCurrentIndex]->setScale(1,1);
+}
+
+void SpitterComponent::setMirrored(bool mirrored)
+{
+	mIsMirrored = mirrored;
+}
+
+void SpitterComponent::setSlimeKinematic(bool kinematic)
+{
+	mSlimeIsKinematic = kinematic;
+}
+
+void SpitterComponent::setSpitterIndex(int index)
+{
+	mSpitterIndex = index;
+}
+
+int SpitterComponent::getSpitterIndex()
+{
+	return mSpitterIndex;
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "IGameComponent.h"
 #include "RigidBodyComponent.h"
+#include "HandMoveComponent.h"
+
 
 class PlayerBodyComponent : public IGameComponent
 {
@@ -14,9 +16,12 @@ public:
 	void playerWon() { mLevelWin = true; }
 	bool isPlayerDead() { return mPlayerDead; }
 	bool isLevelWon() { return mLevelWin; }
+	void onCollision(ColliderComponent& other);
+	void addHand(std::shared_ptr<HandMoveComponent> hand);
 
 private:
 	RigidBodyComponent& mRigidbody;
 	bool mLevelWin = false;
 	bool mPlayerDead = false;
+	std::vector< std::shared_ptr<HandMoveComponent> > mHands;
 };

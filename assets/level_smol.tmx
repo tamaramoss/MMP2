@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="80" height="252" tilewidth="192" tileheight="192" infinite="0" nextlayerid="13" nextobjectid="361">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="80" height="252" tilewidth="192" tileheight="192" infinite="0" nextlayerid="13" nextobjectid="375">
  <tileset firstgid="1" name="background_template" tilewidth="192" tileheight="192" tilecount="9" columns="3">
   <image source="Environment/background_template.png" width="576" height="576"/>
  </tileset>
@@ -1806,7 +1806,7 @@
  </layer>
  <objectgroup id="5" name="GameObjects">
   <object id="3" name="Trigger" type="Trigger" x="-6977.37" y="27954.7" width="836.232" height="724.824"/>
-  <object id="8" name="Player" type="Player" x="13032.9" y="46782" width="768" height="768">
+  <object id="8" name="Player" type="Player" x="13040.9" y="46854" width="768" height="768">
    <properties>
     <property name="Border" value="on"/>
     <property name="BorderSize" value="20"/>
@@ -1824,28 +1824,34 @@
     <property name="Texture" value="lava.png"/>
    </properties>
   </object>
-  <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="12544" y="46308" width="384" height="384">
+  <object id="36" name="PlayerHandLeft" type="PlayerHandLeft" x="12528" y="46388" width="384" height="384">
    <properties>
     <property name="Texture" value="hands_left.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="384"/>
    </properties>
   </object>
-  <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="13940" y="46264" width="384" height="384">
+  <object id="38" name="PlayerHandRight" type="PlayerHandRight" x="13924" y="46344" width="384" height="384">
    <properties>
     <property name="Texture" value="hands_right.png"/>
     <property name="TextureRectLeft" value="384"/>
     <property name="TextureRectTop" value="0"/>
    </properties>
   </object>
-  <object id="39" name="Spitter1" type="Spitter" x="6084" y="30208" width="768" height="768">
+  <object id="39" name="Spitter1" type="Spitter" x="8596" y="21392" width="768" height="768">
    <properties>
     <property name="Kinematic" type="bool" value="true"/>
+    <property name="Mirrored" type="bool" value="false"/>
     <property name="SlimeTexture" value="slime.png"/>
     <property name="Texture" value="spitto.png"/>
+    <property name="TriggerIndex" type="int" value="0"/>
    </properties>
   </object>
-  <object id="41" name="SpitterTrigger1" type="SpitterTrigger" x="840" y="34172" width="6424" height="192"/>
+  <object id="41" name="SpitterTrigger1" type="SpitterTrigger" x="984" y="21628" width="8568" height="992">
+   <properties>
+    <property name="TriggerIndex" type="int" value="0"/>
+   </properties>
+  </object>
   <object id="106" name="Rock12" type="Grabbable" x="12768" y="44621" width="288" height="288">
    <properties>
     <property name="RockSize" type="int" value="384"/>
@@ -2329,7 +2335,7 @@
     <property name="TextureSize" type="int" value="384"/>
    </properties>
   </object>
-  <object id="241" name="GoalCollider" type="Goal" x="-1108" y="3784" width="17064" height="1904">
+  <object id="241" name="GoalCollider" type="Goal" x="-1012" y="4392" width="17064" height="1904">
    <properties>
     <property name="Texture" value="lava.png"/>
    </properties>
@@ -2362,18 +2368,88 @@
     <property name="Texture" value="grabbie_anims.png"/>
    </properties>
   </object>
-  <object id="250" name="Rock6" type="Grabbable" x="3744" y="7000" width="288" height="288">
+  <object id="250" name="Rock6" type="Grabbable" x="2784" y="7176" width="288" height="288">
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="RockType" value="Normal"/>
     <property name="Texture" value="grabbie_anims.png"/>
    </properties>
   </object>
-  <object id="251" name="Rock6" type="Grabbable" x="4512" y="6984" width="288" height="288">
+  <object id="251" name="Rock6" type="Grabbable" x="3552" y="7160" width="288" height="288">
    <properties>
     <property name="RockSize" type="int" value="384"/>
     <property name="RockType" value="Normal"/>
     <property name="Texture" value="grabbie_anims.png"/>
+   </properties>
+  </object>
+  <object id="365" name="SpitterTrigger1" type="SpitterTrigger" x="11324" y="35384" width="2952" height="608">
+   <properties>
+    <property name="TriggerIndex" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="366" name="Spitter1" type="Spitter" x="13176" y="33760" width="768" height="768">
+   <properties>
+    <property name="Kinematic" type="bool" value="true"/>
+    <property name="Mirrored" type="bool" value="false"/>
+    <property name="SlimeTexture" value="slime.png"/>
+    <property name="Texture" value="spitto.png"/>
+    <property name="TriggerIndex" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="367" name="Spitter1" type="Spitter" x="9248" y="28784" width="768" height="768">
+   <properties>
+    <property name="Kinematic" type="bool" value="true"/>
+    <property name="Mirrored" type="bool" value="true"/>
+    <property name="SlimeTexture" value="slime.png"/>
+    <property name="Texture" value="spitto.png"/>
+    <property name="TriggerIndex" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="368" name="SpitterTrigger1" type="SpitterTrigger" x="7844" y="30928" width="4360" height="992">
+   <properties>
+    <property name="TriggerIndex" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="369" name="Spitter1" type="Spitter" x="6016" y="34000" width="768" height="768">
+   <properties>
+    <property name="Kinematic" type="bool" value="true"/>
+    <property name="Mirrored" type="bool" value="false"/>
+    <property name="SlimeTexture" value="slime.png"/>
+    <property name="Texture" value="spitto.png"/>
+    <property name="TriggerIndex" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="370" name="SpitterTrigger1" type="SpitterTrigger" x="1308" y="35232" width="5544" height="608">
+   <properties>
+    <property name="TriggerIndex" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="371" name="Spitter1" type="Spitter" x="1728" y="30024" width="768" height="768">
+   <properties>
+    <property name="Kinematic" type="bool" value="true"/>
+    <property name="Mirrored" type="bool" value="false"/>
+    <property name="SlimeTexture" value="slime.png"/>
+    <property name="Texture" value="spitto.png"/>
+    <property name="TriggerIndex" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="372" name="SpitterTrigger1" type="SpitterTrigger" x="1372" y="31688" width="5544" height="608">
+   <properties>
+    <property name="TriggerIndex" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="373" name="Spitter1" type="Spitter" x="5888" y="27064" width="768" height="768">
+   <properties>
+    <property name="Kinematic" type="bool" value="true"/>
+    <property name="Mirrored" type="bool" value="false"/>
+    <property name="SlimeTexture" value="slime.png"/>
+    <property name="Texture" value="spitto.png"/>
+    <property name="TriggerIndex" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="374" name="SpitterTrigger1" type="SpitterTrigger" x="1180" y="28296" width="5544" height="608">
+   <properties>
+    <property name="TriggerIndex" type="int" value="5"/>
    </properties>
   </object>
  </objectgroup>

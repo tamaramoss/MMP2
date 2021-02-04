@@ -52,6 +52,7 @@ void HandMoveComponent::update(float deltaTime)
 		grab();
 	}
 
+
 	if (InputManager::getInstance().isButtonReleased("Grab", mPlayerIndex) && mIsGrabbing)
 	{
 		release();
@@ -129,14 +130,19 @@ void HandMoveComponent::grab()
 
 void HandMoveComponent::release()
 {
+	if (!mIsGrabbing)
+		return;
+
+	mReleaseFlag = false;
+
 	auto hand = mRigidBody.getB2Body();
 	hand->SetType(b2_dynamicBody);
 	mIsGrabbing = false;
 	mGameObject.get_component<AnimationComponent>()->setAnimation("ToOpen" + std::to_string(mPlayerIndex));
 
 	
-
-	mGrabbedRock->get_component<IRockComponent>()->releaseRock();
+	if(mGrabbedRock != nullptr)
+		mGrabbedRock->get_component<IRockComponent>()->releaseRock();
 	mGrabbedRock = nullptr;
 	mGrabPosition = sf::Vector2f(-1000000,-1000000);
 
@@ -225,4 +231,9 @@ void HandMoveComponent::onCollisionEnter(ColliderComponent& other)
 		mGrabPosition = other.getGameObject().getPosition();
 		mCanGrab = true;
 	}
+}
+
+void HandMoveComponent::setReleaseFlag(bool flag)
+{
+	mReleaseFlag = flag;
 }
