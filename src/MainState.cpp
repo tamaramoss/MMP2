@@ -134,8 +134,7 @@ void MainState::draw()
 
 }
 
-void
-MainState::exit()
+void MainState::exit()
 {
 	mPhysicsManager.shutdown();
 	mSpriteManager.shutdown();

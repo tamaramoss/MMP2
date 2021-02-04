@@ -131,6 +131,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)/../externalLibs/box2d/lib/Release;$(SFMLROOT)/lib;$(SolutionDir)/../externalLibs/tgui/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics.lib;sfml-system.lib;sfml-window.lib;sfml-network.lib;sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Box2D.lib;tgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <HeapReserveSize>10</HeapReserveSize>
+      <HeapCommitSize>10</HeapCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

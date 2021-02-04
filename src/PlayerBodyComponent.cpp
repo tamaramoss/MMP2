@@ -35,7 +35,7 @@ void PlayerBodyComponent::onCollision(ColliderComponent& other)
 		for (auto h : mHands)
 		{
 			h->setReleaseFlag(true);
-			h->getGameObject().get_component<RigidBodyComponent>()->getB2Body()->ApplyLinearImpulse(b2Vec2(0, -5000), b2Vec2(0,0), true);
+			h->getGameObject().get_component<RigidBodyComponent>()->getB2Body()->ApplyLinearImpulse(b2Vec2(0, 3000), b2Vec2(0,0), true);
 		}
 
 		other.getGameObject().setScale(0,0);

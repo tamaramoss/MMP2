@@ -805,7 +805,7 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 
 		});
 
-	auto constantVelocity = std::make_shared<ConstantVelocityComponent>(*gameObject, sf::Vector2f(0, -50));
+	auto constantVelocity = std::make_shared<ConstantVelocityComponent>(*gameObject, sf::Vector2f(0, -110));
 	gameObject->add_component(constantVelocity);
 
 	gameObject->init();
@@ -989,6 +989,7 @@ static void loadSpitter(/*Spitter spitter,*/ const std::string& layer, const std
 
 		spitterTrigger->init();
 		
+		
 	}
 
 
@@ -1017,6 +1018,9 @@ static void loadSpitter(/*Spitter spitter,*/ const std::string& layer, const std
 
 	//gameObject->init();
 	//return gameObject;
+	// clear stuff
+	mSpitters.clear();
+	mSpitterTriggers.clear();
 }
 
 

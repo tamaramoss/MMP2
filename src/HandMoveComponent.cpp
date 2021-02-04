@@ -53,7 +53,7 @@ void HandMoveComponent::update(float deltaTime)
 	}
 
 
-	if (InputManager::getInstance().isButtonReleased("Grab", mPlayerIndex) && mIsGrabbing)
+	if ((InputManager::getInstance().isButtonReleased("Grab", mPlayerIndex) && mIsGrabbing) || mReleaseFlag)
 	{
 		release();
 	}
