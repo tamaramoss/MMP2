@@ -122,7 +122,7 @@ void MainState::update(const float deltaTime)
 		}
 		else
 		{
-			mGameStateManager->setState("FinalScreen");
+			mGameStateManager->setState("MenuState");
 		}
 	}
 

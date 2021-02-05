@@ -28,7 +28,7 @@ FinalScreen::init()
 	// load tile map/level
 	{
 		const std::string& resourcePath = "../assets/";
-		const auto tilemap = NLLoadTmxMap(resourcePath + "end_menu.tmx");
+		const auto tilemap = NLLoadTmxMap(resourcePath + "end_screen.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
 		loadTileLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());

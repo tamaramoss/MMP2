@@ -22,9 +22,13 @@ void TGuiWrapper::process(float deltaTime)
 	{
 		String name = mButtons[mFocusedButtonIndex]->getId();
 
-		if (name == "PlayButton" || name == "RetryButton")
+		if (name == "PlayButton")
 		{
 			mGame->getGameStateManager().setState("ControlState");
+		}
+		else if (name == "RetryButton")
+		{
+			mGame->getGameStateManager().setState("MainState");
 		}
 		else if (name == "QuitButton")
 		{
