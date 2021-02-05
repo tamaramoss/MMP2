@@ -23,7 +23,7 @@ public:
 private:
 	SpriteManager mSpriteManager;
 	GameObjectManager mGameObjectManager;
-
+	sf::Music mMusic;
 	bool mIsInit = false;
 
 };

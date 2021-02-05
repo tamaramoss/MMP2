@@ -57,6 +57,13 @@ FinalScreen::init()
 	}
 	mSpriteManager.setLayerOrder({ "Background", "Buttons" });
 
+	if (!mMusic.openFromFile("../assets/Sounds/background.wav"))
+		return;
+
+	mMusic.setLoop(true);
+	mMusic.play();
+	mMusic.setVolume(50);
+
 
 	mIsInit = true;
 }
@@ -86,6 +93,8 @@ void FinalScreen::exit()
 	mSpriteManager.shutdown();
 	mGameObjectManager.shutdown();
 	mGuiManager->exit();
+
+	mMusic.stop();
 
 	mIsInit = false;
 }

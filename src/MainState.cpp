@@ -122,7 +122,7 @@ void MainState::update(const float deltaTime)
 		}
 		else
 		{
-			mGameStateManager->setState("MenuState");
+			mGameStateManager->setState("FinalScreen");
 		}
 	}
 
@@ -152,6 +152,7 @@ void MainState::exit()
 	mPhysicsManager.shutdown();
 	mSpriteManager.shutdown();
 	mGameObjectManager.shutdown();
+	mMusic.stop();
 
 	mIsInit = false;
 }

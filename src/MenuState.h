@@ -25,7 +25,7 @@ private:
 	SpriteManager mSpriteManager;
 	GameObjectManager mGameObjectManager;
 	std::shared_ptr<TGuiWrapper> mGuiManager;
-
+	sf::Music mMusic;
 	bool mIsInit = false;
 
 };

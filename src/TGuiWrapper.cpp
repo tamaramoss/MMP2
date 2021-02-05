@@ -6,6 +6,7 @@
 #include "AnimationComponent.h"
 #include "ColliderComponent.h"
 #include "InputManager.h"
+#include "SoundComponent.h"
 
 
 TGuiWrapper::TGuiWrapper(Game* game) : mGame(game)
@@ -60,7 +61,7 @@ void TGuiWrapper::process(float deltaTime)
 			{
 				updateFocusedButtonIndex(-1);
 			}
-
+			mButtons[mFocusedButtonIndex]->get_component<SoundComponent>()->setSound("Change");
 		}
 		mTimer = 0.f;
 	}

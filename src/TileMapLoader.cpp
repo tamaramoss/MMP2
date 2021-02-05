@@ -1072,6 +1072,15 @@ static GameObject::ptr loadButton(NLTmxMapObject* object, const std::string& lay
 	animationComp->setLooped(false);
 
 	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animationComp));
+
+	auto soundComp = std::make_shared<SoundComponent>(*gameObject);
+
+	auto buffer2 = std::make_shared<sf::SoundBuffer>();
+	if (!buffer2->loadFromFile("../assets/Sounds/grab.wav"))
+		cout << "No music Here" << endl;
+	soundComp->registerSound("Change", buffer2);
+
+	gameObject->add_component(soundComp);
 	
 	gameObject->add_component(animationComp);
 	guiManager->addButton(gameObject, f);

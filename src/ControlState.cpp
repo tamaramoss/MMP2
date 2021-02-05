@@ -55,7 +55,12 @@ ControlState::init()
 	}
 	mSpriteManager.setLayerOrder({ "Background" });
 
+	if (!mMusic.openFromFile("../assets/Sounds/background.wav"))
+		return;
 
+	mMusic.setLoop(true);
+	mMusic.play();
+	mMusic.setVolume(50);
 	mIsInit = true;
 }
 
@@ -75,6 +80,6 @@ void ControlState::exit()
 {
 	mSpriteManager.shutdown();
 	mGameObjectManager.shutdown();
-
+	mMusic.stop();
 	mIsInit = false;
 }
