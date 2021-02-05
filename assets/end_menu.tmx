@@ -20,13 +20,13 @@
 </data>
  </layer>
  <objectgroup id="2" name="Buttons">
-  <object id="1" name="RetryButton" type="Button" x="455.5" y="160.666" width="369" height="176">
+  <object id="1" name="RetryButton" type="Button" x="416.783" y="160.666" width="451" height="176">
    <properties>
     <property name="Focused" type="bool" value="true"/>
     <property name="Texture" value="btnRetry.png"/>
    </properties>
   </object>
-  <object id="2" name="MenuButton" type="Button" x="455.5" y="391.334" width="369" height="176">
+  <object id="2" name="MenuButton" type="Button" x="421.045" y="391.334" width="451" height="176">
    <properties>
     <property name="Focused" type="bool" value="false"/>
     <property name="Texture" value="btnMenu.png"/>

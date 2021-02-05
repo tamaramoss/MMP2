@@ -147,9 +147,6 @@
     <ClInclude Include="..\src\IGameComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\FinalScreen.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\PlayerBodyComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
@@ -191,6 +188,12 @@
     </ClInclude>
     <ClInclude Include="..\src\TGuiWrapper.h">
       <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ControlState.h">
+      <Filter>Header Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\FinalScreen.h">
+      <Filter>Header Files\GameState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="..\src\PlayerBodyComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ControlState.cpp">
+      <Filter>Source Files\GameState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

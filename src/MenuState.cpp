@@ -55,9 +55,6 @@ MenuState::init()
 		mSpriteManager.setCamera(render_comp.get());
 		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 	}
-
-	//mView = mGame->getWindow().getView();
-	
 	mSpriteManager.setLayerOrder({ "Background", "Buttons" });
 
 	
@@ -66,10 +63,6 @@ MenuState::init()
 
 void MenuState::update(float deltaTime)
 {
-	//mGame->getWindow().setView(mView);
-
-	//EventBus::getInstance().processEvents(deltaTime);
-
 	// update remaining game objects
 	for (auto go_pair : mGameObjectManager.getGameObjects())
 	{
@@ -79,10 +72,7 @@ void MenuState::update(float deltaTime)
 			go_pair.second->update(deltaTime);
 	}
 
-	mGuiManager->process();
-
-	//if (InputManager::getInstance().isButtonPressed("Select"))
-	//	mGameStateManager->setState("MainState");
+	mGuiManager->process(deltaTime);
 }
 
 void MenuState::draw()
@@ -90,36 +80,13 @@ void MenuState::draw()
 	mSpriteManager.draw();
 }
 
-void MenuState::setupGUI ()
-{	
-	//TGuiWrapper::getInstance().getGui().add(tgui::Picture::create("../assets/spaceMenu.png"));
-
-	//tgui::Theme theme("../externalLibs/tgui/themes/Black.txt");
-
-	//auto button = tgui::Button::create();
-	//button->setRenderer(theme.getRenderer("Button"));
-	//button->setPosition(mGame->getWindow().getSize().x / 2 - 75.f, mGame->getWindow().getSize().y / 2 - 80.f);
-	//button->setText("Start");
-	//button->setSize(150, 60);
-	//button->connect("pressed", [&]() { mGameStateManager->setState("MainState"); });
-	//button->setFocused(false);
-	////TGuiWrapper::getInstance().addButton(button, false);
-
-
-	//button = tgui::Button::create();
-	//button->setRenderer(theme.getRenderer("Button"));
-	//button->setPosition(mGame->getWindow().getSize().x / 2 - 75.f, mGame->getWindow().getSize().y / 2 + 80.f);
-	//button->setText("Exit");
-	//button->setSize(150, 60);
-	//button->connect("pressed", [&]() { mGame->getWindow().close(); });
-	//TGuiWrapper::getInstance().addButton(button, false);
-}
 
 void MenuState::exit()
 {
 
 	mSpriteManager.shutdown();
 	mGameObjectManager.shutdown();
-	//TGuiWrapper::getInstance().exit();
+	mGuiManager->exit();
+	
 	mIsInit = false;
 }

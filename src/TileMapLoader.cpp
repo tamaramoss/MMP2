@@ -1026,17 +1026,18 @@ static GameObject::ptr loadButton(NLTmxMapObject* object, const std::string& lay
 	}
 
 	auto normal = std::make_shared<Animation>(spriteTexture);
-	normal->addFrame(IntRect(0, 0, texture_rect.width, texture_rect.height / 2));
-	
+	normal->addFrame(IntRect(0, 0, texture_rect.width, texture_rect.height));
+	normal->getSprite().setTextureRect(IntRect(0, 0, texture_rect.width, texture_rect.height));
 	auto focused = std::make_shared<Animation>(spriteTexture);
-	normal->addFrame(IntRect(0, texture_rect.height / 2, texture_rect.width, texture_rect.height / 2));
+	focused->addFrame(IntRect(0, texture_rect.height, texture_rect.width, texture_rect.height));
+	focused->getSprite().setTextureRect(IntRect(0, texture_rect.height, texture_rect.width, texture_rect.height));
 
 
 	auto animationComp = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 	animationComp->registerAnimation("Default", normal);
 	animationComp->registerAnimation("Focused", focused);
 
-	animationComp->setAnimation("Default");
+	f == false ? animationComp->setAnimation("Default") : animationComp->setAnimation("Focused");
 	animationComp->setLooped(false);
 
 	EventBus::getInstance().fireEvent(std::make_shared<RenderableCreateEvent>(layer, *animationComp));

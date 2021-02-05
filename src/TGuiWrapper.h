@@ -9,12 +9,8 @@ class TGuiWrapper
 {
 public:
 	TGuiWrapper(Game* game);
-	
-	void setGame(Game* game);
 
-	void process();
-
-	void draw();
+	void process(float deltaTime);
 	
 	void exit();
 
@@ -26,6 +22,10 @@ private:
 	Game* mGame;
 	std::vector<GameObject::ptr> mButtons;
 	int mFocusedButtonIndex = -1;
+
+	bool mMovedLastFrame = false;
+	float mTimer = 0.f;
+	float mNextButtonTimer = 0.2f;
 };
 
 

@@ -5,6 +5,8 @@
 #include <iostream>
 
 
+
+#include "ControlState.h"
 #include "InputManager.h"
 #include "MenuState.h"
 #include "MainState.h"
@@ -25,33 +27,6 @@ void Game::run()
 	{
 		// process events in the input manager
 		Event event{};
-
-
-		//	//query joystick for settings if it's plugged in...
-		//if (sf::Joystick::isConnected(0)) {
-		//	// check how many buttons joystick number 0 has
-		//	unsigned int buttonCount = sf::Joystick::getButtonCount(0);
-
-		//	// check if joystick number 0 has a Z axis
-		//	bool hasZ = sf::Joystick::hasAxis(0, sf::Joystick::Z);
-		//	bool hasX = sf::Joystick::hasAxis(0, sf::Joystick::X);
-		//	bool hasY = sf::Joystick::hasAxis(0, sf::Joystick::Y);
-		//	bool hasR = sf::Joystick::hasAxis(0, sf::Joystick::R);
-		//	bool hasU = sf::Joystick::hasAxis(0, sf::Joystick::U);
-		//	bool hasV = sf::Joystick::hasAxis(0, sf::Joystick::V);
-		//	bool hasPovX = sf::Joystick::hasAxis(0, sf::Joystick::PovX);
-		//	bool hasPovY = sf::Joystick::hasAxis(0, sf::Joystick::PovY);
-
-		//	std::cout << "Button count: " << buttonCount << std::endl;
-		//	std::cout << "Has a z-axis: " << hasZ << std::endl;
-		//	std::cout << "Has a x-axis: " << hasX << std::endl;
-		//	std::cout << "Has a y-axis: " << hasY << std::endl;
-		//	std::cout << "Has a r-axis: " << hasR << std::endl;
-		//	std::cout << "Has a u-axis: " << hasU << std::endl;
-		//	std::cout << "Has a v-axis: " << hasV << std::endl;
-		//	std::cout << "Has a Povx-axis: " << hasPovX << std::endl;
-		//	std::cout << "Has a PovY-axis: " << hasPovY << std::endl;
-		//}
 		
 		while (mWindow.pollEvent(event))
 		{
@@ -72,14 +47,6 @@ void Game::run()
 
 bool Game::init()
 {
-
-
-	//get information about the joystick
-	sf::Joystick::Identification id = sf::Joystick::getIdentification(0);
-	//std::cout << "\nVendor ID: " << id.vendorId << "\nProduct ID: " << id.productId << std::endl;
-	sf::String controller("Joystick Use: " + id.name);
-	mWindow.setTitle(controller);//easily tells us what controller is connected
-	//
 	mWindow.create(VideoMode(mConfig.mResolution.x, mConfig.mResolution.y),
 		mConfig.mWindowName);
 
@@ -99,13 +66,10 @@ bool Game::init()
 	//m->init();
 	mGameStateManager.registerState("MainState", m);
 	
-	//mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
+	mGameStateManager.registerState("ControlState", make_shared<ControlState>(&mGameStateManager, this));
+	mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
 
-
-
-	mGameStateManager.setState("MenuState");
-
-	
+	mGameStateManager.setState("FinalScreen");
 
 	return true;
 }
@@ -129,9 +93,7 @@ void Game::update()
 void Game::draw()
 {
 	mWindow.clear();
-
-	//mTGuiWrapper->getGui().draw();
-
+	
 	mGameStateManager.draw();
 
 	//mDebugDraw->draw(mWindow);

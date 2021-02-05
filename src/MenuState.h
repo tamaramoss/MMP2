@@ -17,7 +17,7 @@ public:
 
 	void update(float delta) override;
 	void draw() override;
-	void setupGUI();
+
 	void exit() override;
 
 private:

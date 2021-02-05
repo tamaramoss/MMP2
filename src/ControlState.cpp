@@ -1,38 +1,37 @@
 #include "stdafx.h"
-#include "FinalScreen.h"
-
+#include "ControlState.h"
 
 #include "CameraRenderComponent.h"
 #include "Game.h"
 #include "GameStateManager.h"
+#include "InputManager.h"
 #include "NLTmxMap.h"
 #include "TileMapLoader.h"
 
 using namespace std;
 
-FinalScreen::FinalScreen(GameStateManager* gameStateManager, Game* game)
+ControlState::ControlState(GameStateManager* gameStateManager, Game* game)
 	: GameState(gameStateManager, game)
 	, mSpriteManager(game->getWindow())
 {
 }
 
 void
-FinalScreen::init()
+ControlState::init()
 {
 	if (mIsInit)
 		return;
-	mGuiManager = std::make_shared<TGuiWrapper>(mGame);
-	mGameObjectManager.init();
+
 	mSpriteManager.init();
+	mGameObjectManager.init();
 
 	// load tile map/level
 	{
 		const std::string& resourcePath = "../assets/";
-		const auto tilemap = NLLoadTmxMap(resourcePath + "end_menu.tmx");
+		const auto tilemap = NLLoadTmxMap(resourcePath + "controls.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
-		loadTileLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
-		loadObjectLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
+		loadTileLayers(tilemap, resourcePath, mSpriteManager);
 
 		delete tilemap;
 	}
@@ -54,37 +53,28 @@ FinalScreen::init()
 		mSpriteManager.setCamera(render_comp.get());
 		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 	}
-	mSpriteManager.setLayerOrder({ "Background", "Buttons" });
+	mSpriteManager.setLayerOrder({ "Background" });
 
 
 	mIsInit = true;
 }
 
-void FinalScreen::update(float deltaTime)
+void ControlState::update(float deltaTime)
 {
-	// update remaining game objects
-	for (auto go_pair : mGameObjectManager.getGameObjects())
-	{
-		if (go_pair.second->isMarkedForDelete())
-			mGameObjectManager.removeGameObject(go_pair.first);
-		else
-			go_pair.second->update(deltaTime);
-	}
-
-	mGuiManager->process(deltaTime);
+	if (InputManager::getInstance().isButtonPressed("Select"))
+		mGameStateManager->setState("MainState");
 }
 
-void FinalScreen::draw()
+void ControlState::draw()
 {
 	mSpriteManager.draw();
-
 }
 
-void FinalScreen::exit()
+
+void ControlState::exit()
 {
 	mSpriteManager.shutdown();
 	mGameObjectManager.shutdown();
-	mGuiManager->exit();
 
 	mIsInit = false;
 }

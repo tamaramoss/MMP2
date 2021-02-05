@@ -6,10 +6,12 @@
 #include "TGuiWrapper.h"
 #include "TGUI/TGUI.hpp"
 
-class FinalScreen : public GameState
+class ControlState : public GameState
 {
 public:
-	FinalScreen(GameStateManager* gameStateManager, Game* game);
+	//using GameState::GameState;
+
+	ControlState(GameStateManager* gameStateManager, Game* game);
 
 	void init() override;
 
@@ -21,8 +23,7 @@ public:
 private:
 	SpriteManager mSpriteManager;
 	GameObjectManager mGameObjectManager;
-	std::shared_ptr<TGuiWrapper> mGuiManager;
 
-	
 	bool mIsInit = false;
+
 };

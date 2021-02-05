@@ -13,31 +13,52 @@ TGuiWrapper::TGuiWrapper(Game* game) : mGame(game)
 	
 }
 
-void TGuiWrapper::process()
+void TGuiWrapper::process(float deltaTime)
 {
 	if (mButtons.size() == 0)
 		return;
 
-	if (InputManager::getInstance().isButtonPressed("Selected") && mFocusedButtonIndex != -1)
+	if (InputManager::getInstance().isButtonPressed("Select") && mFocusedButtonIndex != -1)
 	{
-		if (mButtons[mFocusedButtonIndex]->getId() == "StartButton")
+		String name = mButtons[mFocusedButtonIndex]->getId();
+
+		if (name == "PlayButton" || name == "RetryButton")
 		{
-			mGame->getGameStateManager().setState("MainState");
+			mGame->getGameStateManager().setState("ControlState");
+		}
+		else if (name == "QuitButton")
+		{
+			mGame->getWindow().close();
+		}
+		else if (name == "MenuButton")
+		{
+			mGame->getGameStateManager().setState("MenuState");
 		}
 	}
 
-	float position = InputManager::getInstance().getAxisPosition("DPad", 0);
 
- 	if (position != 0)
+
+	if (mTimer < mNextButtonTimer)
 	{
-		if (position < 0.f)
+		mTimer += deltaTime;
+	}
+	else
+	{
+		float position = InputManager::getInstance().getAxisPosition("DPad", 0);
+
+		if (position != 0.f && !mMovedLastFrame)
 		{
-			updateFocusedButtonIndex(1);
+			if (position < 0.f)
+			{
+				updateFocusedButtonIndex(1);
+			}
+			if (position > 0.f)
+			{
+				updateFocusedButtonIndex(-1);
+			}
+
 		}
-		if (position > 0.f)
-		{
-			updateFocusedButtonIndex(-1);
-		}
+		mTimer = 0.f;
 	}
 }
 
