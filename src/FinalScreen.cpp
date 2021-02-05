@@ -41,6 +41,7 @@ FinalScreen::init()
 	{
 		auto v = mGame->getWindow().getView();
 		v.setSize(1280, 720);
+		v.setCenter(1280 / 2, 720 / 2);
 		mGame->getWindow().setView(v);
 
 		auto camera = make_shared<GameObject>("Camera", "Camera");
