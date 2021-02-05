@@ -21,9 +21,11 @@ public:
 	void setSlimeKinematic(bool kinematic);
 	void setSpitterIndex(int index);
 	int getSpitterIndex();
+	void setPlayer(std::shared_ptr<GameObject> player) { mPlayer = player; }
 
 
 private:
+	std::shared_ptr<GameObject> mPlayer;
 	int mSpitterIndex = 0;
 	std::vector<GameObject::ptr> mSlimes;
 	int mCurrentIndex = 0;

@@ -20,6 +20,7 @@ private:
 	SpriteManager mSpriteManager;
 	GameObjectManager mGameObjectManager;
 	PhysicsManager mPhysicsManager;
+	sf::Music mMusic;
 	float mNextStateTimer = 8.0f;
 	float mTimer = 0.0f;
 };

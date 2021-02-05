@@ -4,6 +4,9 @@
 #include "RigidBodyComponent.h"
 #include "PhysicsManager.h"
 #include "AnimationComponent.h"
+#include "SoundComponent.h"
+#include "GameObjectManager.h"
+#include "VectorAlgebra2D.h"
 
 SpitterComponent::SpitterComponent(GameObject& gameObject) : IGameComponent(gameObject)
 {
@@ -63,6 +66,10 @@ void SpitterComponent::spitSlime()
 	mSlimes[mCurrentIndex]->get_component<RigidBodyComponent>()->getB2Body()->SetTransform(PhysicsManager::s2b(mGameObject.getPosition() + sf::Vector2f(80, 300)), 0);
 	mSlimes[mCurrentIndex]->get_component<RigidBodyComponent>()->getB2Body()->SetLinearVelocity(b2Vec2(-100.f * (mIsMirrored ? -1 : 1), 0));
 	mSlimes[mCurrentIndex]->setScale(1,1);
+
+	auto distanceToPlayer = MathUtil::length(mPlayer->getPosition() - mGameObject.getPosition()) * PhysicsManager::UNRATIO;
+	if(distanceToPlayer < 210.f)
+		mGameObject.get_component<SoundComponent>()->setSound("Shoot");
 }
 
 void SpitterComponent::setMirrored(bool mirrored)

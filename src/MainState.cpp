@@ -13,6 +13,7 @@
 #include "GameObjectEvents.h"
 #include "PlayerBodyComponent.h"
 #include "RenderComponentEvents.h"
+#include "SpitterComponent.h"
 
 using namespace std;
 
@@ -29,16 +30,16 @@ void MainState::init()
 	mPhysicsManager.init();
 
 	// load tile map/level
-	{
-		const std::string& resourcePath = "../assets/";
-		const auto tilemap = NLLoadTmxMap(resourcePath + "level_smol.tmx");
-		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
+	
+	const std::string& resourcePath = "../assets/";
+	const auto tilemap = NLLoadTmxMap(resourcePath + "level_smol.tmx");
+	FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
-		loadTileLayers(tilemap, resourcePath, mSpriteManager);
-		loadObjectLayers(tilemap, resourcePath, mSpriteManager);
+	loadTileLayers(tilemap, resourcePath, mSpriteManager);
+	loadObjectLayers(tilemap, resourcePath, mSpriteManager);
 
-		delete tilemap;
-	}
+	delete tilemap;
+	
 
 	// Moving camera
 	{
@@ -62,6 +63,24 @@ void MainState::init()
 
 	// Define layer order manually here. Could come from custom file settings.
 	mSpriteManager.setLayerOrder({"Floor", "Background", "BackgroundExtras", "BehindObjects", "Walls", "GameObjects", "Top"});
+
+	// spitter player refs
+	auto gos = mGameObjectManager.getGameObjects();
+	for (auto o : gos)
+	{
+		if (o.second->getTag() == "Spitter")
+		{
+			o.second->get_component<SpitterComponent>()->setPlayer(mGameObjectManager.getGameObject("Player"));
+		}
+	}
+
+	
+	if (!mMusic.openFromFile(resourcePath + "Sounds/background.wav"))
+		return;
+
+	mMusic.setLoop(true);
+	mMusic.play();
+	mMusic.setVolume(50);
 }
 
 void MainState::update(const float deltaTime)

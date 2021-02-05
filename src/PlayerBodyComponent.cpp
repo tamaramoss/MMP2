@@ -5,6 +5,7 @@
 #include "PhysicsManager.h"
 #include <iostream>
 #include "PlayerBodyComponent.h"
+#include "SoundComponent.h"
 
 PlayerBodyComponent::PlayerBodyComponent(GameObject& gameObject, RigidBodyComponent& rigidBody)
 	:IGameComponent(gameObject),
@@ -40,6 +41,8 @@ void PlayerBodyComponent::onCollision(ColliderComponent& other)
 
 		other.getGameObject().setScale(0,0);
 		other.getBody().getB2Body()->SetLinearVelocity(-other.getBody().getB2Body()->GetLinearVelocity());
+
+		mGameObject.get_component<SoundComponent>()->setSound("Hit");
 	}
 
 }
