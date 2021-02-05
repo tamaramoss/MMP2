@@ -69,7 +69,7 @@ bool Game::init()
 	mGameStateManager.registerState("ControlState", make_shared<ControlState>(&mGameStateManager, this));
 	mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
 
-	mGameStateManager.setState("FinalScreen");
+	mGameStateManager.setState("MenuState");
 
 	return true;
 }
