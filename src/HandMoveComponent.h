@@ -53,6 +53,9 @@ private:
 	bool mIsPulling = false;
 	bool mReleaseFlag = false;
 
+	float mReleaseTimer = 0;
+	float mNoGrabTime = 1.1f;
+
 	// control params
 	int mPlayerIndex = 0;
 	bool mUseRightStick = false;

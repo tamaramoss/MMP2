@@ -47,9 +47,13 @@ void HandMoveComponent::update(float deltaTime)
 	}
 
 	// grabbing
-	if (InputManager::getInstance().isButtonPressed("Grab", mPlayerIndex) && mCanGrab && !mIsGrabbing)
+	if (InputManager::getInstance().isButtonDown("Grab", mPlayerIndex) && mCanGrab && !mIsGrabbing && mReleaseTimer <= 0)
 	{
 		grab();
+	}
+	else if(mReleaseTimer > 0)
+	{
+		mReleaseTimer -= deltaTime;
 	}
 
 
@@ -134,6 +138,7 @@ void HandMoveComponent::release()
 		return;
 
 	mReleaseFlag = false;
+	mReleaseTimer = mNoGrabTime;
 
 	auto hand = mRigidBody.getB2Body();
 	hand->SetType(b2_dynamicBody);
