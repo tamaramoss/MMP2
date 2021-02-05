@@ -293,11 +293,16 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 #pragma region Sound
 
 	auto buffer = std::make_shared<sf::SoundBuffer>();
-	if (!buffer->loadFromFile("../assets/Sounds/chicken.wav"))
+	if (!buffer->loadFromFile("../assets/Sounds/grab.wav"))
 		cout << "No music Here" << endl;
 
 	auto soundComp = std::make_shared<SoundComponent>(*gameObject);
 	soundComp->registerSound("Grab", buffer);
+
+	auto buffer2 = std::make_shared<sf::SoundBuffer>();
+	if (!buffer2->loadFromFile("../assets/Sounds/pull_up.wav"))
+		cout << "No music Here" << endl;
+	soundComp->registerSound("Pull", buffer2);
 
 	gameObject->add_component(soundComp);
 
@@ -528,6 +533,15 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 			//hmc->setBodyReference(gameObject);
 			body_comp->addHand(hmc);
 
+			// sound
+			auto buffer = std::make_shared<sf::SoundBuffer>();
+			if (!buffer->loadFromFile("../assets/Sounds/hit.wav"))
+				cout << "No music Here" << endl;
+
+			auto soundComp = std::make_shared<SoundComponent>(*gameObject);
+			soundComp->registerSound("Hit", buffer);
+			gameObject->add_component(soundComp);
+
 		}
 	}
 
@@ -717,6 +731,14 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 				auto oneTimeRock = std::make_shared<RockOneTimeComponent>(*gameObject);
 				gameObject->add_component(oneTimeRock);
 
+				auto buffer = std::make_shared<sf::SoundBuffer>();
+				if (!buffer->loadFromFile("../assets/Sounds/skull_ded.wav"))
+					cout << "No music Here" << endl;
+
+				auto soundComp = std::make_shared<SoundComponent>(*gameObject);
+				soundComp->registerSound("Dead", buffer);
+				gameObject->add_component(soundComp);
+
 
 				// Initialize components with parsed data.
 				if (spriteTexture.length() > 0)
@@ -863,6 +885,15 @@ static void loadSpitter(const std::string& layer, const std::string& resourcePat
 		gameObject->add_component(animation);
 
 #pragma endregion
+
+		// sound
+		auto buffer = std::make_shared<sf::SoundBuffer>();
+		if (!buffer->loadFromFile("../assets/Sounds/shoot.wav"))
+			cout << "No music Here" << endl;
+
+		auto soundComp = std::make_shared<SoundComponent>(*gameObject);
+		soundComp->registerSound("Shoot", buffer);
+		gameObject->add_component(soundComp);
 
 		auto spitterComp = std::make_shared<SpitterComponent>(*gameObject);
 		spitterComp->setMirrored(isMirrored);

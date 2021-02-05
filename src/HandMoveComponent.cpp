@@ -154,6 +154,8 @@ void HandMoveComponent::release()
 	// launch player if pulling up
 	if (mIsPulling)
 	{
+		mGameObject.get_component<SoundComponent>()->setSound("Pull");
+
 		auto body = mBody->get_component<RigidBodyComponent>()->getB2Body();
 		// from player to point between hands
 		auto handsMidPoint = (mGameObject.getPosition() + mOtherHand->getGameObject().getPosition()) / 2.f;
@@ -166,6 +168,7 @@ void HandMoveComponent::release()
 		{
 			body->ApplyLinearImpulse(PhysicsManager::s2b(direction * 800000.f * PhysicsManager::RATIO), body->GetLocalCenter(), true);
 			hand->ApplyLinearImpulse(PhysicsManager::s2b(direction * 800000.f * PhysicsManager::RATIO), hand->GetLocalCenter(), true);
+
 		}	
 	}
 }

@@ -66,5 +66,3 @@ void GameObjectManager::removeGameObject(const std::string& id)
 	
 	//mGameObjects.erase(it);
 }
-
-
