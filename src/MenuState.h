@@ -4,7 +4,7 @@
 #include "GameState.h"
 #include "SpriteManager.h"
 #include "TGuiWrapper.h"
-#include "TGUI/TGUI.hpp"
+
 
 class MenuState : public GameState
 {
