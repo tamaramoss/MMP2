@@ -109,7 +109,7 @@ void Game::controllerSetup()
 	sf::Joystick::Identification id = sf::Joystick::getIdentification(0);
 	//std::cout << "\nVendor ID: " << id.vendorId << "\nProduct ID: " << id.productId << std::endl;
 	sf::String controller("Joystick Use: " + id.name);
-	mWindow.setTitle(controller);
+	//mWindow.setTitle(controller);
 
 	int controllers = 0;
 

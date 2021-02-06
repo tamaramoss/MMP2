@@ -15,7 +15,7 @@ public:
 	struct Config
 	{
 		Vector2i mResolution{1280, 720};
-		std::string mWindowName = "ProjeccRejecc";
+		std::string mWindowName = "Big Scary Escapetuary";
 	};
 
 	Config& getConfig() { return mConfig; }
