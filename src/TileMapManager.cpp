@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
-#include "TileMapLoader.h"
-#include "NLTmxMap.h"
+#include "TileMapManager.h"
+
 #include "TileLayerRenderComponent.h"
 #include "SpriteRenderComponent.h"
 #include "RigidBodyComponent.h"
@@ -22,30 +22,16 @@
 #include "RockOneTimeComponent.h"
 #include "SoundComponent.h"
 #include "SpitterComponent.h"
-#include "SpitterTriggerComponent.h"
 #include "ConstantVelocityComponent.h"
 
-//#include "SlimeBallComponent.h"
-
-
-struct Player
+TileMapManager& TileMapManager::getInstance()
 {
-	NLTmxMapObject* PlayerBody;
-	NLTmxMapObject* PlayerHandLeft;
-	NLTmxMapObject* PlayerHandRight;
-};
+	static TileMapManager instance;
+	return instance;
+}
 
-struct Spitter
-{
-	NLTmxMapObject* SpitterBody;
-	NLTmxMapObject* SpitterTrigger;
-	int index;
-};
-static vector<NLTmxMapObject*> mSpitters;
-static vector<NLTmxMapObject*> mSpitterTriggers;
-
-void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
-	SpriteManager& spriteManager, TGuiWrapper* guiManager)
+void TileMapManager::loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
+	SpriteManager& spriteManager, GuiManager* guiManager)
 {
 	//err() << "Load tilemap with size: " << tilemap->width << ", "
 	//	<< tilemap->height << " and tile-size: " << tilemap->tileWidth
@@ -152,9 +138,7 @@ void loadTileLayers(NLTmxMap* tilemap, const std::string& resourcePath,
 }
 
 
-
-
-static Animation::ptr MakeAnimation(int rectLeft, int rectTop, int frameWidth, std::string path)
+Animation::ptr TileMapManager::makeAnimation(int rectLeft, int rectTop, int frameWidth, std::string path)
 {
 	auto animation = std::make_shared<Animation>(path);
 
@@ -168,7 +152,7 @@ static Animation::ptr MakeAnimation(int rectLeft, int rectTop, int frameWidth, s
 }
 
 
-static std::shared_ptr<SpriteRenderComponent> makeRenderComponent(NLTmxMapObject* object, std::shared_ptr<GameObject> gameObject, string layer, SpriteManager& spriteManager, string texturePathOptional = "")
+std::shared_ptr<SpriteRenderComponent> TileMapManager::makeRenderComponent(NLTmxMapObject* object, std::shared_ptr<GameObject> gameObject, string layer, SpriteManager& spriteManager, string texturePathOptional = "")
 {
 	std::shared_ptr<SpriteRenderComponent> renderComponent;
 
@@ -209,7 +193,7 @@ static std::shared_ptr<SpriteRenderComponent> makeRenderComponent(NLTmxMapObject
 	return renderComponent;
 }
 
-static GameObject::ptr loadDeadOverlay (SpriteManager& spriteManager)
+GameObject::ptr TileMapManager::loadDeadOverlay (SpriteManager& spriteManager)
 {
 	auto gameObject = std::make_shared<GameObject>("Dead", "Die");
 	gameObject->move(-100000, -100000);
@@ -224,7 +208,7 @@ static GameObject::ptr loadDeadOverlay (SpriteManager& spriteManager)
 	return gameObject;
 }
 
-static GameObject::ptr loadWinOverlay(SpriteManager& spriteManager)
+GameObject::ptr TileMapManager::loadWinOverlay(SpriteManager& spriteManager)
 {
 	auto gameObject = std::make_shared<GameObject>("Win", "Win");
 	gameObject->move(-100000, -100000);
@@ -239,7 +223,7 @@ static GameObject::ptr loadWinOverlay(SpriteManager& spriteManager)
 	return gameObject;
 }
 
-static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& layer, GameObject::ptr parent, const int index, const float speed, const Vector2f startPos, float distanceFromStart, SpriteManager& spriteManager)
+GameObject::ptr TileMapManager::createHand(NLTmxMapObject* object, const std::string& layer, GameObject::ptr parent, const int index, const float speed, const Vector2f startPos, float distanceFromStart, SpriteManager& spriteManager)
 {
 	std::string name = "Hand" + to_string(index);
 	auto gameObject = make_shared<GameObject>(name, "Hand");
@@ -272,8 +256,8 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 
 #pragma region animation
 
-	auto closedToOPen = MakeAnimation(0, 0, textureRect.height, path);
-	auto openToClosed = MakeAnimation(0, textureRect.height , textureRect.height, path);
+	auto closedToOPen = makeAnimation(0, 0, textureRect.height, path);
+	auto openToClosed = makeAnimation(0, textureRect.height , textureRect.height, path);
 
 	//closedToOPen->getSprite().setScale(1.5f, 1.5f);
 	//openToClosed->getSprite().setScale(1.5f, 1.5f);
@@ -363,7 +347,7 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 	return gameObject;
 }
 
-static void makePhysics(GameObject::ptr gameObject, bool isKinematic, float sizeFactor = 1.0f)
+void TileMapManager::makePhysics(GameObject::ptr gameObject, bool isKinematic, float sizeFactor = 1.0f)
 {
 	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_staticBody);
 	//create the collider: 
@@ -404,7 +388,7 @@ static void makePhysics(GameObject::ptr gameObject, bool isKinematic, float size
 	gameObject->add_component(colliderComp);
 }
 
-static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer, const std::string& resourcePath,
+GameObject::ptr TileMapManager::makePlayer(Player playerStruct, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(playerStruct.PlayerBody->name, playerStruct.PlayerBody->type);
@@ -458,10 +442,10 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 #pragma region Animation
 
 
-	auto defaultFace = MakeAnimation(0, 0, 768, path);
-	auto dead = MakeAnimation(0, 768 * 2, 768, path);
-	auto jump = MakeAnimation(0, 768, 768, path);
-	auto win = MakeAnimation(0, 768 * 3, 768, path);
+	auto defaultFace = makeAnimation(0, 0, 768, path);
+	auto dead = makeAnimation(0, 768 * 2, 768, path);
+	auto jump = makeAnimation(0, 768, 768, path);
+	auto win = makeAnimation(0, 768 * 3, 768, path);
 
 
 	auto animatedSprite = make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
@@ -551,7 +535,7 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 	return gameObject;
 }
 
-static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+GameObject::ptr TileMapManager::loadCollider(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(object->name + to_string(object->id), object->type);
@@ -596,7 +580,7 @@ static GameObject::ptr loadCollider(NLTmxMapObject* object, const std::string& l
 	return gameObject;
 }
 
-static GameObject::ptr loadGoalTrigger(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+GameObject::ptr TileMapManager::loadGoalTrigger(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(object->name, object->type);
@@ -624,7 +608,7 @@ static GameObject::ptr loadGoalTrigger(NLTmxMapObject* object, const std::string
 	return gameObject;
 }
 
-static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(object->name + to_string(object->id), object->type);
@@ -671,7 +655,7 @@ static GameObject::ptr loadTrigger(NLTmxMapObject* object, const std::string& la
 }
 
 
-static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+GameObject::ptr TileMapManager::loadRock(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(object->name + to_string(object->id), object->type);
@@ -712,9 +696,9 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 				auto rockTimer = std::make_shared<RockTimedComponent>(*gameObject);
 				gameObject->add_component(rockTimer);
 
-				auto sleep = MakeAnimation(0, 0, texture_rect.width, spriteTexture);
-				auto wake = MakeAnimation(0, texture_rect.height, texture_rect.width, spriteTexture);
-				auto angry = MakeAnimation(0, texture_rect.height * 2, texture_rect.width, spriteTexture);
+				auto sleep = makeAnimation(0, 0, texture_rect.width, spriteTexture);
+				auto wake = makeAnimation(0, texture_rect.height, texture_rect.width, spriteTexture);
+				auto angry = makeAnimation(0, texture_rect.height * 2, texture_rect.width, spriteTexture);
 
 				auto animationComp = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 				animationComp->registerAnimation("Sleep", sleep);
@@ -758,8 +742,8 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 				auto normalRock = std::make_shared<RockNormalComponent>(*gameObject);
 				gameObject->add_component(normalRock);
 
-				auto defaut = MakeAnimation(0, 0, texture_rect.width, spriteTexture);
-				auto Gabbed = MakeAnimation(0, texture_rect.height, texture_rect.width, spriteTexture);
+				auto defaut = makeAnimation(0, 0, texture_rect.width, spriteTexture);
+				auto Gabbed = makeAnimation(0, texture_rect.height, texture_rect.width, spriteTexture);
 
 				auto animationComp = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.2f, false, true);
 				animationComp->registerAnimation("Default", defaut);
@@ -779,7 +763,7 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 	return gameObject;
 }
 
-static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+GameObject::ptr TileMapManager::loadLava(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	auto gameObject = make_shared<GameObject>(object->name, object->type);
@@ -812,7 +796,7 @@ static GameObject::ptr loadLava(NLTmxMapObject* object, const std::string& layer
 	return gameObject;
 }
 
-static void loadSpitter(const std::string& layer, const std::string& resourcePath,
+void TileMapManager::loadSpitter(const std::string& layer, const std::string& resourcePath,
 	SpriteManager& spriteManager)
 {
 	vector<std::shared_ptr<SpitterComponent>> spitters;
@@ -874,8 +858,8 @@ static void loadSpitter(const std::string& layer, const std::string& resourcePat
 
 #pragma region animation
 
-		auto d = MakeAnimation(0, 0, 768, texturePath);
-		auto s = MakeAnimation(0, 768, 768, texturePath);
+		auto d = makeAnimation(0, 0, 768, texturePath);
+		auto s = makeAnimation(0, 768, 768, texturePath);
 
 		auto animation = std::make_shared<AnimationComponent>(*gameObject, spriteManager.getWindow(), 0.5f, false, false);
 		animation->registerAnimation("Default", d);
@@ -1023,8 +1007,8 @@ static void loadSpitter(const std::string& layer, const std::string& resourcePat
 	mSpitterTriggers.clear();
 }
 
-static GameObject::ptr loadButton(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
-	SpriteManager& spriteManager, TGuiWrapper* guiManager)
+GameObject::ptr TileMapManager::loadButton(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
+	SpriteManager& spriteManager, GuiManager* guiManager)
 {
 	auto gameObject = make_shared<GameObject>(object->name, object->type);
 	EventBus::getInstance().fireEvent(std::make_shared<GameObjectCreateEvent>(gameObject));
@@ -1089,7 +1073,7 @@ static GameObject::ptr loadButton(NLTmxMapObject* object, const std::string& lay
 	return gameObject;
 }
 
-void loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, SpriteManager& sprite_manager, TGuiWrapper* guiManager)
+void TileMapManager::loadObjectLayers(NLTmxMap* tilemap, const std::string& resource_path, SpriteManager& sprite_manager, GuiManager* guiManager)
 {
 	Player player{};
 	//Spitter spitter{};

@@ -7,7 +7,7 @@
 #include "CameraRenderComponent.h"
 
 #include "NLTmxMap.h"
-#include "TileMapLoader.h"
+#include "TileMapManager.h"
 #include "PositionFollowComponent.h"
 #include "AnimationComponent.h"
 #include "GameObjectEvents.h"
@@ -27,8 +27,7 @@ void MainState::init()
 {
 	if (mIsInit)
 		return;
-	
-	mGameObjectManager.init();
+
 	mSpriteManager.init();
 	mPhysicsManager.init();
 
@@ -38,8 +37,8 @@ void MainState::init()
 	const auto tilemap = NLLoadTmxMap(resourcePath + "level_smol.tmx");
 	FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
-	loadTileLayers(tilemap, resourcePath, mSpriteManager);
-	loadObjectLayers(tilemap, resourcePath, mSpriteManager);
+	TileMapManager::getInstance().loadTileLayers(tilemap, resourcePath, mSpriteManager);
+	TileMapManager::getInstance().loadObjectLayers(tilemap, resourcePath, mSpriteManager);
 
 	delete tilemap;
 	
@@ -55,11 +54,11 @@ void MainState::init()
 			*camera, mGame->getWindow(), mGame->getWindow().getView());
 		camera->add_component(render_comp);
 
-		auto follow = make_shared<PositionFollowComponent>(*camera, mGameObjectManager.getGameObject("Player")->getPosition());
+		auto follow = make_shared<PositionFollowComponent>(*camera, GameObjectManager::getInstance().getGameObject("Player")->getPosition());
 		camera->add_component(follow);
 		camera->init();
 
-		mGameObjectManager.addGameObject(camera);
+		GameObjectManager::getInstance().addGameObject(camera);
 		mSpriteManager.setCamera(render_comp.get());
 		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 	}
@@ -67,12 +66,12 @@ void MainState::init()
 	// Define layer order manually here. Could come from custom file settings.
 	mSpriteManager.setLayerOrder({"Floor", "Background", "BackgroundExtras", "BehindObjects", "Walls", "GameObjects", "Top"});
 	// spitter player refs
-	auto gos = mGameObjectManager.getGameObjects();
+	auto gos = GameObjectManager::getInstance().getGameObjects();
 	for (auto o : gos)
 	{
 		if (o.second->getTag() == "Spitter")
 		{
-			o.second->get_component<SpitterComponent>()->setPlayer(mGameObjectManager.getGameObject("Player"));
+			o.second->get_component<SpitterComponent>()->setPlayer(GameObjectManager::getInstance().getGameObject("Player"));
 		}
 	}
 
@@ -93,27 +92,27 @@ void MainState::update(const float deltaTime)
 	EventBus::getInstance().processEvents(deltaTime);
 
 	// update remaining game objects
-	for (auto go_pair : mGameObjectManager.getGameObjects())
+	for (auto go_pair : GameObjectManager::getInstance().getGameObjects())
 	{
 		if (go_pair.second->isMarkedForDelete())
-			mGameObjectManager.removeGameObject(go_pair.first);
+			GameObjectManager::getInstance().removeGameObject(go_pair.first);
 		else
 			go_pair.second->update(deltaTime);
 	}
 
 	// set camera to player + hands + tiny offset
-	auto player = mGameObjectManager.getGameObject("Player");
+	auto player = GameObjectManager::getInstance().getGameObject("Player");
 	auto spriteBounds = player->get_component<AnimationComponent>()->getCurrentAnimation()->getSprite().getLocalBounds();
 	auto playerPos = player->getPosition() - sf::Vector2f(spriteBounds.width, 0);
-	auto handPos = (mGameObjectManager.getGameObject("Hand0")->getPosition() + mGameObjectManager.getGameObject("Hand1")->getPosition()) / 2.f;
+	auto handPos = (GameObjectManager::getInstance().getGameObject("Hand0")->getPosition() + GameObjectManager::getInstance().getGameObject("Hand1")->getPosition()) / 2.f;
 
 	Vector2f position = (playerPos + handPos) / 2.f + sf::Vector2f(0, -750.f);
 
-	mGameObjectManager.getGameObject("Camera")->get_component<PositionFollowComponent>()->setFollowPosition(position);
+	GameObjectManager::getInstance().getGameObject("Camera")->get_component<PositionFollowComponent>()->setFollowPosition(position);
 
 	if (player->get_component<PlayerBodyComponent>()->isPlayerDead())
 	{
-		auto m = mGameObjectManager.getGameObject("Dead");
+		auto m = GameObjectManager::getInstance().getGameObject("Dead");
 		m->setPosition(Vector2f(position.x, position.y));
 
 		if (mTimer < mNextStateTimer)
@@ -128,7 +127,7 @@ void MainState::update(const float deltaTime)
 
 	if (player->get_component<PlayerBodyComponent>()->isLevelWon())
 	{
-		auto m = mGameObjectManager.getGameObject("Win");
+		auto m = GameObjectManager::getInstance().getGameObject("Win");
 		m->setPosition(Vector2f(position.x, position.y));
 
 		if (mTimer < mNextStateTimer)
@@ -151,7 +150,7 @@ void MainState::exit()
 {
 	mPhysicsManager.shutdown();
 	mSpriteManager.shutdown();
-	mGameObjectManager.shutdown();
+	GameObjectManager::getInstance().shutdown();
 	mMusic.stop();
 
 	mIsInit = false;

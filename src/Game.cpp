@@ -34,8 +34,6 @@ void Game::run()
 				mWindow.close();
 			else
 				mInputManager->process(event);
-
-
 		}
 
 		update();
@@ -55,6 +53,9 @@ bool Game::init()
 	controllerSetup();
 
 	mDebugDraw = &DebugDraw::getInstance();
+
+	mGameObjectManager = &GameObjectManager::getInstance();
+	mGameObjectManager->init();
 
 
 	mInputManager->set_renderWindow(&mWindow);
@@ -84,7 +85,7 @@ void Game::update()
 	mInputManager->update();
 
 	mGameStateManager.update(fDeltaTimeSeconds);
-
+	
 	//mDebugDraw->update(fDeltaTimeSeconds);
 }
 

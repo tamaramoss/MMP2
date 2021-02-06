@@ -18,7 +18,6 @@ public:
 
 private:
 	SpriteManager mSpriteManager;
-	GameObjectManager mGameObjectManager;
 	PhysicsManager mPhysicsManager;
 
 	float mNextStateTimer = 5.0f;

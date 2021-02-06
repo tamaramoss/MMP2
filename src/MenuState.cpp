@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "GameStateManager.h"
 #include "NLTmxMap.h"
-#include "TileMapLoader.h"
+#include "TileMapManager.h"
 
 using namespace std;
 
@@ -22,8 +22,8 @@ MenuState::init()
 	if (mIsInit)
 		return;
 
-	mGuiManager = std::make_shared<TGuiWrapper>(mGame);
-	mGameObjectManager.init();
+	mGuiManager = std::make_shared<GuiManager>(mGame);
+
 	mSpriteManager.init();
 
 	// load tile map/level
@@ -32,8 +32,8 @@ MenuState::init()
 		const auto tilemap = NLLoadTmxMap(resourcePath + "main_menu.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
-		loadTileLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
-		loadObjectLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
+		TileMapManager::getInstance().loadTileLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
+		TileMapManager::getInstance().loadObjectLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
 
 		delete tilemap;
 	}
@@ -51,7 +51,7 @@ MenuState::init()
 
 		camera->init();
 
-		mGameObjectManager.addGameObject(camera);
+		GameObjectManager::getInstance().addGameObject(camera);
 		mSpriteManager.setCamera(render_comp.get());
 		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 	}
@@ -69,10 +69,10 @@ MenuState::init()
 void MenuState::update(float deltaTime)
 {
 	// update remaining game objects
-	for (auto go_pair : mGameObjectManager.getGameObjects())
+	for (auto go_pair : GameObjectManager::getInstance().getGameObjects())
 	{
 		if (go_pair.second->isMarkedForDelete())
-			mGameObjectManager.removeGameObject(go_pair.first);
+			GameObjectManager::getInstance().removeGameObject(go_pair.first);
 		else
 			go_pair.second->update(deltaTime);
 	}
@@ -90,7 +90,7 @@ void MenuState::exit()
 {
 
 	mSpriteManager.shutdown();
-	mGameObjectManager.shutdown();
+	GameObjectManager::getInstance().shutdown();
 	mGuiManager->exit();
 	
 	mIsInit = false;
