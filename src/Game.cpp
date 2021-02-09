@@ -70,6 +70,13 @@ bool Game::init()
 
 	mGameStateManager.setState("MenuState");
 
+	if (!mMusic.openFromFile("../assets/Sounds/background.wav"))
+		return false;
+
+	mMusic.setLoop(true);
+	mMusic.play();
+	mMusic.setVolume(50);
+
 	return true;
 }
 
@@ -95,6 +102,7 @@ void Game::draw()
 	
 	mGameStateManager.draw();
 
+
 	mDebugDraw->draw(mWindow);
 
 
@@ -103,6 +111,9 @@ void Game::draw()
 
 void Game::shutdown()
 {
+	mGameStateManager.shutdown();
+	mMusic.stop();
+	mGameObjectManager->shutdown();
 }
 
 void Game::controllerSetup()

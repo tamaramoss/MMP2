@@ -21,7 +21,6 @@ private:
 	PhysicsManager mPhysicsManager;
 
 	float mNextStateTimer = 5.0f;
-	sf::Music mMusic;
 	float mTimer = 0.0f;
 
 	bool mIsInit = false;

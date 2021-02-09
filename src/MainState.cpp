@@ -64,7 +64,7 @@ void MainState::init()
 	}
 
 	// Define layer order manually here. Could come from custom file settings.
-	mSpriteManager.setLayerOrder({"Floor", "Background", "BackgroundExtras", "BehindObjects", "Walls", "GameObjects", "Top"});
+	mSpriteManager.setLayerOrder({"Floor", "Background", "BehindObjects", "Walls",  "BackgroundExtras", "GameObjects", "Top"});
 	// spitter player refs
 	auto gos = GameObjectManager::getInstance().getGameObjects();
 	for (auto o : gos)
@@ -74,14 +74,6 @@ void MainState::init()
 			o.second->get_component<SpitterComponent>()->setPlayer(GameObjectManager::getInstance().getGameObject("Player"));
 		}
 	}
-
-	
-	if (!mMusic.openFromFile(resourcePath + "Sounds/background.wav"))
-		return;
-
-	mMusic.setLoop(true);
-	mMusic.play();
-	mMusic.setVolume(50);
 
 	mIsInit = true;
 }
@@ -150,8 +142,8 @@ void MainState::exit()
 {
 	mPhysicsManager.shutdown();
 	mSpriteManager.shutdown();
-	GameObjectManager::getInstance().shutdown();
-	mMusic.stop();
+	GameObjectManager::getInstance().reset();
+	mTimer = 0.f;
 
 	mIsInit = false;
 }

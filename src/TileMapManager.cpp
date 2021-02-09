@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+
+
 #include "TileMapManager.h"
 
 #include "TileLayerRenderComponent.h"
@@ -490,7 +492,7 @@ GameObject::ptr TileMapManager::loadRock(NLTmxMapObject* object, const std::stri
 		}
 	}
 
-	makePhysics(gameObject, true, 0.4f);
+	makePhysics(gameObject, true, 0.4f, false, true);
 
 	gameObject->init();
 	return gameObject;
@@ -506,7 +508,7 @@ GameObject::ptr TileMapManager::loadLava(NLTmxMapObject* object, const std::stri
 
 	auto spriteComponent = makeRenderComponent(object, gameObject, layer, spriteManager);
 
-	makePhysics(gameObject, true);
+	makePhysics(gameObject, true, 1.f, false, true);
 
 	//Extend Physics manager and Collider Component to get detailed collision information.
 	gameObject->get_component<ColliderComponent>()->registerOnCollisionFunction(
@@ -679,6 +681,9 @@ void TileMapManager::setupSpitter(const std::string& layer, const std::string& r
 			}
 		}
 	}
+
+	mSpitterBody.clear();
+	mSpitterTrigger.clear();
 }
 
 GameObject::ptr TileMapManager::loadButton(NLTmxMapObject* object, const std::string& layer, const std::string& resourcePath,
@@ -749,6 +754,8 @@ GameObject::ptr TileMapManager::loadWinOverlay(SpriteManager& spriteManager)
 	return gameObject;
 }
 
+
+
 void TileMapManager::makePhysics(GameObject::ptr gameObject, bool isKinematic, float sizeFactor, bool isStatic, bool isSensor, float density, float friction)
 {
 	const auto rigid_comp = make_shared<RigidBodyComponent>(*gameObject, b2_staticBody);
@@ -803,15 +810,22 @@ void TileMapManager::makePhysicsWithObject(NLTmxMapObject* object, GameObject::p
 	//create the collider: 
 	b2PolygonShape shape;
 
-	const auto w = (texture_rect.width / 2.) * PhysicsManager::UNRATIO;
-	const auto h = (texture_rect.height / 2.) * PhysicsManager::UNRATIO;
-	shape.SetAsBox(w, h, b2Vec2(w, h), 0);
+	auto w = (texture_rect.width / 2.) * PhysicsManager::UNRATIO;
+	auto h = (texture_rect.height / 2.) * PhysicsManager::UNRATIO;
+	double cosRotation = cos(degreesToRadians(object->rotation));
+	double sinRotation = sin(degreesToRadians(object->rotation));
+	double rotatedCenterX = w * cosRotation - h * sinRotation;
+	double rotatedCenterY = w * sinRotation + h * cosRotation;
+
+	
+	shape.SetAsBox(w, h, b2Vec2(rotatedCenterX, rotatedCenterY), degreesToRadians(object->rotation));
 
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 1.f;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &shape;
 	FixtureDef.isSensor = isSensor;
+
 	auto colliderComp = make_shared<ColliderComponent>(*gameObject, *rigid_comp, FixtureDef);
 
 	gameObject->add_component(rigid_comp);
@@ -886,7 +900,6 @@ std::shared_ptr<AnimationComponent> TileMapManager::makeAnimationComponent(NLTmx
 			textureRect.top = stoi(property->value);
 		}
 	}
-
 
 	for (int i = 0; i < animationNames.size(); i++)
 	{

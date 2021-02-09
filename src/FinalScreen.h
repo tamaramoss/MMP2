@@ -22,7 +22,7 @@ private:
 	SpriteManager mSpriteManager;
 
 	std::shared_ptr<GuiManager> mGuiManager;
-	sf::Music mMusic;
+
 	
 	bool mIsInit = false;
 };

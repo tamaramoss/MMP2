@@ -31,7 +31,7 @@ void GameObjectManager::init()
 	}
 }
 
-void GameObjectManager::shutdown()
+void GameObjectManager::reset()
 {
 	mGameObjects.clear();
 
@@ -39,6 +39,14 @@ void GameObjectManager::shutdown()
 	//for (auto& m_listener : mListeners)
 	//	EventBus::getInstance().removeListener(m_listener);
 	//mListeners.clear();
+}
+
+void GameObjectManager::shutdown()
+{
+	// unsubscribe from events
+	for (auto& m_listener : mListeners)
+		EventBus::getInstance().removeListener(m_listener);
+	mListeners.clear();
 }
 
 void

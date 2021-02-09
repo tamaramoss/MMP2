@@ -26,12 +26,14 @@ public:
 	GameStateManager& getGameStateManager() { return mGameStateManager; }
 	
 	void run();
+
 private:
 
 	bool init();
 	void update();
 	void draw();
-	static void shutdown();
+	void shutdown();
+
 
 	void controllerSetup();
 
@@ -44,4 +46,6 @@ private:
 	GuiManager* mTGuiWrapper = nullptr;
 	InputManager* mInputManager = nullptr;
 	DebugDraw* mDebugDraw = nullptr;
+	sf::Music mMusic;
+
 };

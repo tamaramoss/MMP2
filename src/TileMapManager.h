@@ -2,6 +2,9 @@
 
 #include <memory>
 #include <string>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 
 
 #include "Animation.h"
@@ -37,7 +40,8 @@ private:
     vector<NLTmxMapObject*> mSpitterBody;
     vector<NLTmxMapObject*> mSpitterTrigger;
 
-   
+    float degreesToRadians(float angleDegrees) { return (angleDegrees) * M_PI / 180.f; }
+    float radiansToDegrees(float angleRadians) { return (angleRadians) * 180.f / M_PI; }
    
     GameObject::ptr loadDeadOverlay(SpriteManager& spriteManager);
     GameObject::ptr loadWinOverlay(SpriteManager& spriteManager);

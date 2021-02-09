@@ -15,6 +15,7 @@ public:
 	static GameObjectManager& getInstance();
 
 	void init();
+	void reset();
 	void shutdown();
 
 	void addGameObject(const GameObject::ptr& gameObject);
