@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "GameStateManager.h"
 #include "NLTmxMap.h"
-#include "TileMapLoader.h"
+#include "TileMapManager.h"
 
 using namespace std;
 
@@ -21,8 +21,8 @@ FinalScreen::init()
 {
 	if (mIsInit)
 		return;
-	mGuiManager = std::make_shared<TGuiWrapper>(mGame);
-	mGameObjectManager.init();
+	mGuiManager = std::make_shared<GuiManager>(mGame);
+
 	mSpriteManager.init();
 
 	// load tile map/level
@@ -31,8 +31,8 @@ FinalScreen::init()
 		const auto tilemap = NLLoadTmxMap(resourcePath + "end_screen.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
-		loadTileLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
-		loadObjectLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
+		TileMapManager::getInstance().loadTileLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
+		TileMapManager::getInstance().loadObjectLayers(tilemap, resourcePath, mSpriteManager, mGuiManager.get());
 
 		delete tilemap;
 	}
@@ -51,18 +51,11 @@ FinalScreen::init()
 
 		camera->init();
 
-		mGameObjectManager.addGameObject(camera);
+		GameObjectManager::getInstance().addGameObject(camera);
 		mSpriteManager.setCamera(render_comp.get());
 		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 	}
 	mSpriteManager.setLayerOrder({ "Background", "Buttons" });
-
-	if (!mMusic.openFromFile("../assets/Sounds/background.wav"))
-		return;
-
-	mMusic.setLoop(true);
-	mMusic.play();
-	mMusic.setVolume(50);
 
 
 	mIsInit = true;
@@ -71,10 +64,10 @@ FinalScreen::init()
 void FinalScreen::update(float deltaTime)
 {
 	// update remaining game objects
-	for (auto go_pair : mGameObjectManager.getGameObjects())
+	for (auto go_pair : GameObjectManager::getInstance().getGameObjects())
 	{
 		if (go_pair.second->isMarkedForDelete())
-			mGameObjectManager.removeGameObject(go_pair.first);
+			GameObjectManager::getInstance().removeGameObject(go_pair.first);
 		else
 			go_pair.second->update(deltaTime);
 	}
@@ -91,10 +84,10 @@ void FinalScreen::draw()
 void FinalScreen::exit()
 {
 	mSpriteManager.shutdown();
-	mGameObjectManager.shutdown();
+	GameObjectManager::getInstance().reset();
 	mGuiManager->exit();
 
-	mMusic.stop();
+
 
 	mIsInit = false;
 }

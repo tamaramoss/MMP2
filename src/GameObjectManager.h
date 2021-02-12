@@ -7,12 +7,15 @@
 
 #include "EventBus.h"
 
+
 class GameObjectManager
 {
 public:
 	using GameObjectMap = std::unordered_map<std::string, GameObject::ptr>;
+	static GameObjectManager& getInstance();
 
 	void init();
+	void reset();
 	void shutdown();
 
 	void addGameObject(const GameObject::ptr& gameObject);

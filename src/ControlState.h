@@ -3,7 +3,7 @@
 #include "GameObjectManager.h"
 #include "GameState.h"
 #include "SpriteManager.h"
-#include "TGuiWrapper.h"
+#include "GuiManager.h"
 
 
 class ControlState : public GameState
@@ -22,8 +22,8 @@ public:
 
 private:
 	SpriteManager mSpriteManager;
-	GameObjectManager mGameObjectManager;
-	sf::Music mMusic;
+
+
 	bool mIsInit = false;
 
 };

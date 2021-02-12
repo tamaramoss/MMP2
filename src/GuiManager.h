@@ -5,10 +5,10 @@
 
 class Game;
 
-class TGuiWrapper
+class GuiManager
 {
 public:
-	TGuiWrapper(Game* game);
+	GuiManager(Game* game);
 
 	void process(float deltaTime);
 	

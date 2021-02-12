@@ -51,6 +51,11 @@ void GameStateManager::draw() const
 		mCurrentState->draw();
 }
 
+void GameStateManager::shutdown() const
+{
+	mCurrentState->exit();
+}
+
 GameState* GameStateManager::findState(const std::string& stateName)
 {
 	const auto state = mStates.find(stateName);

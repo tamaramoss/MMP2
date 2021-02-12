@@ -24,7 +24,7 @@ void SoundComponent::update(float fDeltaTime)
 void SoundComponent::setSound(std::string name)
 {
 	SoundBuffer* sound = findSound(name);
-	FF_ASSERT_MSG(sound != nullptr, "State could not be found");
+	FF_ASSERT_MSG(sound != nullptr, "Sound could not be found");
 
 	mSound.setBuffer(*sound);
 	mSound.play();

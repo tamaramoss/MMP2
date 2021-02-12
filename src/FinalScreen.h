@@ -3,7 +3,7 @@
 #include "GameObjectManager.h"
 #include "GameState.h"
 #include "SpriteManager.h"
-#include "TGuiWrapper.h"
+#include "GuiManager.h"
 
 
 class FinalScreen : public GameState
@@ -20,9 +20,9 @@ public:
 
 private:
 	SpriteManager mSpriteManager;
-	GameObjectManager mGameObjectManager;
-	std::shared_ptr<TGuiWrapper> mGuiManager;
-	sf::Music mMusic;
+
+	std::shared_ptr<GuiManager> mGuiManager;
+
 	
 	bool mIsInit = false;
 };

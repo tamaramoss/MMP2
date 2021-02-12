@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "TGuiWrapper.h"
+#include "GuiManager.h"
 
 
 #include "AnimationComponent.h"
@@ -9,12 +9,12 @@
 #include "SoundComponent.h"
 
 
-TGuiWrapper::TGuiWrapper(Game* game) : mGame(game)
+GuiManager::GuiManager(Game* game) : mGame(game)
 {
 	
 }
 
-void TGuiWrapper::process(float deltaTime)
+void GuiManager::process(float deltaTime)
 {
 	if (mButtons.size() == 0)
 		return;
@@ -68,7 +68,7 @@ void TGuiWrapper::process(float deltaTime)
 }
 
 
-void TGuiWrapper::addButton(GameObject::ptr button, bool focused)
+void GuiManager::addButton(GameObject::ptr button, bool focused)
 {
 	if (focused)
 		mFocusedButtonIndex = mButtons.size();
@@ -76,7 +76,7 @@ void TGuiWrapper::addButton(GameObject::ptr button, bool focused)
 	mButtons.push_back(button);
 }
 
-void TGuiWrapper::updateFocusedButtonIndex(int step)
+void GuiManager::updateFocusedButtonIndex(int step)
 {
 	mButtons[mFocusedButtonIndex]->get_component<AnimationComponent>()->setAnimation("Default");
 	
@@ -89,7 +89,7 @@ void TGuiWrapper::updateFocusedButtonIndex(int step)
 
 }
 
-void TGuiWrapper::exit()
+void GuiManager::exit()
 {
 	mButtons.clear();
 	mFocusedButtonIndex = -1;
