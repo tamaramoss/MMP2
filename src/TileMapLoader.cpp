@@ -293,14 +293,14 @@ static GameObject::ptr createHand(NLTmxMapObject* object, const std::string& lay
 #pragma region Sound
 
 	auto buffer = std::make_shared<sf::SoundBuffer>();
-	if (!buffer->loadFromFile("../assets/Sounds/grab.wav"))
+	if (!buffer->loadFromFile("../assets/Sounds/grab.ogg"))
 		cout << "No music Here" << endl;
 
 	auto soundComp = std::make_shared<SoundComponent>(*gameObject);
 	soundComp->registerSound("Grab", buffer);
 
 	auto buffer2 = std::make_shared<sf::SoundBuffer>();
-	if (!buffer2->loadFromFile("../assets/Sounds/pull_up.wav"))
+	if (!buffer2->loadFromFile("../assets/Sounds/pull_up.ogg"))
 		cout << "No music Here" << endl;
 	soundComp->registerSound("Pull", buffer2);
 
@@ -535,7 +535,7 @@ static GameObject::ptr makePlayer(Player playerStruct, const std::string& layer,
 
 			// sound
 			auto buffer = std::make_shared<sf::SoundBuffer>();
-			if (!buffer->loadFromFile("../assets/Sounds/hit.wav"))
+			if (!buffer->loadFromFile("../assets/Sounds/hit.ogg"))
 				cout << "No music Here" << endl;
 
 			auto soundComp = std::make_shared<SoundComponent>(*gameObject);
@@ -732,7 +732,7 @@ static GameObject::ptr loadRock(NLTmxMapObject* object, const std::string& layer
 				gameObject->add_component(oneTimeRock);
 
 				auto buffer = std::make_shared<sf::SoundBuffer>();
-				if (!buffer->loadFromFile("../assets/Sounds/skull_ded.wav"))
+				if (!buffer->loadFromFile("../assets/Sounds/skull_ded.ogg"))
 					cout << "No music Here" << endl;
 
 				auto soundComp = std::make_shared<SoundComponent>(*gameObject);
@@ -888,7 +888,7 @@ static void loadSpitter(const std::string& layer, const std::string& resourcePat
 
 		// sound
 		auto buffer = std::make_shared<sf::SoundBuffer>();
-		if (!buffer->loadFromFile("../assets/Sounds/shoot.wav"))
+		if (!buffer->loadFromFile("../assets/Sounds/shoot.ogg"))
 			cout << "No music Here" << endl;
 
 		auto soundComp = std::make_shared<SoundComponent>(*gameObject);
@@ -1076,7 +1076,7 @@ static GameObject::ptr loadButton(NLTmxMapObject* object, const std::string& lay
 	auto soundComp = std::make_shared<SoundComponent>(*gameObject);
 
 	auto buffer2 = std::make_shared<sf::SoundBuffer>();
-	if (!buffer2->loadFromFile("../assets/Sounds/grab.wav"))
+	if (!buffer2->loadFromFile("../assets/Sounds/grab.ogg"))
 		cout << "No music Here" << endl;
 	soundComp->registerSound("Change", buffer2);
 

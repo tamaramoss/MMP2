@@ -55,7 +55,7 @@ ControlState::init()
 	}
 	mSpriteManager.setLayerOrder({ "Background" });
 
-	if (!mMusic.openFromFile("../assets/Sounds/background.wav"))
+	if (!mMusic.openFromFile("../assets/Sounds/background.ogg"))
 		return;
 
 	mMusic.setLoop(true);

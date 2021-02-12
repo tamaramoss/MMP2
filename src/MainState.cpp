@@ -77,7 +77,7 @@ void MainState::init()
 	}
 
 	
-	if (!mMusic.openFromFile(resourcePath + "Sounds/background.wav"))
+	if (!mMusic.openFromFile(resourcePath + "Sounds/background.ogg"))
 		return;
 
 	mMusic.setLoop(true);

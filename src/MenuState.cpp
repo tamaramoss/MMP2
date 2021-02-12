@@ -57,7 +57,7 @@ MenuState::init()
 	}
 	mSpriteManager.setLayerOrder({ "Background", "Buttons" });
 
-	if (!mMusic.openFromFile("../assets/Sounds/background.wav"))
+	if (!mMusic.openFromFile("../assets/Sounds/background.ogg"))
 		return;
 
 	mMusic.setLoop(true);
