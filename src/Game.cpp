@@ -34,8 +34,6 @@ void Game::run()
 				mWindow.close();
 			else
 				mInputManager->process(event);
-
-
 		}
 
 		update();
@@ -56,6 +54,9 @@ bool Game::init()
 
 	mDebugDraw = &DebugDraw::getInstance();
 
+	mGameObjectManager = &GameObjectManager::getInstance();
+	mGameObjectManager->init();
+
 
 	mInputManager->set_renderWindow(&mWindow);
 
@@ -68,6 +69,13 @@ bool Game::init()
 	mGameStateManager.registerState("FinalScreen", make_shared<FinalScreen>(&mGameStateManager, this));
 
 	mGameStateManager.setState("MenuState");
+
+	if (!mMusic.openFromFile("../assets/Sounds/background.wav"))
+		return false;
+
+	mMusic.setLoop(true);
+	mMusic.play();
+	mMusic.setVolume(50);
 
 	return true;
 }
@@ -84,8 +92,8 @@ void Game::update()
 	mInputManager->update();
 
 	mGameStateManager.update(fDeltaTimeSeconds);
-
-	//mDebugDraw->update(fDeltaTimeSeconds);
+	
+	mDebugDraw->update(fDeltaTimeSeconds);
 }
 
 void Game::draw()
@@ -94,7 +102,8 @@ void Game::draw()
 	
 	mGameStateManager.draw();
 
-	//mDebugDraw->draw(mWindow);
+
+	mDebugDraw->draw(mWindow);
 
 
 	mWindow.display();
@@ -102,6 +111,9 @@ void Game::draw()
 
 void Game::shutdown()
 {
+	mGameStateManager.shutdown();
+	mMusic.stop();
+	mGameObjectManager->shutdown();
 }
 
 void Game::controllerSetup()

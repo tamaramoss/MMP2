@@ -174,8 +174,8 @@
     <ClInclude Include="..\src\SpitterComponent.h" />
     <ClInclude Include="..\src\SpitterTriggerComponent.h" />
     <ClInclude Include="..\src\SpriteManager.h" />
-    <ClInclude Include="..\src\TGuiWrapper.h" />
-    <ClInclude Include="..\src\TileMapLoader.h" />
+    <ClInclude Include="..\src\GuiManager.h" />
+    <ClInclude Include="..\src\TileMapManager.h" />
     <ClInclude Include="..\src\IGameComponent.h" />
     <ClInclude Include="../src/GameStateManager.h" />
     <ClInclude Include="../src/InputManager.h" />
@@ -221,8 +221,8 @@
     <ClCompile Include="..\src\SpitterComponent.cpp" />
     <ClCompile Include="..\src\SpriteManager.cpp" />
     <ClCompile Include="..\src\SpriteRenderComponent.cpp" />
-    <ClCompile Include="..\src\TGuiWrapper.cpp" />
-    <ClCompile Include="..\src\TileMapLoader.cpp" />
+    <ClCompile Include="..\src\GuiManager.cpp" />
+    <ClCompile Include="..\src\TileMapManager.cpp" />
     <ClCompile Include="../src/TileLayerRenderComponent.cpp" />
     <ClCompile Include="../src/stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

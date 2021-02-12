@@ -1,6 +1,9 @@
 #include "stdafx.h"
 
 #include "SpriteManager.h"
+
+#include <iostream>
+
 #include "IRenderComponent.h"
 
 #include "RenderComponentEvents.h"
@@ -35,6 +38,9 @@ void SpriteManager::shutdown()
 	for (auto& m_listener : mListeners)
 		EventBus::getInstance().removeListener(m_listener);
 	mListeners.clear();
+
+	std::cout << "Remove render" << std::endl;
+
 }
 
 void

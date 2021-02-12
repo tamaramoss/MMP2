@@ -6,7 +6,7 @@
 #include "GameStateManager.h"
 #include "InputManager.h"
 #include "NLTmxMap.h"
-#include "TileMapLoader.h"
+#include "TileMapManager.h"
 
 using namespace std;
 
@@ -23,7 +23,7 @@ ControlState::init()
 		return;
 
 	mSpriteManager.init();
-	mGameObjectManager.init();
+
 
 	// load tile map/level
 	{
@@ -31,7 +31,7 @@ ControlState::init()
 		const auto tilemap = NLLoadTmxMap(resourcePath + "controls.tmx");
 		FF_ASSERT_MSG(tilemap != nullptr, "Could not load tilemap " + resourcePath + "game.tmx");
 
-		loadTileLayers(tilemap, resourcePath, mSpriteManager);
+		TileMapManager::getInstance().loadTileLayers(tilemap, resourcePath, mSpriteManager);
 
 		delete tilemap;
 	}
@@ -49,7 +49,7 @@ ControlState::init()
 
 		camera->init();
 
-		mGameObjectManager.addGameObject(camera);
+		GameObjectManager::getInstance().addGameObject(camera);
 		mSpriteManager.setCamera(render_comp.get());
 		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 	}
@@ -61,7 +61,9 @@ ControlState::init()
 	mMusic.setLoop(true);
 	mMusic.play();
 	mMusic.setVolume(50);
+
 	mIsInit = true;
+
 }
 
 void ControlState::update(float deltaTime)
@@ -79,7 +81,7 @@ void ControlState::draw()
 void ControlState::exit()
 {
 	mSpriteManager.shutdown();
-	mGameObjectManager.shutdown();
-	mMusic.stop();
+	GameObjectManager::getInstance().reset();
+	
 	mIsInit = false;
 }

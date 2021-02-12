@@ -1,13 +1,15 @@
 #pragma once
 
 #include <string>
-#include "TGuiWrapper.h"
+
+#include "GameObjectManager.h"
+#include "GuiManager.h"
 
 #include "GameStateManager.h"
 
 class InputManager;
 class DebugDraw;
-class TGuiWrapper;
+class GuiManager;
 
 class Game
 {
@@ -24,12 +26,14 @@ public:
 	GameStateManager& getGameStateManager() { return mGameStateManager; }
 	
 	void run();
+
 private:
 
 	bool init();
 	void update();
 	void draw();
-	static void shutdown();
+	void shutdown();
+
 
 	void controllerSetup();
 
@@ -37,8 +41,11 @@ private:
 
 	RenderWindow mWindow;
 	GameStateManager mGameStateManager;
+	GameObjectManager* mGameObjectManager;
 
-	TGuiWrapper* mTGuiWrapper = nullptr;
+	GuiManager* mTGuiWrapper = nullptr;
 	InputManager* mInputManager = nullptr;
 	DebugDraw* mDebugDraw = nullptr;
+	sf::Music mMusic;
+
 };

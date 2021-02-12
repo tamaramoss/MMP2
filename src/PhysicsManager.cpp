@@ -1,6 +1,9 @@
 #include "stdafx.h"
 
 #include "PhysicsManager.h"
+
+#include <iostream>
+
 #include "RigidBodyComponent.h"
 #include "PhysicsComponentEvents.h"
 #include <Box2D/Dynamics/b2World.h>
@@ -61,6 +64,8 @@ void PhysicsManager::shutdown()
 	for (auto it = mListeners.begin(); it != mListeners.end(); ++it)
 		EventBus::getInstance().removeListener(*it);
 
+	std::cout << "Remove physcs" << std::endl;
+	
 	mListeners.clear();
 	mRigidbodies.clear();
 }

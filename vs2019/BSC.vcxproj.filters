@@ -69,9 +69,6 @@
     <ClInclude Include="../src/MainState.h">
       <Filter>Header Files\GameState</Filter>
     </ClInclude>
-    <ClInclude Include="../src/GameStateManager.h">
-      <Filter>Header Files\GameState</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\IRenderComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
@@ -88,9 +85,6 @@
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\NLTmxMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TileMapLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SpriteManager.h">
@@ -186,14 +180,20 @@
     <ClInclude Include="..\src\IRockComponent.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TGuiWrapper.h">
-      <Filter>Header Files\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ControlState.h">
       <Filter>Header Files\GameState</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FinalScreen.h">
       <Filter>Header Files\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/GameStateManager.h">
+      <Filter>Header Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TileMapManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GuiManager.h">
+      <Filter>Header Files\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -208,9 +208,6 @@
     </ClCompile>
     <ClCompile Include="../src/GameObject.cpp">
       <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/GameStateManager.cpp">
-      <Filter>Source Files\GameState</Filter>
     </ClCompile>
     <ClCompile Include="../src/MainState.cpp">
       <Filter>Source Files\GameState</Filter>
@@ -296,17 +293,20 @@
     <ClCompile Include="..\src\FinalScreen.cpp">
       <Filter>Source Files\GameState</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TGuiWrapper.cpp">
-      <Filter>Source Files\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\TileMapLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\PlayerBodyComponent.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ControlState.cpp">
       <Filter>Source Files\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/GameStateManager.cpp">
+      <Filter>Source Files\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TileMapManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GuiManager.cpp">
+      <Filter>Source Files\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

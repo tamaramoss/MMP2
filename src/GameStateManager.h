@@ -17,6 +17,7 @@ public:
 
 	void update(float delta);
 	void draw() const;
+	void shutdown() const;
 
 private:
 	GameState* findState(const std::string& stateName);
