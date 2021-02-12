@@ -1,3 +1,8 @@
+/// code by
+/// MOSS TAMARA | fhs44413
+/// PALAGIC CATALIN | fhs44416
+/// FH Salzburg - MMT 2021
+
 #pragma once
 #include "IGameComponent.h"
 #include <SFML\System\Vector2.hpp>

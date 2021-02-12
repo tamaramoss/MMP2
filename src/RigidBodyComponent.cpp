@@ -1,3 +1,8 @@
+/// code by
+/// MOSS TAMARA | fhs44413
+/// PALAGIC CATALIN | fhs44416
+/// FH Salzburg - MMT 2021
+
 #include "stdafx.h"
 
 #include "RigidBodyComponent.h"
@@ -50,26 +55,26 @@ void RigidBodyComponent::physicsUpdate(float deltaTime) const
 	mGameObject.setRotation(getB2Body()->GetAngle() * 180 / b2_pi);
 
 	//Debug Draw
-	auto fixture = mBody->GetFixtureList();
-	b2AABB aabb;
-	aabb.lowerBound = b2Vec2(FLT_MAX, FLT_MAX);
-	aabb.upperBound = b2Vec2(-FLT_MAX, -FLT_MAX);
-	while (fixture != nullptr)
-	{
-		aabb.Combine(aabb, fixture->GetAABB(0));
+	//auto fixture = mBody->GetFixtureList();
+	//b2AABB aabb;
+	//aabb.lowerBound = b2Vec2(FLT_MAX, FLT_MAX);
+	//aabb.upperBound = b2Vec2(-FLT_MAX, -FLT_MAX);
+	//while (fixture != nullptr)
+	//{
+	//	aabb.Combine(aabb, fixture->GetAABB(0));
 
-		const auto convexshape = fixture->GetShape();
-		if (convexshape->GetType() == b2Shape::e_polygon)
-		{
-			DebugDraw::getInstance().drawPolygonShape(*dynamic_cast<b2PolygonShape*>(convexshape), mGameObject,
-				PhysicsManager::s2b(Color::Green));
-		}
+	//	const auto convexshape = fixture->GetShape();
+	//	if (convexshape->GetType() == b2Shape::e_polygon)
+	//	{
+	//		DebugDraw::getInstance().drawPolygonShape(*dynamic_cast<b2PolygonShape*>(convexshape), mGameObject,
+	//			PhysicsManager::s2b(Color::Green));
+	//	}
 
-		fixture = fixture->GetNext();
+	//	fixture = fixture->GetNext();
 
-		DebugDraw::getInstance().drawAABB(&aabb, Color::Green);
-		DebugDraw::getInstance().DrawTransform(getB2Body()->GetTransform());
-	}
+	//	DebugDraw::getInstance().drawAABB(&aabb, Color::Green);
+	//	DebugDraw::getInstance().DrawTransform(getB2Body()->GetTransform());
+	//}
 	
 }
 

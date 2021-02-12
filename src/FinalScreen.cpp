@@ -1,3 +1,8 @@
+/// code by
+/// MOSS TAMARA | fhs44413
+/// PALAGIC CATALIN | fhs44416
+/// FH Salzburg - MMT 2021
+
 #include "stdafx.h"
 #include "FinalScreen.h"
 
@@ -57,13 +62,6 @@ FinalScreen::init()
 	}
 	mSpriteManager.setLayerOrder({ "Background", "Buttons" });
 
-	if (!mMusic.openFromFile("../assets/Sounds/background.ogg"))
-		return;
-
-	mMusic.setLoop(true);
-	mMusic.play();
-	mMusic.setVolume(50);
-
 	mIsInit = true;
 }
 
@@ -92,8 +90,6 @@ void FinalScreen::exit()
 	mSpriteManager.shutdown();
 	GameObjectManager::getInstance().reset();
 	mGuiManager->exit();
-
-
 
 	mIsInit = false;
 }

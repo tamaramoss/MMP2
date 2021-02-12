@@ -1,3 +1,8 @@
+/// code by
+/// MOSS TAMARA | fhs44413
+/// PALAGIC CATALIN | fhs44416
+/// FH Salzburg - MMT 2021
+
 #include "stdafx.h"
 
 #include "MainState.h"
@@ -75,12 +80,6 @@ void MainState::init()
 		}
 	}
 	
-	if (!mMusic.openFromFile(resourcePath + "Sounds/background.ogg"))
-		return;
-
-	mMusic.setLoop(true);
-	mMusic.play();
-	mMusic.setVolume(50);
 	mIsInit = true;
 }
 

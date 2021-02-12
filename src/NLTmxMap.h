@@ -1,3 +1,8 @@
+/// modified by
+/// MOSS TAMARA | fhs44413
+/// PALAGIC CATALIN | fhs44416
+/// FH Salzburg - MMT 2021
+
 #pragma once
 
 // TMX map file parser from https://github.com/catnapgames/TestNLTmxMap

@@ -1,3 +1,8 @@
+/// code by
+/// MOSS TAMARA | fhs44413
+/// PALAGIC CATALIN | fhs44416
+/// FH Salzburg - MMT 2021
+
 #include "stdafx.h"
 #include "ControlState.h"
 
@@ -54,13 +59,6 @@ ControlState::init()
 		//camera->setPosition(Vector2f(192*13,192*90)); // set position of cam
 	}
 	mSpriteManager.setLayerOrder({ "Background" });
-
-	if (!mMusic.openFromFile("../assets/Sounds/background.ogg"))
-		return;
-
-	mMusic.setLoop(true);
-	mMusic.play();
-	mMusic.setVolume(50);
 
 	mIsInit = true;
 
